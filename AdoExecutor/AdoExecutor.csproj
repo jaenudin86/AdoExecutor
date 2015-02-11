@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5EE4034A-03D7-4385-AC9C-9F5214F711EE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AdoExecutor</RootNamespace>
+    <AssemblyName>AdoExecutor</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\AdoExecutorConfiguration.cs" />
+    <Compile Include="Configuration\AdoExecutorConfigurationFactory.cs" />
+    <Compile Include="Configuration\IAdoExecutorConfiguration.cs" />
+    <Compile Include="ConnectionString\AppConfigConnectionStringProvider.cs" />
+    <Compile Include="ConnectionString\ConstantConnectionStringProvider.cs" />
+    <Compile Include="ConnectionString\IConnectionStringProvider.cs" />
+    <Compile Include="DataObjectFactory\IAdoExecutorDataObjectFactory.cs" />
+    <Compile Include="DataObjectFactory\OdbcAdoExecutorDataObjectFactory.cs" />
+    <Compile Include="DataObjectFactory\OleDbAdoExecutorDataObjectFactory.cs" />
+    <Compile Include="DataObjectFactory\SqlAdoExecutorDataObjectFactory.cs" />
+    <Compile Include="Exception\AdoExecutorException.cs" />
+    <Compile Include="Interception\AdoExecutorInterceptorContextBase.cs" />
+    <Compile Include="Interception\AdoExecutorInterceptorEntryContext.cs" />
+    <Compile Include="Interception\AdoExecutorInterceptorErrorContext.cs" />
+    <Compile Include="Interception\AdoExecutorInterceptorExitContext.cs" />
+    <Compile Include="Interception\AdoExecutorInterceptorSuccessContext.cs" />
+    <Compile Include="Interception\IAdoExecutorInterceptor.cs" />
+    <Compile Include="Interception\IAdoExecutorInterceptorContext.cs" />
+    <Compile Include="Interception\IAdoExecutorInterceptorEntryContext.cs" />
+    <Compile Include="Interception\IAdoExecutorInterceptorErrorContext.cs" />
+    <Compile Include="Interception\IAdoExecutorInterceptorExitContext.cs" />
+    <Compile Include="Interception\IAdoExecutorInterceptorSuccessContext.cs" />
+    <Compile Include="ObjectBuilder\AdoExecutorObjectBuilderContext.cs" />
+    <Compile Include="ObjectBuilder\DataTableAdoExecutorObjectBuilder.cs" />
+    <Compile Include="ObjectBuilder\DynamicAdoExecutorObjectBuilder.cs" />
+    <Compile Include="ObjectBuilder\IAdoExecutorObjectBuilder.cs" />
+    <Compile Include="ObjectBuilder\IAdoExecutorObjectBuilderContext.cs" />
+    <Compile Include="ObjectBuilder\SimpleTypeAdoExecutorObjectBuilder.cs" />
+    <Compile Include="ParameterExtractor\AdoExecutorParameterExtractorContext.cs" />
+    <Compile Include="ParameterExtractor\IAdoExecutorParameterExtractor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryFactory\AdoExecutorQueryFactory.cs" />
+    <Compile Include="QueryFactory\IAdoExecutorQueryFactory.cs" />
+    <Compile Include="Query\AdoExecutorQuery.cs" />
+    <Compile Include="Query\IAdoExecutorQuery.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
