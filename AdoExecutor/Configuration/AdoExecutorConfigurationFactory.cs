@@ -1,5 +1,6 @@
 ﻿using AdoExecutor.ConnectionString;
 using AdoExecutor.DataObjectFactory;
+using AdoExecutor.Interception;
 using AdoExecutor.ObjectBuilder;
 
 namespace AdoExecutor.Configuration
@@ -14,6 +15,8 @@ namespace AdoExecutor.Configuration
 
       configuration.ObjectBuilders.Add(new DataTableAdoExecutorObjectBuilder());
       configuration.ObjectBuilders.Add(new SimpleTypeAdoExecutorObjectBuilder());
+
+      configuration.Interceptors.Add(new ConnectionStateManagerAdoExecutorInterceptor());
 
       return configuration;
     }

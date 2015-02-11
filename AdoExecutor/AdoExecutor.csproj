@@ -56,6 +56,7 @@
     <Compile Include="Interception\AdoExecutorInterceptorErrorContext.cs" />
     <Compile Include="Interception\AdoExecutorInterceptorExitContext.cs" />
     <Compile Include="Interception\AdoExecutorInterceptorSuccessContext.cs" />
+    <Compile Include="Interception\ConnectionStateManagerAdoExecutorInterceptor.cs" />
     <Compile Include="Interception\IAdoExecutorInterceptor.cs" />
     <Compile Include="Interception\IAdoExecutorInterceptorContext.cs" />
     <Compile Include="Interception\IAdoExecutorInterceptorEntryContext.cs" />
