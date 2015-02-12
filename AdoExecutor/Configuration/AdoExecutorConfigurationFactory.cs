@@ -2,6 +2,7 @@
 using AdoExecutor.DataObjectFactory;
 using AdoExecutor.Interception;
 using AdoExecutor.ObjectBuilder;
+using AdoExecutor.ParameterExtractor;
 
 namespace AdoExecutor.Configuration
 {
@@ -17,6 +18,10 @@ namespace AdoExecutor.Configuration
       configuration.ObjectBuilders.Add(new SimpleTypeAdoExecutorObjectBuilder());
 
       configuration.Interceptors.Add(new ConnectionStateManagerAdoExecutorInterceptor());
+
+      configuration.ParameterExtractors.Add(new SpecifiedParameterAdoExecutorParameterExtractor());
+      configuration.ParameterExtractors.Add(new ArrayAdoExecutorParameterExtractor());
+      configuration.ParameterExtractors.Add(new ObjectPropertyAdoExecutorParameterExtractor());
 
       return configuration;
     }

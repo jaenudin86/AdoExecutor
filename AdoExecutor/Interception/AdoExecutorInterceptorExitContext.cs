@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Data;
 using AdoExecutor.Configuration;
+using AdoExecutor.Context;
 
 namespace AdoExecutor.Interception
 {
-  public class AdoExecutorInterceptorExitContext : AdoExecutorInterceptorContextBase, IAdoExecutorInterceptorExitContext
+  public class AdoExecutorInterceptorExitContext : AdoExecutorContext, IAdoExecutorInterceptorExitContext
   {
     public AdoExecutorInterceptorExitContext(
       string query,

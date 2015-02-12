@@ -1,6 +1,8 @@
-﻿namespace AdoExecutor.Interception
+﻿using AdoExecutor.Context;
+
+namespace AdoExecutor.Interception
 {
-  public interface IAdoExecutorInterceptorSuccessContext : IAdoExecutorInterceptorContext
+  public interface IAdoExecutorInterceptorSuccessContext : IAdoExecutorContext
   {
     object Result { get; }
   }

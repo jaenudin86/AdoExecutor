@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Data;
 using AdoExecutor.Configuration;
+using AdoExecutor.Context;
 using AdoExecutor.ObjectBuilder;
+using AdoExecutor.ParameterExtractor;
 
 namespace AdoExecutor.Query
 {
@@ -20,16 +22,29 @@ namespace AdoExecutor.Query
 
     public IDbConnection Connection { get; private set; }
 
-    public int Execute(string query, object parameters = null)
+    public virtual int Execute(string query, object parameters = null)
     {
       return 0;
     }
 
-    public T Select<T>(string query, object parameters = null)
+    public virtual T Select<T>(string query, object parameters = null)
     {
       var command = _configuration.DataObjectFactory.CreateCommand();
       command.CommandText = query;
       command.Connection = Connection;
+
+      var context1 = new AdoExecutorContext(query, parameters, Connection, command, _configuration);
+
+      foreach (var adoExecutorParameterExtractor in _configuration.ParameterExtractors)
+      {
+        if (adoExecutorParameterExtractor.CanProcess(context1))
+        {
+          adoExecutorParameterExtractor.ExtractParameter(context1);
+          break;
+        }
+      }
+
+
       Connection.Open();
       var result = command.ExecuteReader();
 
@@ -45,7 +60,7 @@ namespace AdoExecutor.Query
       throw new System.Exception();
     }
 
-    private IDbConnection PrepareConnection()
+    protected virtual IDbConnection PrepareConnection()
     {
       string connectionString = _configuration.ConnectionStringProvider.ConnectionString;
       IDbConnection connection = _configuration.DataObjectFactory.CreateConnection();

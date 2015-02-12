@@ -2,30 +2,30 @@
 using System.Data;
 using AdoExecutor.Configuration;
 
-namespace AdoExecutor.Interception
+namespace AdoExecutor.Context
 {
-  public abstract class AdoExecutorInterceptorContextBase : IAdoExecutorInterceptorContext
+  public class AdoExecutorContext : IAdoExecutorContext
   {
-    protected AdoExecutorInterceptorContextBase(
+    public AdoExecutorContext(
       string query,
       object parameters,
       IDbConnection connection,
       IDbCommand command,
       IAdoExecutorConfiguration configuration)
     {
-      if (query == null) 
+      if (query == null)
         throw new ArgumentNullException("query");
 
-      if (parameters == null) 
+      if (parameters == null)
         throw new ArgumentNullException("parameters");
 
-      if (connection == null) 
+      if (connection == null)
         throw new ArgumentNullException("connection");
 
-      if (command == null) 
+      if (command == null)
         throw new ArgumentNullException("command");
 
-      if (configuration == null) 
+      if (configuration == null)
         throw new ArgumentNullException("configuration");
 
       Configuration = configuration;

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using AdoExecutor.Context;
 
 namespace AdoExecutor.ParameterExtractor
 {
   public interface IAdoExecutorParameterExtractor
   {
-    Type[] SupportedTypes { get; }
+    bool CanProcess(IAdoExecutorContext context);
+    void ExtractParameter(IAdoExecutorContext context);
   }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Data;
 using AdoExecutor.Configuration;
+using AdoExecutor.Context;
 
 namespace AdoExecutor.Interception
 {
-  public class AdoExecutorInterceptorErrorContext : AdoExecutorInterceptorContextBase,
+  public class AdoExecutorInterceptorErrorContext : AdoExecutorContext,
     IAdoExecutorInterceptorErrorContext
   {
     public AdoExecutorInterceptorErrorContext(

@@ -1,8 +1,10 @@
-﻿namespace AdoExecutor.Interception
+﻿using AdoExecutor.Context;
+
+namespace AdoExecutor.Interception
 {
   public interface IAdoExecutorInterceptor
   {
-    void OnEntry(IAdoExecutorInterceptorEntryContext context);
+    void OnEntry(IAdoExecutorContext context);
     void OnSuccess(IAdoExecutorInterceptorSuccessContext context);
     void OnError(IAdoExecutorInterceptorSuccessContext context);
     void OnExit(IAdoExecutorInterceptorExitContext context);
