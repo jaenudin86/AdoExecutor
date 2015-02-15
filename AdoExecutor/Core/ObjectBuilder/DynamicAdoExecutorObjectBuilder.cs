@@ -18,7 +18,7 @@ namespace AdoExecutor.Core.ObjectBuilder
       {
         var result = new List<object>();
 
-        while (context.DataReader.Read())
+        while (context.DataReader.Read() && !context.DataReader.IsClosed)
         {
           result.Add(CreateDynamicObject(context.DataReader));
         }
@@ -27,7 +27,7 @@ namespace AdoExecutor.Core.ObjectBuilder
       }
       else
       {
-        while (context.DataReader.Read())
+        while (context.DataReader.Read() && !context.DataReader.IsClosed)
         {
           return CreateDynamicObject(context.DataReader);
         } 

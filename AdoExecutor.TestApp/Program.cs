@@ -22,7 +22,12 @@ namespace AdoExecutor.TestApp
       dynamic obj = new ExpandoObject();
       obj.Id = Guid.NewGuid();
 
-      var result = query.Select<Guid[]>("select Id from dbo.TestGuid");
+      var result = query.Select<Person[]>("select Id from dbo.TestGuid");
+    }
+
+    public class Person
+    {
+      public Guid Id { get; set; }
     }
   }
 }

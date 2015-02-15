@@ -6,6 +6,8 @@ namespace AdoExecutor.Core.ObjectBuilder
 {
   public class DataSetAdoExecutorObjectBuilder : IAdoExecutorObjectBuilder
   {
+    private readonly DataTableAdapter _dataTableAdapter = new DataTableAdapter();
+
     public bool CanProcess(AdoExecutorObjectBuilderContext context)
     {
       return context.ResultType == typeof (DataSet);
@@ -13,12 +15,11 @@ namespace AdoExecutor.Core.ObjectBuilder
 
     public object CreateInstance(AdoExecutorObjectBuilderContext context)
     {
-      var adapter = new DataTableAdapter();
       var dataSet = new DataSet();
 
       do
       {
-        DataTable dataTable = adapter.Load(context.DataReader);
+        DataTable dataTable = _dataTableAdapter.Load(context.DataReader);
 
         dataSet.Tables.Add(dataTable);
       } while (context.DataReader.NextResult() && !context.DataReader.IsClosed);

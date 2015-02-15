@@ -39,7 +39,7 @@ namespace AdoExecutor.Core.ObjectBuilder
         Type elementType = context.ResultType.GetElementType();
         return resultList.ToArray(elementType);
       }
-      else if (context.DataReader.Read())
+      else if (context.DataReader.Read() && !context.DataReader.IsClosed)
       {
         return context.DataReader.GetValue(0);
       }

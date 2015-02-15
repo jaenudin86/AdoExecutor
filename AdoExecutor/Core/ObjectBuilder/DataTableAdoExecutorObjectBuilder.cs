@@ -6,6 +6,8 @@ namespace AdoExecutor.Core.ObjectBuilder
 {
   public class DataTableAdoExecutorObjectBuilder : IAdoExecutorObjectBuilder
   {
+    private readonly DataTableAdapter _dataTableAdapter = new DataTableAdapter();
+
     public bool CanProcess(AdoExecutorObjectBuilderContext context)
     {
       return context.ResultType == typeof (DataTable);
@@ -13,8 +15,7 @@ namespace AdoExecutor.Core.ObjectBuilder
 
     public object CreateInstance(AdoExecutorObjectBuilderContext context)
     {
-      var adapter = new DataTableAdapter();
-      return adapter.Load(context.DataReader);
+      return _dataTableAdapter.Load(context.DataReader);
     }
   }
 }

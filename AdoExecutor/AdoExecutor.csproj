@@ -48,6 +48,7 @@
     <Compile Include="Core\Helper\PrimitiveSqlDataTypes.cs" />
     <Compile Include="Core\Interception\ConsoleLoggerAdoExecutorInterceptor.cs" />
     <Compile Include="Core\Interception\LoggerAdoExecutorInterceptorBase.cs" />
+    <Compile Include="Core\ObjectBuilder\DefinedTypeAdoExecutorObjectBuilder.cs" />
     <Compile Include="Core\ParameterExtractor\DataTableAdoExecutorParameterExtractor.cs" />
     <Compile Include="Core\ParameterExtractor\DictionaryAdoExecutorParameterExtractor.cs" />
     <Compile Include="Core\Query\Internal\AdoExecutorInterceptoInvoker.cs" />
