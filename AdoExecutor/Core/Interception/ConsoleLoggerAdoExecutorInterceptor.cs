@@ -6,22 +6,12 @@ namespace AdoExecutor.Core.Interception
 {
   public class ConsoleLoggerAdoExecutorInterceptor : LoggerAdoExecutorInterceptorBase
   {
-    protected override void LogOnEntry(AdoExecutorContext context, string logMessage)
-    {
-      Console.WriteLine(logMessage);
-    }
-
     protected override void LogOnError(AdoExecutorInterceptorErrorContext context, string logMessage)
     {
       Console.WriteLine(logMessage);
     }
 
     protected override void LogOnExit(AdoExecutorInterceptorExitContext context, string logMessage)
-    {
-      Console.WriteLine(logMessage);
-    }
-
-    protected override void LogOnSuccess(AdoExecutorInterceptorSuccessContext context, string logMessage)
     {
       Console.WriteLine(logMessage);
     }

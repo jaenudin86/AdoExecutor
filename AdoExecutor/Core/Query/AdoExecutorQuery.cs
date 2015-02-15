@@ -13,8 +13,8 @@ namespace AdoExecutor.Core.Query
   {
     private readonly IAdoExecutorConfiguration _configuration;
     private readonly AdoExecutorInterceptoInvoker _interceptoInvoker;
-    private readonly AdoExecutorParameterExtractorInvoker _parameterExtractorInvoker;
     private readonly AdoExecutorObjectBuilderInvoker _objectBuilderInvoker;
+    private readonly AdoExecutorParameterExtractorInvoker _parameterExtractorInvoker;
 
     private IDbConnection _connection;
 
@@ -47,8 +47,9 @@ namespace AdoExecutor.Core.Query
       {
         IDataReader dataReader = command.ExecuteReader();
 
-        return (T) _objectBuilderInvoker.CreateInstance(new AdoExecutorObjectBuilderContext(query, parameters, typeof (T),
-              AdoExecutorInvokeMethod.Select, Connection, command, _configuration, dataReader));
+        return
+          (T) _objectBuilderInvoker.CreateInstance(new AdoExecutorObjectBuilderContext(query, parameters, typeof (T),
+            AdoExecutorInvokeMethod.Select, Connection, command, _configuration, dataReader));
       };
 
       return InvokeFlow(query, parameters, AdoExecutorInvokeMethod.Select, selectFunc);
@@ -64,9 +65,11 @@ namespace AdoExecutor.Core.Query
         command.CommandText = query;
         command.Connection = Connection;
 
-        _interceptoInvoker.OnEntry(new AdoExecutorContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration));
+        _interceptoInvoker.OnEntry(new AdoExecutorContext(query, parameters, resultType, invokeMethod, Connection,
+          command, _configuration));
 
-        _parameterExtractorInvoker.ExtractParameter(new AdoExecutorContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration));
+        _parameterExtractorInvoker.ExtractParameter(new AdoExecutorContext(query, parameters, resultType, invokeMethod,
+          Connection, command, _configuration));
 
         Exception exception = null;
         T result = default(T);
@@ -75,18 +78,21 @@ namespace AdoExecutor.Core.Query
         {
           result = executeCommandFunc(command);
 
-          _interceptoInvoker.OnSuccess(new AdoExecutorInterceptorSuccessContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration, result));
+          _interceptoInvoker.OnSuccess(new AdoExecutorInterceptorSuccessContext(query, parameters, resultType,
+            invokeMethod, Connection, command, _configuration, result));
         }
         catch (Exception ex)
         {
           exception = ex;
 
-          _interceptoInvoker.OnError(new AdoExecutorInterceptorErrorContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration, ex));
+          _interceptoInvoker.OnError(new AdoExecutorInterceptorErrorContext(query, parameters, resultType, invokeMethod,
+            Connection, command, _configuration, ex));
           throw;
         }
         finally
         {
-          _interceptoInvoker.OnExit(new AdoExecutorInterceptorExitContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration, result, exception));
+          _interceptoInvoker.OnExit(new AdoExecutorInterceptorExitContext(query, parameters, resultType, invokeMethod,
+            Connection, command, _configuration, result, exception));
         }
 
         return result;
@@ -105,7 +111,7 @@ namespace AdoExecutor.Core.Query
 
     #region IDisposable
 
-    private bool _isDisposed = false;
+    private bool _isDisposed;
 
     public void Dispose()
     {

@@ -6,7 +6,7 @@ using AdoExecutor.Infrastructure.ObjectBuilder;
 
 namespace AdoExecutor.Core.Query.Internal
 {
-  public class AdoExecutorObjectBuilderInvoker
+  internal class AdoExecutorObjectBuilderInvoker
   {
     private readonly IAdoExecutorConfiguration _configuration;
 
@@ -23,7 +23,7 @@ namespace AdoExecutor.Core.Query.Internal
       if (context.InvokeMethod != AdoExecutorInvokeMethod.Select)
         throw new AdoExecutorException("Unsupported invoke method type.");
 
-      foreach (var objectBuilder in _configuration.ObjectBuilders)
+      foreach (IAdoExecutorObjectBuilder objectBuilder in _configuration.ObjectBuilders)
       {
         if (objectBuilder.CanProcess(context))
           return objectBuilder.CreateInstance(context);
