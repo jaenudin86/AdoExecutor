@@ -17,8 +17,8 @@ namespace AdoExecutor.Core.Configuration
 
       configuration.ObjectBuilders.Add(new DataSetAdoExecutorObjectBuilder());
       configuration.ObjectBuilders.Add(new DataTableAdoExecutorObjectBuilder());
+      configuration.ObjectBuilders.Add(new SimpleTypeAdoExecutorObjectBuilder());
       configuration.ObjectBuilders.Add(new DynamicAdoExecutorObjectBuilder());
-      //configuration.ObjectBuilders.Add(new SimpleTypeAdoExecutorObjectBuilder());
 
       configuration.Interceptors.Add(new ConnectionStateManagerAdoExecutorInterceptor());
 

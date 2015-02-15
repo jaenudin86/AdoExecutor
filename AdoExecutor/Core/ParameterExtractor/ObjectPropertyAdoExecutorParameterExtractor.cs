@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Data;
 using System.Reflection;
+using AdoExecutor.Core.Helper;
 using AdoExecutor.Infrastructure.Context;
 using AdoExecutor.Infrastructure.Exception;
 using AdoExecutor.Infrastructure.ParameterExtractor;
@@ -10,20 +11,18 @@ namespace AdoExecutor.Core.ParameterExtractor
 {
   public class ObjectPropertyAdoExecutorParameterExtractor : IAdoExecutorParameterExtractor
   {
+    private readonly PrimitiveSqlDataTypes _primitiveSqlDataTypes = new PrimitiveSqlDataTypes();
+
     public bool CanProcess(AdoExecutorContext context)
     {
       if (context.ParametersType.IsArray)
         return false;
 
-      if (context.ParametersType.IsAssignableFrom(typeof(IEnumerable)))
+      if (_primitiveSqlDataTypes.IsSqlPrimitiveType(context.ParametersType))
         return false;
 
-      if (context.ParametersType.IsPrimitive)
+      if(context.Parameters is IEnumerable)
         return false;
-
-      //todo check type is not primitive
-      //if(_bridge.IsSupportedDotNetType(parametersType))
-      //  return false;
 
       return true;
     }
@@ -36,11 +35,10 @@ namespace AdoExecutor.Core.ParameterExtractor
 
       foreach (PropertyInfo propertyInfo in parametersPublicProperies)
       {
-        //todo check type is primitive
-        //if (!_bridge.IsSupportedDotNetType(propertyInfo.PropertyType))
-        //{
-        //  throw new AdoExecutorException("Not supported type.");
-        //}
+        if (!_primitiveSqlDataTypes.IsSqlPrimitiveType(propertyInfo.PropertyType))
+        {
+          throw new AdoExecutorException("All object properties should be primitive type.");
+        }
 
         IDbDataParameter dataParameter = context.Configuration.DataObjectFactory.CreateDataParameter();
         dataParameter.ParameterName = string.Format("@{0}", propertyInfo.Name);
