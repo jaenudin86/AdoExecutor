@@ -1,7 +1,6 @@
 ﻿using System.Data;
 using AdoExecutor.Core.Parameter;
 using AdoExecutor.Infrastructure.Context;
-using AdoExecutor.Infrastructure.Exception;
 using AdoExecutor.Infrastructure.ParameterExtractor;
 
 namespace AdoExecutor.Core.ParameterExtractor
@@ -10,41 +9,51 @@ namespace AdoExecutor.Core.ParameterExtractor
   {
     public bool CanProcess(AdoExecutorContext context)
     {
-      return context.ParametersType == typeof (AdoExecutorSpecifiedParameter);
+      return context.ParametersType == typeof (AdoExecutorSpecifiedParameter) ||
+             context.ParametersType == typeof (AdoExecutorSpecifiedParameter[]);
     }
 
     public void ExtractParameter(AdoExecutorContext context)
     {
-      var outputParameter = (AdoExecutorSpecifiedParameter) context.Parameters;
-
-      if (outputParameter.Value == null && outputParameter.DbType == null &&
-          (outputParameter.Direction == ParameterDirection.Input ||
-           outputParameter.Direction == ParameterDirection.InputOutput))
+      if (context.ParametersType.IsArray)
       {
-        throw new AdoExecutorException("Cannot set parameter type.");
+        var parameters = (AdoExecutorSpecifiedParameter[]) context.Parameters;
+
+        foreach (AdoExecutorSpecifiedParameter parameter in parameters)
+        {
+          AddParameter(context, parameter);
+        }
       }
+      else
+      {
+        var parameter = (AdoExecutorSpecifiedParameter) context.Parameters;
+        AddParameter(context, parameter);
+      }
+    }
 
+    private void AddParameter(AdoExecutorContext context, AdoExecutorSpecifiedParameter parameter)
+    {
       IDbDataParameter dataParameter = context.Configuration.DataObjectFactory.CreateDataParameter();
-      dataParameter.ParameterName = outputParameter.ParameterName;
-      dataParameter.Value = outputParameter.Value;
+      dataParameter.ParameterName = parameter.ParameterName;
+      dataParameter.Value = parameter.Value;
 
-      if (outputParameter.DbType.HasValue)
-        dataParameter.DbType = outputParameter.DbType.Value;
+      if (parameter.DbType.HasValue)
+        dataParameter.DbType = parameter.DbType.Value;
 
-      if (outputParameter.Direction.HasValue)
-        dataParameter.Direction = outputParameter.Direction.Value;
+      if (parameter.Direction.HasValue)
+        dataParameter.Direction = parameter.Direction.Value;
 
-      if (outputParameter.Precision.HasValue)
-        dataParameter.Precision = outputParameter.Precision.Value;
+      if (parameter.Precision.HasValue)
+        dataParameter.Precision = parameter.Precision.Value;
 
-      if (outputParameter.Scale.HasValue)
-        dataParameter.Scale = outputParameter.Scale.Value;
+      if (parameter.Scale.HasValue)
+        dataParameter.Scale = parameter.Scale.Value;
 
-      if (outputParameter.Size.HasValue)
-        dataParameter.Size = outputParameter.Size.Value;
+      if (parameter.Size.HasValue)
+        dataParameter.Size = parameter.Size.Value;
 
-      if (outputParameter.Direction != ParameterDirection.Input)
-        outputParameter.SetParameter(dataParameter);
+      if (parameter.Direction != ParameterDirection.Input)
+        parameter.SetParameter(dataParameter);
 
       context.Command.Parameters.Add(dataParameter);
     }
