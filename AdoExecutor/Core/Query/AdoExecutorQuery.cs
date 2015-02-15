@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
-using AdoExecutor.Core.Interception;
-using AdoExecutor.Core.ObjectBuilder;
+using AdoExecutor.Core.Query.Internal;
 using AdoExecutor.Infrastructure.Configuration;
 using AdoExecutor.Infrastructure.Context;
 using AdoExecutor.Infrastructure.Interception;
@@ -14,6 +13,11 @@ namespace AdoExecutor.Core.Query
   public class AdoExecutorQuery : IAdoExecutorQuery
   {
     private readonly IAdoExecutorConfiguration _configuration;
+    private readonly AdoExecutorInterceptoInvoker _interceptoInvoker;
+    private readonly AdoExecutorParameterExtractorInvoker _parameterExtractorInvoker;
+    private readonly AdoExecutorObjectBuilderInvoker _objectBuilderInvoker;
+
+    private IDbConnection _connection;
 
     public AdoExecutorQuery(IAdoExecutorConfiguration configuration)
     {
@@ -21,93 +25,68 @@ namespace AdoExecutor.Core.Query
         throw new ArgumentNullException("configuration");
 
       _configuration = configuration;
-      Connection = PrepareConnection();
+      _interceptoInvoker = new AdoExecutorInterceptoInvoker(_configuration);
+      _parameterExtractorInvoker = new AdoExecutorParameterExtractorInvoker(_configuration);
+      _objectBuilderInvoker = new AdoExecutorObjectBuilderInvoker(_configuration);
     }
 
-    public IDbConnection Connection { get; private set; }
+    public IDbConnection Connection
+    {
+      get { return _connection ?? (_connection = PrepareConnection()); }
+    }
 
     public virtual int Execute(string query, object parameters = null)
     {
-      return 0;
+      Func<IDbCommand, int> executeFunc = command => command.ExecuteNonQuery();
+
+      return InvokeFlow(query, parameters, AdoExecutorInvokeMethod.Execute, executeFunc);
     }
 
     public virtual T Select<T>(string query, object parameters = null)
     {
+      Func<IDbCommand, T> selectFunc = command =>
+      {
+        IDataReader dataReader = command.ExecuteReader();
+
+        return (T) _objectBuilderInvoker.CreateInstance(new AdoExecutorObjectBuilderContext(query, parameters, typeof (T),
+              AdoExecutorInvokeMethod.Select, Connection, command, _configuration, dataReader));
+      };
+
+      return InvokeFlow(query, parameters, AdoExecutorInvokeMethod.Select, selectFunc);
+    }
+
+    protected virtual T InvokeFlow<T>(string query, object parameters, AdoExecutorInvokeMethod invokeMethod,
+      Func<IDbCommand, T> executeCommandFunc)
+    {
+      Type resultType = typeof (T);
+
       IDbCommand command = _configuration.DataObjectFactory.CreateCommand();
       command.CommandText = query;
       command.Connection = Connection;
 
-      //interception - onEntry
-      foreach (IAdoExecutorInterceptor interceptor in _configuration.Interceptors)
-      {
-        var interceptorContext = new AdoExecutorContext(query, parameters, typeof (T),
-          AdoExecutorInvokeMethod.Select, Connection, command, _configuration);
+      _interceptoInvoker.OnEntry(new AdoExecutorContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration));
 
-        interceptor.OnEntry(interceptorContext);
-      }
-
-      foreach (IAdoExecutorParameterExtractor adoExecutorParameterExtractor in _configuration.ParameterExtractors)
-      {
-        var parameterExtractorContext = new AdoExecutorContext(query, parameters, typeof (T),
-          AdoExecutorInvokeMethod.Select, Connection, command, _configuration);
-
-        if (adoExecutorParameterExtractor.CanProcess(parameterExtractorContext))
-        {
-          adoExecutorParameterExtractor.ExtractParameter(parameterExtractorContext);
-          break;
-        }
-      }
+      _parameterExtractorInvoker.ExtractParameter(new AdoExecutorContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration));
 
       Exception exception = null;
-      T result = default (T);
+      T result = default(T);
 
       try
       {
-        IDataReader dataReader = command.ExecuteReader();
+        result = executeCommandFunc(command);
 
-        foreach (IAdoExecutorObjectBuilder objectBuilder in _configuration.ObjectBuilders)
-        {
-          var objectBuilderContext = new AdoExecutorObjectBuilderContext(query, parameters, typeof (T),
-            AdoExecutorInvokeMethod.Select, Connection, command, _configuration, dataReader);
-
-          if (objectBuilder.CanProcess(objectBuilderContext))
-          {
-            result = (T) objectBuilder.CreateInstance(objectBuilderContext);
-            break;
-          }
-        }
-
-        foreach (IAdoExecutorInterceptor interceptor in _configuration.Interceptors)
-        {
-          var interceptorContext = new AdoExecutorInterceptorSuccessContext(query, parameters, typeof (T),
-            AdoExecutorInvokeMethod.Select, Connection, command, _configuration, result);
-
-          interceptor.OnSuccess(interceptorContext);
-        }
+        _interceptoInvoker.OnSuccess(new AdoExecutorInterceptorSuccessContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration, result));
       }
       catch (Exception ex)
       {
         exception = ex;
 
-        foreach (IAdoExecutorInterceptor interceptor in _configuration.Interceptors)
-        {
-          var interceptorContext = new AdoExecutorInterceptorErrorContext(query, parameters, typeof (T),
-            AdoExecutorInvokeMethod.Select, Connection, command, _configuration, ex);
-
-          interceptor.OnError(interceptorContext);
-        }
-
+        _interceptoInvoker.OnError(new AdoExecutorInterceptorErrorContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration, ex));
         throw;
       }
       finally
       {
-        foreach (IAdoExecutorInterceptor interceptor in _configuration.Interceptors)
-        {
-          var interceptorContext = new AdoExecutorInterceptorExitContext(query, parameters, typeof (T),
-            AdoExecutorInvokeMethod.Select, Connection, command, _configuration, result, exception);
-
-          interceptor.OnExit(interceptorContext);
-        }
+        _interceptoInvoker.OnExit(new AdoExecutorInterceptorExitContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration, result, exception));
       }
 
       return result;

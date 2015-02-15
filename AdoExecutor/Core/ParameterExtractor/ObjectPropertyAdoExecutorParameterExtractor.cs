@@ -12,18 +12,13 @@ namespace AdoExecutor.Core.ParameterExtractor
   {
     public bool CanProcess(AdoExecutorContext context)
     {
-      if (context.Parameters == null)
+      if (context.ParametersType.IsArray)
         return false;
 
-      var parametersType = context.Parameters.GetType();
-
-      if (parametersType.IsArray)
+      if (context.ParametersType.IsAssignableFrom(typeof(IEnumerable)))
         return false;
 
-      if (parametersType.IsAssignableFrom(typeof (IEnumerable)))
-        return false;
-
-      if(parametersType.IsPrimitive)
+      if (context.ParametersType.IsPrimitive)
         return false;
 
       //todo check type is not primitive

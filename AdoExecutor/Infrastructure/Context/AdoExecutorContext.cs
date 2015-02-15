@@ -20,9 +20,6 @@ namespace AdoExecutor.Infrastructure.Context
       if (query == null)
         throw new ArgumentNullException("query");
 
-      if (parameters == null)
-        throw new ArgumentNullException("parameters");
-
       if (resultType == null)
         throw new ArgumentNullException("resultType");
 

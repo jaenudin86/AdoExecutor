@@ -45,6 +45,13 @@
     <Compile Include="Core\Helper\DataTableAdapter.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Core\Interception\ConsoleLoggerAdoExecutorInterceptor.cs" />
+    <Compile Include="Core\Interception\LoggerAdoExecutorInterceptorBase.cs" />
+    <Compile Include="Core\ParameterExtractor\DataTableAdoExecutorParameterExtractor.cs" />
+    <Compile Include="Core\ParameterExtractor\DictionaryAdoExecutorParameterExtractor.cs" />
+    <Compile Include="Core\Query\Internal\AdoExecutorInterceptoInvoker.cs" />
+    <Compile Include="Core\Query\Internal\AdoExecutorObjectBuilderInvoker.cs" />
+    <Compile Include="Core\Query\Internal\AdoExecutorParameterExtractorInvoker.cs" />
     <Compile Include="Infrastructure\Configuration\IAdoExecutorConfiguration.cs" />
     <Compile Include="Core\ConnectionString\AppConfigConnectionStringProvider.cs" />
     <Compile Include="Core\ConnectionString\ConstantConnectionStringProvider.cs" />

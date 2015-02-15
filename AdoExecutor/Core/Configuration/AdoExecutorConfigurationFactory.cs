@@ -9,7 +9,7 @@ namespace AdoExecutor.Core.Configuration
 {
   public class AdoExecutorConfigurationFactory
   {
-    public IAdoExecutorConfiguration CreateDefaultConfiguration(string connectionStringAppConfigKey)
+    public IAdoExecutorConfiguration CreateDefaultSqlConfiguration(string connectionStringAppConfigKey)
     {
       var configuration = new AdoExecutorConfiguration();
       configuration.ConnectionStringProvider = new AppConfigConnectionStringProvider(connectionStringAppConfigKey);
@@ -17,11 +17,14 @@ namespace AdoExecutor.Core.Configuration
 
       configuration.ObjectBuilders.Add(new DataSetAdoExecutorObjectBuilder());
       configuration.ObjectBuilders.Add(new DataTableAdoExecutorObjectBuilder());
+      configuration.ObjectBuilders.Add(new DynamicAdoExecutorObjectBuilder());
       //configuration.ObjectBuilders.Add(new SimpleTypeAdoExecutorObjectBuilder());
 
       configuration.Interceptors.Add(new ConnectionStateManagerAdoExecutorInterceptor());
 
       configuration.ParameterExtractors.Add(new SpecifiedParameterAdoExecutorParameterExtractor());
+      configuration.ParameterExtractors.Add(new DataTableAdoExecutorParameterExtractor());
+      configuration.ParameterExtractors.Add(new DictionaryAdoExecutorParameterExtractor());
       configuration.ParameterExtractors.Add(new ArrayAdoExecutorParameterExtractor());
       configuration.ParameterExtractors.Add(new ObjectPropertyAdoExecutorParameterExtractor());
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using AdoExecutor.Core.Parameter;
 using AdoExecutor.Infrastructure.Context;
 using AdoExecutor.Infrastructure.Exception;
@@ -11,12 +10,7 @@ namespace AdoExecutor.Core.ParameterExtractor
   {
     public bool CanProcess(AdoExecutorContext context)
     {
-      if (context.Parameters == null)
-        return false;
-
-      Type parametersType = context.Parameters.GetType();
-
-      return parametersType == typeof (AdoExecutorSpecifiedParameter);
+      return context.ParametersType == typeof (AdoExecutorSpecifiedParameter);
     }
 
     public void ExtractParameter(AdoExecutorContext context)
@@ -24,7 +18,8 @@ namespace AdoExecutor.Core.ParameterExtractor
       var outputParameter = (AdoExecutorSpecifiedParameter) context.Parameters;
 
       if (outputParameter.Value == null && outputParameter.DbType == null &&
-          (outputParameter.Direction == ParameterDirection.Input || outputParameter.Direction == ParameterDirection.InputOutput))
+          (outputParameter.Direction == ParameterDirection.Input ||
+           outputParameter.Direction == ParameterDirection.InputOutput))
       {
         throw new AdoExecutorException("Cannot set parameter type.");
       }
