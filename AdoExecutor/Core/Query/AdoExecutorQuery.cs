@@ -5,12 +5,11 @@ using AdoExecutor.Infrastructure.Configuration;
 using AdoExecutor.Infrastructure.Context;
 using AdoExecutor.Infrastructure.Interception;
 using AdoExecutor.Infrastructure.ObjectBuilder;
-using AdoExecutor.Infrastructure.ParameterExtractor;
 using AdoExecutor.Infrastructure.Query;
 
 namespace AdoExecutor.Core.Query
 {
-  public class AdoExecutorQuery : IAdoExecutorQuery
+  public class AdoExecutorQuery : IAdoExecutorQuery, IDisposable
   {
     private readonly IAdoExecutorConfiguration _configuration;
     private readonly AdoExecutorInterceptoInvoker _interceptoInvoker;
@@ -60,36 +59,38 @@ namespace AdoExecutor.Core.Query
     {
       Type resultType = typeof (T);
 
-      IDbCommand command = _configuration.DataObjectFactory.CreateCommand();
-      command.CommandText = query;
-      command.Connection = Connection;
-
-      _interceptoInvoker.OnEntry(new AdoExecutorContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration));
-
-      _parameterExtractorInvoker.ExtractParameter(new AdoExecutorContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration));
-
-      Exception exception = null;
-      T result = default(T);
-
-      try
+      using (IDbCommand command = _configuration.DataObjectFactory.CreateCommand())
       {
-        result = executeCommandFunc(command);
+        command.CommandText = query;
+        command.Connection = Connection;
 
-        _interceptoInvoker.OnSuccess(new AdoExecutorInterceptorSuccessContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration, result));
-      }
-      catch (Exception ex)
-      {
-        exception = ex;
+        _interceptoInvoker.OnEntry(new AdoExecutorContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration));
 
-        _interceptoInvoker.OnError(new AdoExecutorInterceptorErrorContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration, ex));
-        throw;
-      }
-      finally
-      {
-        _interceptoInvoker.OnExit(new AdoExecutorInterceptorExitContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration, result, exception));
-      }
+        _parameterExtractorInvoker.ExtractParameter(new AdoExecutorContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration));
 
-      return result;
+        Exception exception = null;
+        T result = default(T);
+
+        try
+        {
+          result = executeCommandFunc(command);
+
+          _interceptoInvoker.OnSuccess(new AdoExecutorInterceptorSuccessContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration, result));
+        }
+        catch (Exception ex)
+        {
+          exception = ex;
+
+          _interceptoInvoker.OnError(new AdoExecutorInterceptorErrorContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration, ex));
+          throw;
+        }
+        finally
+        {
+          _interceptoInvoker.OnExit(new AdoExecutorInterceptorExitContext(query, parameters, resultType, invokeMethod, Connection, command, _configuration, result, exception));
+        }
+
+        return result;
+      }
     }
 
     protected virtual IDbConnection PrepareConnection()
@@ -101,5 +102,32 @@ namespace AdoExecutor.Core.Query
 
       return connection;
     }
+
+    #region IDisposable
+
+    private bool _isDisposed = false;
+
+    public void Dispose()
+    {
+      InternalDispose();
+      GC.SuppressFinalize(this);
+    }
+
+    protected void InternalDispose()
+    {
+      if (!_isDisposed)
+      {
+        Connection.Dispose();
+      }
+
+      _isDisposed = true;
+    }
+
+    ~AdoExecutorQuery()
+    {
+      InternalDispose();
+    }
+
+    #endregion
   }
 }
