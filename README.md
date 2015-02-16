@@ -50,7 +50,7 @@ What type of result (generic) are supported?
 Examples?
 ---------
 
-Select data and map result to Person class
+Select data and map result to Account class
 ```csharp
 public class Account
 {
