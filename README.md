@@ -11,12 +11,6 @@ It's quite similar to <a href="https://github.com/StackExchange/dapper-dot-net">
 * Use interfaces, do not use extensions - It's hard to mock in tests
 * Do not modify user sql query
 
-How it works?
--------------
-
-It's really simple, in base scenarios you shoud use SqlAdoExecutorQueryFactory and invoke one of two methods 
-* Execute - for insert, update, delete data, execute stored procedures etc, 
-* Select - for select data
 
 How can i use it?
 -----------------
