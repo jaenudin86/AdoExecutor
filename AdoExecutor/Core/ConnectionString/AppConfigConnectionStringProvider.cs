@@ -6,16 +6,26 @@ namespace AdoExecutor.Core.ConnectionString
 {
   public class AppConfigConnectionStringProvider : IConnectionStringProvider
   {
+    private readonly string _connectionStringAppConfigKey;
+    private string _connectionString;
+
     public AppConfigConnectionStringProvider(string connectionStringAppConfigKey)
     {
       if (connectionStringAppConfigKey == null)
         throw new ArgumentNullException("connectionStringAppConfigKey");
 
-      ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringAppConfigKey];
-
-      ConnectionString = connectionStringSettings.ConnectionString;
+      _connectionStringAppConfigKey = connectionStringAppConfigKey;
     }
 
-    public string ConnectionString { get; private set; }
+    public string ConnectionString
+    {
+      get
+      {
+        if (_connectionString == null)
+          _connectionString = ConfigurationManager.ConnectionStrings[_connectionStringAppConfigKey].ConnectionString;
+
+        return _connectionString;
+      }
+    }
   }
 }

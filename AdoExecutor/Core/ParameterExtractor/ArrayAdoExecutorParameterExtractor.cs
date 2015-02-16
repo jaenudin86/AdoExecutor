@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Data;
+using AdoExecutor.Core.Helper;
 using AdoExecutor.Infrastructure.Context;
 using AdoExecutor.Infrastructure.Exception;
 using AdoExecutor.Infrastructure.ParameterExtractor;
@@ -9,6 +10,8 @@ namespace AdoExecutor.Core.ParameterExtractor
 {
   public class ArrayAdoExecutorParameterExtractor : IAdoExecutorParameterExtractor
   {
+    private readonly PrimitiveSqlDataTypes _primitiveSqlDataTypes = new PrimitiveSqlDataTypes();
+
     public bool CanProcess(AdoExecutorContext context)
     {
       if (context.Parameters == null)
@@ -20,33 +23,27 @@ namespace AdoExecutor.Core.ParameterExtractor
       if (!context.ParametersType.IsArray)
         return false;
 
-      //TODO check ElementType is primitive
-      //Type elementType = context.ParametersType.GetElementType();
-      //if (elementType != typeof (object))
-      //  return false;
+      Type elementType = context.ParametersType.GetElementType();
+      if (elementType != typeof (object) && !_primitiveSqlDataTypes.IsSqlPrimitiveType(elementType)) 
+        return false;
 
       return true;
     }
 
     public void ExtractParameter(AdoExecutorContext context)
     {
+      Type elementType = context.ParametersType.GetElementType();
       var parameters = (IList) context.Parameters;
 
       for (int i = 0; i < parameters.Count; i++)
       {
         object parameter = parameters[i];
 
-        if (parameter == null)
-        {
-          throw new AdoExecutorException("Cannot pass null into array.");
-        }
+        if (elementType == typeof(object) && parameter == null)
+          throw new AdoExecutorException("Cannot pass null value in object array type.");
 
-        //todo checkType is Primitive
-        //Type parameterType = parameter.GetType();
-        //if (!_bridge.IsSupportedDotNetType(parameterType))
-        //{
-        //  throw new AdoExecutorException("Not supported type.");
-        //}
+        if (elementType != typeof (object) && !_primitiveSqlDataTypes.IsSqlPrimitiveType(elementType))
+          throw new AdoExecutorException("Array item muse be primitive type.");
 
         IDbDataParameter dataParameter = context.Configuration.DataObjectFactory.CreateDataParameter();
         dataParameter.ParameterName = string.Format("@{0}", i);

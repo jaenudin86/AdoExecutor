@@ -1,5 +1,4 @@
 ﻿using System;
-using AdoExecutor.Infrastructure.Context;
 using AdoExecutor.Infrastructure.Interception;
 
 namespace AdoExecutor.Core.Interception
