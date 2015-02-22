@@ -9,12 +9,13 @@ using AdoExecutor.Infrastructure.Query;
 
 namespace AdoExecutor.Core.Query
 {
-  public class AdoExecutorQuery : IAdoExecutorQuery, IDisposable
+  public class AdoExecutorQuery : IAdoExecutorQuery
   {
     private readonly IAdoExecutorConfiguration _configuration;
     private readonly AdoExecutorInterceptoInvoker _interceptoInvoker;
     private readonly AdoExecutorObjectBuilderInvoker _objectBuilderInvoker;
     private readonly AdoExecutorParameterExtractorInvoker _parameterExtractorInvoker;
+    private readonly AdoExecutorQueryOptionsConfigurator _optionsConfigurator;
 
     private IDbConnection _connection;
 
@@ -27,6 +28,7 @@ namespace AdoExecutor.Core.Query
       _interceptoInvoker = new AdoExecutorInterceptoInvoker(_configuration);
       _parameterExtractorInvoker = new AdoExecutorParameterExtractorInvoker(_configuration);
       _objectBuilderInvoker = new AdoExecutorObjectBuilderInvoker(_configuration);
+      _optionsConfigurator = new AdoExecutorQueryOptionsConfigurator();
     }
 
     public IDbConnection Connection
@@ -34,14 +36,14 @@ namespace AdoExecutor.Core.Query
       get { return _connection ?? (_connection = PrepareConnection()); }
     }
 
-    public virtual int Execute(string query, object parameters = null)
+    public virtual int Execute(string query, object parameters = null, AdoExecutorQueryOptions options = null)
     {
       Func<IDbCommand, int> executeFunc = command => command.ExecuteNonQuery();
 
-      return InvokeFlow(query, parameters, AdoExecutorInvokeMethod.Execute, executeFunc);
+      return InvokeFlow(query, parameters, options, AdoExecutorInvokeMethod.Execute, executeFunc);
     }
 
-    public virtual T Select<T>(string query, object parameters = null)
+    public virtual T Select<T>(string query, object parameters = null, AdoExecutorQueryOptions options = null)
     {
       Func<IDbCommand, T> selectFunc = command =>
       {
@@ -52,10 +54,10 @@ namespace AdoExecutor.Core.Query
             AdoExecutorInvokeMethod.Select, Connection, command, _configuration, dataReader));
       };
 
-      return InvokeFlow(query, parameters, AdoExecutorInvokeMethod.Select, selectFunc);
+      return InvokeFlow(query, parameters, options, AdoExecutorInvokeMethod.Select, selectFunc);
     }
 
-    protected virtual T InvokeFlow<T>(string query, object parameters, AdoExecutorInvokeMethod invokeMethod,
+    protected virtual T InvokeFlow<T>(string query, object parameters, AdoExecutorQueryOptions options, AdoExecutorInvokeMethod invokeMethod,
       Func<IDbCommand, T> executeCommandFunc)
     {
       Type resultType = typeof (T);
@@ -64,6 +66,8 @@ namespace AdoExecutor.Core.Query
       {
         command.CommandText = query;
         command.Connection = Connection;
+
+        _optionsConfigurator.ConfigureCommand(command, options);
 
         _interceptoInvoker.OnEntry(new AdoExecutorContext(query, parameters, resultType, invokeMethod, Connection,
           command, _configuration));

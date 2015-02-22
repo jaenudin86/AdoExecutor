@@ -33,9 +33,6 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -53,6 +50,7 @@
     <Compile Include="Core\Query\Internal\AdoExecutorInterceptoInvoker.cs" />
     <Compile Include="Core\Query\Internal\AdoExecutorObjectBuilderInvoker.cs" />
     <Compile Include="Core\Query\Internal\AdoExecutorParameterExtractorInvoker.cs" />
+    <Compile Include="Core\Query\Internal\AdoExecutorQueryOptionsConfigurator.cs" />
     <Compile Include="Infrastructure\Configuration\IAdoExecutorConfiguration.cs" />
     <Compile Include="Core\ConnectionString\AppConfigConnectionStringProvider.cs" />
     <Compile Include="Core\ConnectionString\ConstantConnectionStringProvider.cs" />
@@ -80,6 +78,7 @@
     <Compile Include="Core\ParameterExtractor\ObjectPropertyAdoExecutorParameterExtractor.cs" />
     <Compile Include="Core\ParameterExtractor\SpecifiedParameterAdoExecutorParameterExtractor.cs" />
     <Compile Include="Core\Parameter\AdoExecutorSpecifiedParameter.cs" />
+    <Compile Include="Infrastructure\Query\AdoExecutorQueryOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\QueryFactory\SqlAdoExecutorQueryFactory.cs" />
     <Compile Include="Infrastructure\QueryFactory\IAdoExecutorQueryFactory.cs" />

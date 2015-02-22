@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoExecutor", "AdoExecutor\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoExecutor.TestApp", "AdoExecutor.TestApp\AdoExecutor.TestApp.csproj", "{2E19D6DC-C6E1-44E7-AED2-FD063C414923}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoExecutor.UnitTest", "AdoExecutor.UnitTest\AdoExecutor.UnitTest.csproj", "{725A14E1-133B-4F0E-B037-D64CA0D53CE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoExecutor.IntegrationTest.Sql", "AdoExecutor.IntegrationTest.Sql\AdoExecutor.IntegrationTest.Sql.csproj", "{2DBFE8FC-B71D-497D-AC36-67CD62886562}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{2E19D6DC-C6E1-44E7-AED2-FD063C414923}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E19D6DC-C6E1-44E7-AED2-FD063C414923}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E19D6DC-C6E1-44E7-AED2-FD063C414923}.Release|Any CPU.Build.0 = Release|Any CPU
+		{725A14E1-133B-4F0E-B037-D64CA0D53CE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{725A14E1-133B-4F0E-B037-D64CA0D53CE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{725A14E1-133B-4F0E-B037-D64CA0D53CE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{725A14E1-133B-4F0E-B037-D64CA0D53CE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DBFE8FC-B71D-497D-AC36-67CD62886562}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DBFE8FC-B71D-497D-AC36-67CD62886562}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DBFE8FC-B71D-497D-AC36-67CD62886562}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DBFE8FC-B71D-497D-AC36-67CD62886562}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

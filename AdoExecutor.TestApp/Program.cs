@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Diagnostics;
 using System.Dynamic;
 using AdoExecutor.Core.QueryFactory;
@@ -8,21 +9,7 @@ namespace AdoExecutor.TestApp
 {
   internal class Program
   {
-    private static void Main(string[] args)
-    {
-      var adoExecutorQueryFactory = new SqlAdoExecutorQueryFactory("test");
-
-      IAdoExecutorQuery query = adoExecutorQueryFactory.CreateQuery();
-
-      dynamic obj = new ExpandoObject();
-      obj.Id = Guid.NewGuid();
-
-      var sw = Stopwatch.StartNew();
-      var result = query.Select<Person[]>("select * from dbo.Account");
-      sw.Stop();
-    }
-
-    public class Person
+    public class Account
     {
       public Guid Id { get; set; }
       public string Login { get; set; }
@@ -31,5 +18,19 @@ namespace AdoExecutor.TestApp
       public DateTime? Created { get; set; }
       public int FailedLoginCount { get; set; }
     }
+
+    private static void Main(string[] args)
+    {
+      var adoExecutorQueryFactory = new SqlAdoExecutorQueryFactory("test");
+      IAdoExecutorQuery query = adoExecutorQueryFactory.CreateQuery();
+
+      var queryText = @"select Id, Login, PasswordHash, IsBlocked, Created, FailedLoginCount 
+                       from dbo.Account
+                       where id = @id";
+
+      var queryParameter = new {Id = new Guid("8F45FE85-7D79-47CC-82D6-CD433B3D10BB")};
+    }
+
+
   }
 }
