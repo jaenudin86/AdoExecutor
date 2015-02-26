@@ -13,7 +13,6 @@ namespace AdoExecutor.Core.Helper
       typeof (byte[]),
       typeof (char),
       typeof (char[]),
-      typeof (Enum),
       typeof (string),
       typeof (short),
       typeof (ushort),

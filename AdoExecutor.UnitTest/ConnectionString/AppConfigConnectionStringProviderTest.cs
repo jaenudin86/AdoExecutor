@@ -10,6 +10,7 @@ namespace AdoExecutor.UnitTest.ConnectionString
     [Test]
     public void Constructor_ShouldThrownArgumentNullException_WhenConnectionStringAppConfigKeyArgumentIsNull()
     {
+      //ACT
       Assert.Throws<ArgumentNullException>(() => new AppConfigConnectionStringProvider(null));
     }
 

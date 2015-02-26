@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="ConnectionString\AppConfigConnectionStringProviderTest.cs" />
     <Compile Include="ConnectionString\ConstantConnectionStringProviderTests.cs" />
+    <Compile Include="Helper\PrimitiveSqlDataTypesTests.cs" />
     <Compile Include="Interception\ConnectionStateManagerAdoExecutorInterceptorTests.cs" />
     <Compile Include="ObjectBuilder\DataTableAdoExecutorObjectBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
