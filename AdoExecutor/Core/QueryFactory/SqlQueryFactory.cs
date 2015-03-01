@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Remoting.Messaging;
 using AdoExecutor.Core.Configuration;
 using AdoExecutor.Core.Configuration.Infrastructure;
 using AdoExecutor.Core.ConnectionString;
@@ -9,7 +10,10 @@ using AdoExecutor.Core.ParameterExtractor;
 using AdoExecutor.Core.Query;
 using AdoExecutor.Core.Query.Infrastructure;
 using AdoExecutor.Core.QueryFactory.Infrastructure;
+using AdoExecutor.Utilities.Adapter.DataTable;
 using AdoExecutor.Utilities.Adapter.List;
+using AdoExecutor.Utilities.ObjectConverter;
+using AdoExecutor.Utilities.PrimitiveTypes;
 
 namespace AdoExecutor.Core.QueryFactory
 {
@@ -37,10 +41,10 @@ namespace AdoExecutor.Core.QueryFactory
       configuration.ConnectionStringProvider = new AppConfigConnectionStringProvider(_connectionStringAppConfigKey);
       configuration.DataObjectFactory = new SqlDataObjectFactory();
 
-      configuration.ObjectBuilders.Add(new DataSetObjectBuilder());
-      configuration.ObjectBuilders.Add(new DataTableObjectBuilder());
-      configuration.ObjectBuilders.Add(new SimpleTypeObjectBuilder());
-      configuration.ObjectBuilders.Add(new DefinedTypeObjectBuilder());
+      configuration.ObjectBuilders.Add(new DataSetObjectBuilder(new DataTableAdapter()));
+      configuration.ObjectBuilders.Add(new DataTableObjectBuilder(new DataTableAdapter()));
+      configuration.ObjectBuilders.Add(new SimpleTypeObjectBuilder(new SqlPrimitiveDataTypes(), new ListAdapterFactory(), new ObjectConverter()));
+      configuration.ObjectBuilders.Add(new DefinedTypeObjectBuilder(new ListAdapterFactory(), new SqlPrimitiveDataTypes(), new ObjectConverter()));
       configuration.ObjectBuilders.Add(new DynamicObjectBuilder(new ListAdapterFactory()));
 
       configuration.Interceptors.Add(new ConnectionStateManagerInterceptor());

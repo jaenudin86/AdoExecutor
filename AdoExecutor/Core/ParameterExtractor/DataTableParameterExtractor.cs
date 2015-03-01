@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using AdoExecutor.Core.Context.Infrastructure;
 using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ParameterExtractor.Infrastructure;
 

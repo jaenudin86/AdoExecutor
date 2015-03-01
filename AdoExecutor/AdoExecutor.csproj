@@ -38,9 +38,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Configuration\Configuration.cs" />
-    <Compile Include="Utilities\Adapter\DataTableAdapter.cs">
+    <Compile Include="Utilities\Adapter\DataTable\DataTableAdapter.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Utilities\Adapter\DataTable\Infrastructure\IDataTableAdapter.cs" />
     <Compile Include="Utilities\Adapter\List\AbstractGenericListAdapter.cs" />
     <Compile Include="Utilities\Adapter\List\ArrayListAdapter.cs" />
     <Compile Include="Utilities\Adapter\List\GenericListAdapter.cs" />
@@ -48,10 +49,11 @@
     <Compile Include="Utilities\Adapter\List\Infrastructure\IListAdapterFactory.cs" />
     <Compile Include="Utilities\Adapter\List\ListAdapterFactory.cs" />
     <Compile Include="Utilities\Adapter\List\ReadOnlyCollectionListAdapter.cs" />
-    <Compile Include="Utilities\Adapter\List\ReadOnlyListAdapterBase.cs" />
     <Compile Include="Utilities\Adapter\List\ReadOnlyObservableCollectionListAdapter.cs" />
-    <Compile Include="Utilities\PrimitiveTypes\Infrastructure\IPrimitiveSqlDataTypes.cs" />
-    <Compile Include="Utilities\PrimitiveTypes\PrimitiveSqlDataTypes.cs" />
+    <Compile Include="Utilities\ObjectConverter\Infrastructure\IObjectConverter.cs" />
+    <Compile Include="Utilities\ObjectConverter\ObjectConverter.cs" />
+    <Compile Include="Utilities\PrimitiveTypes\Infrastructure\ISqlPrimitiveDataTypes.cs" />
+    <Compile Include="Utilities\PrimitiveTypes\SqlPrimitiveDataTypes.cs" />
     <Compile Include="Core\Interception\ConsoleLoggerInterceptor.cs" />
     <Compile Include="Core\Interception\LoggerInterceptorBase.cs" />
     <Compile Include="Core\ObjectBuilder\DefinedTypeObjectBuilder.cs" />

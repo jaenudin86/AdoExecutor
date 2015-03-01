@@ -4,7 +4,7 @@ using AdoExecutor.Utilities.PrimitiveTypes.Infrastructure;
 
 namespace AdoExecutor.Utilities.PrimitiveTypes
 {
-  public class PrimitiveSqlDataTypes : IPrimitiveSqlDataTypes
+  public class SqlPrimitiveDataTypes : ISqlPrimitiveDataTypes
   {
     private static readonly Type[] PrimitiveDataTypes =
     {
@@ -47,14 +47,12 @@ namespace AdoExecutor.Utilities.PrimitiveTypes
       typeof (Guid?)
     };
 
-    public bool IsSqlPrimitiveType(Type dataType)
+    public virtual bool IsSqlPrimitiveType(Type dataType)
     {
-      var dataTypeToCheck = Nullable.GetUnderlyingType(dataType) ?? dataType;
-
-      return PrimitiveDataTypes.Contains(dataTypeToCheck);
+      return PrimitiveDataTypes.Contains(dataType);
     }
 
-    public Type[] GetAllSqlPrimitiveTypes()
+    public virtual Type[] GetAllSqlPrimitiveTypes()
     {
       return PrimitiveDataTypes;
     }

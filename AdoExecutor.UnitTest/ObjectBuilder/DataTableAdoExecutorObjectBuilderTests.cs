@@ -4,6 +4,7 @@ using AdoExecutor.Core.Configuration.Infrastructure;
 using AdoExecutor.Core.Context.Infrastructure;
 using AdoExecutor.Core.ObjectBuilder;
 using AdoExecutor.Core.ObjectBuilder.Infrastructure;
+using AdoExecutor.Utilities.Adapter.DataTable;
 using FakeItEasy;
 using NUnit.Framework;
 
@@ -17,7 +18,8 @@ namespace AdoExecutor.UnitTest.ObjectBuilder
     [SetUp]
     public void SetUp()
     {
-      _objectBuilder = new DataTableObjectBuilder();
+      //todo mock
+      _objectBuilder = new DataTableObjectBuilder(new DataTableAdapter());
     }
 
     [Test]

@@ -3,61 +3,103 @@ using System.Collections;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ObjectBuilder.Infrastructure;
+using AdoExecutor.Utilities.Adapter.List.Infrastructure;
+using AdoExecutor.Utilities.ObjectConverter.Infrastructure;
+using AdoExecutor.Utilities.PrimitiveTypes.Infrastructure;
 
 namespace AdoExecutor.Core.ObjectBuilder
 {
   public class DefinedTypeObjectBuilder : IObjectBuilder
   {
+    private readonly IListAdapterFactory _listAdapterFactory;
+    private readonly IObjectConverter _objectConverter;
+    private readonly ISqlPrimitiveDataTypes _sqlPrimitiveDataTypes;
+
+    public DefinedTypeObjectBuilder(IListAdapterFactory listAdapterFactory, ISqlPrimitiveDataTypes sqlPrimitiveDataTypes,
+      IObjectConverter objectConverter)
+    {
+      if (listAdapterFactory == null)
+        throw new ArgumentNullException("listAdapterFactory");
+
+      if (sqlPrimitiveDataTypes == null)
+        throw new ArgumentNullException("sqlPrimitiveDataTypes");
+
+      if (objectConverter == null)
+        throw new ArgumentNullException("objectConverter");
+
+      _listAdapterFactory = listAdapterFactory;
+      _sqlPrimitiveDataTypes = sqlPrimitiveDataTypes;
+      _objectConverter = objectConverter;
+    }
+
     public bool CanProcess(ObjectBuilderContext context)
     {
-      Type resultType = context.ResultType.IsArray ? context.ResultType.GetElementType() : context.ResultType;
-      resultType = Nullable.GetUnderlyingType(resultType) ?? resultType;
+      IListAdapter listAdapter = _listAdapterFactory.CreateListAdapter(context.ResultType);
+      Type resultType = listAdapter != null ? listAdapter.ElementType : context.ResultType;
 
-      return (resultType.BaseType == typeof (ValueType) && !resultType.IsEnum) ||
-             (resultType.BaseType == typeof (object) && resultType.IsClass && !resultType.IsAbstract && !resultType.IsInterface);
+      if (resultType.IsValueType)
+        return false;
+
+      if (resultType.IsAbstract || resultType.IsInterface)
+        return false;
+
+      if (Nullable.GetUnderlyingType(resultType) != null)
+        return false;
+
+      if (resultType.GetInterface(typeof (IEnumerable).FullName) != null)
+        return false;
+
+      if (resultType == typeof (object))
+        return false;
+
+      if (_sqlPrimitiveDataTypes.IsSqlPrimitiveType(resultType))
+        return false;
+
+      if (resultType.GetConstructor(Type.EmptyTypes) == null)
+        return false;
+
+      return true;
     }
 
     public object CreateInstance(ObjectBuilderContext context)
     {
-      if (context.ResultType.IsArray)
-      {
-        var instanceType = context.ResultType.GetElementType();
-        var resultList = new ArrayList();
+      IListAdapter listAdapter = _listAdapterFactory.CreateListAdapter(context.ResultType);
 
-        while (context.DataReader.Read() && !context.DataReader.IsClosed)
-        {
-          var objectInstance = CreateSingleInstance(context.DataReader, instanceType);
-          resultList.Add(objectInstance);
-        }
-
-        return resultList.ToArray(instanceType);
-      }
-      else
+      if (listAdapter != null)
       {
         while (context.DataReader.Read() && !context.DataReader.IsClosed)
         {
-          return CreateSingleInstance(context.DataReader, context.ResultType);
+          object objectInstance = CreateSingleInstance(context.DataReader, listAdapter.ElementType);
+          listAdapter.AdapterList.Add(objectInstance);
         }
-      }
 
-      return null;
+        return listAdapter.ConverToSourceList();
+      }
+      while (context.DataReader.Read() && !context.DataReader.IsClosed)
+        return CreateSingleInstance(context.DataReader, context.ResultType);
+
+      throw new AdoExecutorException("Cannot read data from reader.");
     }
 
     //todo cache
     private object CreateSingleInstance(IDataReader dataReader, Type instanceType)
     {
-      var instance = Activator.CreateInstance(instanceType);
-      var typeProperties = instanceType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+      object instance = Activator.CreateInstance(instanceType);
+      PropertyInfo[] typeProperties = instanceType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
       for (int i = 0; i < dataReader.FieldCount; i++)
       {
-        var columnName = dataReader.GetName(i);
-        var property = typeProperties.SingleOrDefault(x => x.Name.Equals(columnName, StringComparison.OrdinalIgnoreCase));
+        string columnName = dataReader.GetName(i);
+        PropertyInfo property =
+          typeProperties.SingleOrDefault(x => x.Name.Equals(columnName, StringComparison.OrdinalIgnoreCase));
 
         if (property != null)
         {
-          property.SetValue(instance, dataReader.GetValue(i), null);
+          object value = dataReader.GetValue(i);
+          object convertedValue = _objectConverter.ChangeType(property.PropertyType, value);
+          property.SetValue(instance, convertedValue, null);
         }
       }
 

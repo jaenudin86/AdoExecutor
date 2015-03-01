@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using AdoExecutor.Core.Context.Infrastructure;
+using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ParameterExtractor.Infrastructure;
 
 namespace AdoExecutor.Core.ParameterExtractor
@@ -18,6 +18,9 @@ namespace AdoExecutor.Core.ParameterExtractor
 
       foreach (var parameter in parameters)
       {
+        if (parameter.Value == null)
+          throw new AdoExecutorException("Dictionary parameter value cannot be null.");
+
         IDbDataParameter dataParameter = context.Configuration.DataObjectFactory.CreateDataParameter();
         dataParameter.ParameterName = parameter.Key;
         dataParameter.Value = parameter.Value;

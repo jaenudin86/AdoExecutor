@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Dynamic;
+using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ObjectBuilder.Infrastructure;
 using AdoExecutor.Utilities.Adapter.List.Infrastructure;
 
@@ -27,29 +28,29 @@ namespace AdoExecutor.Core.ObjectBuilder
       IListAdapter listAdapter = _listAdapterFactory.CreateListAdapter(context.ResultType);
 
       if (listAdapter != null)
-      {
         return listAdapter.ElementType == typeof (object);
-      }
 
       return false;
     }
 
     public object CreateInstance(ObjectBuilderContext context)
     {
-      if (context.ResultType == typeof (object))
+      IListAdapter listAdapter = _listAdapterFactory.CreateListAdapter(context.ResultType);
+
+      if (listAdapter != null)
+      {
+        while (context.DataReader.Read() && !context.DataReader.IsClosed)
+          listAdapter.AdapterList.Add(CreateDynamicObject(context.DataReader));
+
+        return listAdapter.ConverToSourceList();
+      }
+      else
       {
         if (context.DataReader.Read() && !context.DataReader.IsClosed)
           return CreateDynamicObject(context.DataReader);
       }
 
-      IListAdapter listAdapter = _listAdapterFactory.CreateListAdapter(context.ResultType);
-
-      while (context.DataReader.Read() && !context.DataReader.IsClosed)
-      {
-        listAdapter.AdapterList.Add(CreateDynamicObject(context.DataReader));
-      }
-
-      return listAdapter.ConverToSourceList();
+      throw new AdoExecutorException("Cannot read data from reader.");
     }
 
     private object CreateDynamicObject(IDataReader dataReader)
@@ -58,9 +59,7 @@ namespace AdoExecutor.Core.ObjectBuilder
       var dictionaryResult = (IDictionary<string, object>) result;
 
       for (int i = 0; i < dataReader.FieldCount; i++)
-      {
         dictionaryResult[dataReader.GetName(i)] = dataReader[i];
-      }
 
       return result;
     }

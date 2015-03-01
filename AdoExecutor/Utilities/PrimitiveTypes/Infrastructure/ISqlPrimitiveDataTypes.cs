@@ -2,7 +2,7 @@
 
 namespace AdoExecutor.Utilities.PrimitiveTypes.Infrastructure
 {
-  public interface IPrimitiveSqlDataTypes
+  public interface ISqlPrimitiveDataTypes
   {
     bool IsSqlPrimitiveType(Type dataType);
     Type[] GetAllSqlPrimitiveTypes();

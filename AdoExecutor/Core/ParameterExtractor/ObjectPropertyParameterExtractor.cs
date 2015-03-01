@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Data;
 using System.Reflection;
-using AdoExecutor.Core.Context.Infrastructure;
 using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ParameterExtractor.Infrastructure;
 using AdoExecutor.Utilities.PrimitiveTypes;
@@ -11,14 +10,14 @@ namespace AdoExecutor.Core.ParameterExtractor
 {
   public class ObjectPropertyParameterExtractor : IParameterExtractor
   {
-    private readonly PrimitiveSqlDataTypes _primitiveSqlDataTypes = new PrimitiveSqlDataTypes();
+    private readonly SqlPrimitiveDataTypes _sqlPrimitiveDataTypes = new SqlPrimitiveDataTypes();
 
     public bool CanProcess(Context.Infrastructure.Context context)
     {
       if (context.ParametersType.IsArray)
         return false;
 
-      if (_primitiveSqlDataTypes.IsSqlPrimitiveType(context.ParametersType))
+      if (_sqlPrimitiveDataTypes.IsSqlPrimitiveType(context.ParametersType))
         return false;
 
       if(context.Parameters is IEnumerable)
@@ -35,7 +34,7 @@ namespace AdoExecutor.Core.ParameterExtractor
 
       foreach (PropertyInfo propertyInfo in parametersPublicProperies)
       {
-        if (!_primitiveSqlDataTypes.IsSqlPrimitiveType(propertyInfo.PropertyType))
+        if (!_sqlPrimitiveDataTypes.IsSqlPrimitiveType(propertyInfo.PropertyType))
         {
           throw new AdoExecutorException("All object properties should be primitive type.");
         }

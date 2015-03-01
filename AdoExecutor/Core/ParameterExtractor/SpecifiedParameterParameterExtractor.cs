@@ -1,5 +1,6 @@
-﻿using System.Data;
-using AdoExecutor.Core.Context.Infrastructure;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Data;
 using AdoExecutor.Core.Parameter;
 using AdoExecutor.Core.ParameterExtractor.Infrastructure;
 
@@ -9,25 +10,30 @@ namespace AdoExecutor.Core.ParameterExtractor
   {
     public bool CanProcess(Context.Infrastructure.Context context)
     {
-      return context.ParametersType == typeof (SpecifiedParameter) ||
-             context.ParametersType == typeof (SpecifiedParameter[]);
+      if (context.Parameters is SpecifiedParameter)
+        return true;
+
+      if (context.Parameters is IEnumerable<SpecifiedParameter>)
+        return true;
+
+      return false;
     }
 
     public void ExtractParameter(Context.Infrastructure.Context context)
     {
-      if (context.ParametersType.IsArray)
+      if (context.Parameters is IEnumerable<SpecifiedParameter>)
       {
-        var parameters = (SpecifiedParameter[]) context.Parameters;
+        var parameters = (IEnumerable<SpecifiedParameter>) context.Parameters;
 
-        foreach (SpecifiedParameter parameter in parameters)
+        foreach (SpecifiedParameter specifiedParameter in parameters)
         {
-          AddParameter(context, parameter);
+          AddParameter(context, specifiedParameter);
         }
       }
       else
       {
-        var parameter = (SpecifiedParameter) context.Parameters;
-        AddParameter(context, parameter);
+        var specifiedParameter = (SpecifiedParameter) context.Parameters;
+        AddParameter(context, specifiedParameter);
       }
     }
 

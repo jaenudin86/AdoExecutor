@@ -10,7 +10,7 @@ namespace AdoExecutor.Core.ParameterExtractor
 {
   public class ArrayParameterExtractor : IParameterExtractor
   {
-    private readonly PrimitiveSqlDataTypes _primitiveSqlDataTypes = new PrimitiveSqlDataTypes();
+    private readonly SqlPrimitiveDataTypes _sqlPrimitiveDataTypes = new SqlPrimitiveDataTypes();
 
     public bool CanProcess(Context.Infrastructure.Context context)
     {
@@ -24,7 +24,7 @@ namespace AdoExecutor.Core.ParameterExtractor
         return false;
 
       Type elementType = context.ParametersType.GetElementType();
-      if (elementType != typeof (object) && !_primitiveSqlDataTypes.IsSqlPrimitiveType(elementType)) 
+      if (elementType != typeof (object) && !_sqlPrimitiveDataTypes.IsSqlPrimitiveType(elementType)) 
         return false;
 
       return true;
@@ -42,7 +42,7 @@ namespace AdoExecutor.Core.ParameterExtractor
         if (elementType == typeof(object) && parameter == null)
           throw new AdoExecutorException("Cannot pass null value in object array type.");
 
-        if (elementType != typeof (object) && !_primitiveSqlDataTypes.IsSqlPrimitiveType(elementType))
+        if (elementType != typeof (object) && !_sqlPrimitiveDataTypes.IsSqlPrimitiveType(elementType))
           throw new AdoExecutorException("Array item muse be primitive type.");
 
         IDbDataParameter dataParameter = context.Configuration.DataObjectFactory.CreateDataParameter();

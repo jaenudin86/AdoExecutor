@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using AdoExecutor.Core.Configuration.Infrastructure;
 
@@ -42,6 +43,7 @@ namespace AdoExecutor.Core.Context.Infrastructure
       Connection = connection;
       Command = command;
       Configuration = configuration;
+      Bag = new Dictionary<string, object>();
     }
 
     public string Query { get; private set; }
@@ -62,5 +64,6 @@ namespace AdoExecutor.Core.Context.Infrastructure
     public IDbConnection Connection { get; private set; }
     public IDbCommand Command { get; private set; }
     public IConfiguration Configuration { get; private set; }
+    public IDictionary<string, object> Bag { get; private set; }
   }
 }

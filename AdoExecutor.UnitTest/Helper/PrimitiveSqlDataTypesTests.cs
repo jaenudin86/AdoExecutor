@@ -12,10 +12,10 @@ namespace AdoExecutor.UnitTest.Helper
     [SetUp]
     public void SetUp()
     {
-      _primitiveSqlDataTypes = new PrimitiveSqlDataTypes();
+      _sqlPrimitiveDataTypes = new SqlPrimitiveDataTypes();
     }
 
-    private PrimitiveSqlDataTypes _primitiveSqlDataTypes;
+    private SqlPrimitiveDataTypes _sqlPrimitiveDataTypes;
 
     [Test]
     [TestCase(typeof (object))]
@@ -25,7 +25,7 @@ namespace AdoExecutor.UnitTest.Helper
     public void IsSqlPrimitiveType_ShouldReturnFalse_WhenTypeIsNotPrimitiveType(Type notPrimitiveType)
     {
       //ACT
-      bool isPrimitiveType = _primitiveSqlDataTypes.IsSqlPrimitiveType(notPrimitiveType);
+      bool isPrimitiveType = _sqlPrimitiveDataTypes.IsSqlPrimitiveType(notPrimitiveType);
 
       //ASSERT
       Assert.IsFalse(isPrimitiveType);
@@ -72,7 +72,7 @@ namespace AdoExecutor.UnitTest.Helper
     public void IsSqlPrimitiveType_ShouldReturnTrue_WhenTypeIsPrimitiveType(Type primitiveType)
     {
       //ACT
-      bool isPrimitiveType = _primitiveSqlDataTypes.IsSqlPrimitiveType(primitiveType);
+      bool isPrimitiveType = _sqlPrimitiveDataTypes.IsSqlPrimitiveType(primitiveType);
 
       //ASSERT
       Assert.IsTrue(isPrimitiveType);

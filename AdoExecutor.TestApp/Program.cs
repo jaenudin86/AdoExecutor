@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Diagnostics;
 using System.Dynamic;
@@ -25,10 +26,9 @@ namespace AdoExecutor.TestApp
       var adoExecutorQueryFactory = new SqlQueryFactory("test");
       IQuery query = adoExecutorQueryFactory.CreateQuery();
 
-      var queryText = @"select Id, Login, PasswordHash, IsBlocked, Created, FailedLoginCount 
-                       from dbo.Account";
+      var queryText = @"select Id from dbo.Account";
 
-      var result = query.Select<object[]>(queryText);
+      var result = query.Select<ReadOnlyObservableCollection<Guid?>>(queryText);
     }
 
 
