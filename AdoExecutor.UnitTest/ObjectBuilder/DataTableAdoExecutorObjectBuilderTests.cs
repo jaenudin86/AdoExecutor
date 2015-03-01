@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Data;
+using AdoExecutor.Core.Configuration.Infrastructure;
+using AdoExecutor.Core.Context.Infrastructure;
 using AdoExecutor.Core.ObjectBuilder;
-using AdoExecutor.Infrastructure.Configuration;
-using AdoExecutor.Infrastructure.Context;
-using AdoExecutor.Infrastructure.ObjectBuilder;
+using AdoExecutor.Core.ObjectBuilder.Infrastructure;
 using FakeItEasy;
 using NUnit.Framework;
 
@@ -12,26 +12,26 @@ namespace AdoExecutor.UnitTest.ObjectBuilder
   [TestFixture]
   public class DataTableAdoExecutorObjectBuilderTests
   {
-    private DataTableAdoExecutorObjectBuilder _objectBuilder;
+    private DataTableObjectBuilder _objectBuilder;
 
     [SetUp]
     public void SetUp()
     {
-      _objectBuilder = new DataTableAdoExecutorObjectBuilder();
+      _objectBuilder = new DataTableObjectBuilder();
     }
 
     [Test]
     public void CanProcess_ShouldReturnTrue_WhenResultTypeIsDataTable()
     {
       //ARRANGE
-      var context = new AdoExecutorObjectBuilderContext(
+      var context = new ObjectBuilderContext(
         "test",
         null,
         typeof (DataTable),
-        AdoExecutorInvokeMethod.Select,
+        InvokeMethod.Select,
         A.Fake<IDbConnection>(),
         A.Fake<IDbCommand>(),
-        A.Fake<IAdoExecutorConfiguration>(),
+        A.Fake<IConfiguration>(),
         A.Fake<IDataReader>());
 
       //ACT
@@ -48,14 +48,14 @@ namespace AdoExecutor.UnitTest.ObjectBuilder
     public void CanProcess_ShouldReturnFalse_WhenResultTypeIsNotDataTable(Type resultType)
     {
       //ARRANGE
-      var context = new AdoExecutorObjectBuilderContext(
+      var context = new ObjectBuilderContext(
         "test",
         null,
         resultType,
-        AdoExecutorInvokeMethod.Select,
+        InvokeMethod.Select,
         A.Fake<IDbConnection>(),
         A.Fake<IDbCommand>(),
-        A.Fake<IAdoExecutorConfiguration>(),
+        A.Fake<IConfiguration>(),
         A.Fake<IDataReader>());
 
       //ACT
@@ -79,14 +79,14 @@ namespace AdoExecutor.UnitTest.ObjectBuilder
 
       var dataReader = new DataTableReader(sourceDataTable);
 
-      var context = new AdoExecutorObjectBuilderContext(
+      var context = new ObjectBuilderContext(
         "test",
         null,
         typeof(DataTable),
-        AdoExecutorInvokeMethod.Select,
+        InvokeMethod.Select,
         A.Fake<IDbConnection>(),
         A.Fake<IDbCommand>(),
-        A.Fake<IAdoExecutorConfiguration>(),
+        A.Fake<IConfiguration>(),
         dataReader);
 
       //ACT

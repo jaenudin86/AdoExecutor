@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Configuration;
-using AdoExecutor.Infrastructure.ConnectionString;
+using AdoExecutor.Core.ConnectionString.Infrastructure;
 
 namespace AdoExecutor.Core.ConnectionString
 {

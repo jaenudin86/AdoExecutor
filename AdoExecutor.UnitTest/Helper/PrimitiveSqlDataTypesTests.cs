@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Data;
-using AdoExecutor.Core.Helper;
+using AdoExecutor.Utilities.PrimitiveTypes;
 using NUnit.Framework;
 
 namespace AdoExecutor.UnitTest.Helper

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Dynamic;
+using AdoExecutor.Core.Query.Infrastructure;
 using AdoExecutor.Core.QueryFactory;
-using AdoExecutor.Infrastructure.Query;
 
 namespace AdoExecutor.TestApp
 {
@@ -21,14 +22,13 @@ namespace AdoExecutor.TestApp
 
     private static void Main(string[] args)
     {
-      var adoExecutorQueryFactory = new SqlAdoExecutorQueryFactory("test");
-      IAdoExecutorQuery query = adoExecutorQueryFactory.CreateQuery();
+      var adoExecutorQueryFactory = new SqlQueryFactory("test");
+      IQuery query = adoExecutorQueryFactory.CreateQuery();
 
       var queryText = @"select Id, Login, PasswordHash, IsBlocked, Created, FailedLoginCount 
-                       from dbo.Account
-                       where id = @id";
+                       from dbo.Account";
 
-      var queryParameter = new {Id = new Guid("8F45FE85-7D79-47CC-82D6-CD433B3D10BB")};
+      var result = query.Select<object[]>(queryText);
     }
 
 

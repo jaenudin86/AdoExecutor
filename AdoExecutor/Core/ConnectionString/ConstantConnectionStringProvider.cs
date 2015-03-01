@@ -1,5 +1,5 @@
 ﻿using System;
-using AdoExecutor.Infrastructure.ConnectionString;
+using AdoExecutor.Core.ConnectionString.Infrastructure;
 
 namespace AdoExecutor.Core.ConnectionString
 {
