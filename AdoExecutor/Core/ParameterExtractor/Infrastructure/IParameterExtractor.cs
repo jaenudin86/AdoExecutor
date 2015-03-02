@@ -4,7 +4,7 @@ namespace AdoExecutor.Core.ParameterExtractor.Infrastructure
 {
   public interface IParameterExtractor
   {
-    bool CanProcess(Context.Infrastructure.Context context);
-    void ExtractParameter(Context.Infrastructure.Context context);
+    bool CanProcess(Context.Infrastructure.AdoExecutorContext context);
+    void ExtractParameter(Context.Infrastructure.AdoExecutorContext context);
   }
 }

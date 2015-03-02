@@ -5,11 +5,11 @@ using AdoExecutor.Core.Configuration.Infrastructure;
 
 namespace AdoExecutor.Core.Context.Infrastructure
 {
-  public class Context
+  public class AdoExecutorContext
   {
     private object _parameters;
 
-    public Context(
+    public AdoExecutorContext(
       string query,
       object parameters,
       Type resultType,

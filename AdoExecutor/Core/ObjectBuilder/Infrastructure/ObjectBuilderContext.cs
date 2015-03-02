@@ -5,7 +5,7 @@ using AdoExecutor.Core.Context.Infrastructure;
 
 namespace AdoExecutor.Core.ObjectBuilder.Infrastructure
 {
-  public class ObjectBuilderContext : Context.Infrastructure.Context
+  public class ObjectBuilderContext : Context.Infrastructure.AdoExecutorContext
   {
     public ObjectBuilderContext(
       string query, 

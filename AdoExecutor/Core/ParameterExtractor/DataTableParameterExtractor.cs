@@ -6,12 +6,12 @@ namespace AdoExecutor.Core.ParameterExtractor
 {
   public class DataTableParameterExtractor : IParameterExtractor
   {
-    public bool CanProcess(Context.Infrastructure.Context context)
+    public bool CanProcess(Context.Infrastructure.AdoExecutorContext context)
     {
       return context.ParametersType == typeof (DataTable);
     }
 
-    public void ExtractParameter(Context.Infrastructure.Context context)
+    public void ExtractParameter(Context.Infrastructure.AdoExecutorContext context)
     {
       var parameters = (DataTable) context.Parameters;
 

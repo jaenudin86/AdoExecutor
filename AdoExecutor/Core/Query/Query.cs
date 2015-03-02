@@ -69,10 +69,10 @@ namespace AdoExecutor.Core.Query
 
         _optionsConfigurator.ConfigureCommand(command, options);
 
-        _interceptoInvoker.OnEntry(new Context.Infrastructure.Context(query, parameters, resultType, invokeMethod, Connection,
+        _interceptoInvoker.OnEntry(new Context.Infrastructure.AdoExecutorContext(query, parameters, resultType, invokeMethod, Connection,
           command, _configuration));
 
-        _parameterExtractorInvoker.ExtractParameter(new Context.Infrastructure.Context(query, parameters, resultType, invokeMethod,
+        _parameterExtractorInvoker.ExtractParameter(new Context.Infrastructure.AdoExecutorContext(query, parameters, resultType, invokeMethod,
           Connection, command, _configuration));
 
         System.Exception exception = null;

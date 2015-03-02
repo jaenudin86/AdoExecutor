@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Data;
-using System.Reflection;
 using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ParameterExtractor.Infrastructure;
 using AdoExecutor.Utilities.PrimitiveTypes.Infrastructure;
 
 namespace AdoExecutor.Core.ParameterExtractor
 {
-  public class ObjectPropertyParameterExtractor : IParameterExtractor
+  public class EnumerableParameterExtractor : IParameterExtractor
   {
     private readonly ISqlPrimitiveDataTypes _sqlPrimitiveDataTypes;
 
-    public ObjectPropertyParameterExtractor(ISqlPrimitiveDataTypes sqlPrimitiveDataTypes)
+    public EnumerableParameterExtractor(ISqlPrimitiveDataTypes sqlPrimitiveDataTypes)
     {
       if (sqlPrimitiveDataTypes == null) 
         throw new ArgumentNullException("sqlPrimitiveDataTypes");
@@ -22,28 +21,30 @@ namespace AdoExecutor.Core.ParameterExtractor
 
     public bool CanProcess(Context.Infrastructure.AdoExecutorContext context)
     {
-      if (_sqlPrimitiveDataTypes.IsSqlPrimitiveType(context.ParametersType))
+      if(_sqlPrimitiveDataTypes.IsSqlPrimitiveType(context.ParametersType))
         return false;
 
-      if(context.Parameters is IEnumerable)
-        return false;
-
-      return true;
+      return context.Parameters is IEnumerable;
     }
 
     public void ExtractParameter(Context.Infrastructure.AdoExecutorContext context)
     {
-      PropertyInfo[] parametersPublicProperies =
-        context.ParametersType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+      var parameters = (IEnumerable) context.Parameters;
+      int counter = 0;
 
-      foreach (PropertyInfo propertyInfo in parametersPublicProperies)
+      foreach (object parameter in parameters)
       {
-        if (!_sqlPrimitiveDataTypes.IsSqlPrimitiveType(propertyInfo.PropertyType))
-          throw new AdoExecutorException("Object property must be sql primitive type.");
+        if(parameter == null)
+          throw new AdoExecutorException("Array item cannot be null.");
+
+        var parameterType = parameter.GetType();
+
+        if (!_sqlPrimitiveDataTypes.IsSqlPrimitiveType(parameterType))
+          throw new AdoExecutorException("Array item must be sql primitive type.");
 
         IDbDataParameter dataParameter = context.Configuration.DataObjectFactory.CreateDataParameter();
-        dataParameter.ParameterName = string.Format("@{0}", propertyInfo.Name);
-        dataParameter.Value = propertyInfo.GetValue(context.Parameters, null);
+        dataParameter.ParameterName = string.Format("@{0}", counter++);
+        dataParameter.Value = parameter;
 
         context.Command.Parameters.Add(dataParameter);
       }

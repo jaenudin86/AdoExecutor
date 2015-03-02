@@ -45,14 +45,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectionString\AppConfigConnectionStringProviderTest.cs" />
-    <Compile Include="ConnectionString\ConstantConnectionStringProviderTests.cs" />
-    <Compile Include="Helper\PrimitiveSqlDataTypesTests.cs" />
-    <Compile Include="Interception\ConnectionStateManagerAdoExecutorInterceptorTests.cs" />
-    <Compile Include="ObjectBuilder\DataTableAdoExecutorObjectBuilderTests.cs" />
+    <Compile Include="Core\Configuration\ConfigurationTests.cs" />
+    <Compile Include="Core\ConnectionString\AppConfigConnectionStringProviderTest.cs" />
+    <Compile Include="Core\ConnectionString\ConstantConnectionStringProviderTests.cs" />
+    <Compile Include="Core\Context\Infrastructure\AdoExecutorContextTests.cs" />
+    <Compile Include="Utilities\SqlPrimitiveDataTypesTests.cs" />
+    <Compile Include="Core\Interception\ConnectionStateManagerAdoExecutorInterceptorTests.cs" />
+    <Compile Include="Core\ObjectBuilder\DataTableAdoExecutorObjectBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Utilities\PrimitiveTypes\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

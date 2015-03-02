@@ -4,10 +4,10 @@ using System.Data;
 using AdoExecutor.Utilities.PrimitiveTypes;
 using NUnit.Framework;
 
-namespace AdoExecutor.UnitTest.Helper
+namespace AdoExecutor.UnitTest.Utilities
 {
   [TestFixture]
-  public class PrimitiveSqlDataTypesTests
+  public class SqlPrimitiveDataTypesTests
   {
     [SetUp]
     public void SetUp()

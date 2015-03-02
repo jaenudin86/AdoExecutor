@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using AdoExecutor.Core.Parameter;
 using AdoExecutor.Core.ParameterExtractor.Infrastructure;
@@ -8,7 +7,7 @@ namespace AdoExecutor.Core.ParameterExtractor
 {
   public class SpecifiedParameterParameterExtractor : IParameterExtractor
   {
-    public bool CanProcess(Context.Infrastructure.Context context)
+    public bool CanProcess(Context.Infrastructure.AdoExecutorContext context)
     {
       if (context.Parameters is SpecifiedParameter)
         return true;
@@ -19,16 +18,16 @@ namespace AdoExecutor.Core.ParameterExtractor
       return false;
     }
 
-    public void ExtractParameter(Context.Infrastructure.Context context)
+    public void ExtractParameter(Context.Infrastructure.AdoExecutorContext context)
     {
-      if (context.Parameters is IEnumerable<SpecifiedParameter>)
+      var specifiedParameters = context.Parameters as IEnumerable<SpecifiedParameter>;
+
+      if (specifiedParameters != null)
       {
-        var parameters = (IEnumerable<SpecifiedParameter>) context.Parameters;
+        var parameters = specifiedParameters;
 
         foreach (SpecifiedParameter specifiedParameter in parameters)
-        {
           AddParameter(context, specifiedParameter);
-        }
       }
       else
       {
@@ -37,7 +36,7 @@ namespace AdoExecutor.Core.ParameterExtractor
       }
     }
 
-    private void AddParameter(Context.Infrastructure.Context context, SpecifiedParameter parameter)
+    private void AddParameter(Context.Infrastructure.AdoExecutorContext context, SpecifiedParameter parameter)
     {
       IDbDataParameter dataParameter = context.Configuration.DataObjectFactory.CreateDataParameter();
       dataParameter.ParameterName = parameter.ParameterName;

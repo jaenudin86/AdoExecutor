@@ -17,7 +17,7 @@ namespace AdoExecutor.Core.Query.Internal
       _configuration = configuration;
     }
 
-    public void OnEntry(Context.Infrastructure.Context context)
+    public void OnEntry(Context.Infrastructure.AdoExecutorContext context)
     {
       foreach (IInterceptor interceptor in _configuration.Interceptors)
       {

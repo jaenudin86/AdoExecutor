@@ -2,7 +2,7 @@
 using AdoExecutor.Core.ConnectionString;
 using NUnit.Framework;
 
-namespace AdoExecutor.UnitTest.ConnectionString
+namespace AdoExecutor.UnitTest.Core.ConnectionString
 {
   [TestFixture]
   public class ConstantConnectionStringProviderTests
@@ -10,7 +10,7 @@ namespace AdoExecutor.UnitTest.ConnectionString
     [Test]
     public void Constructor_ShouldThrownArgumentNullException_WhenConnectionStringArgumentIsNull()
     {
-      //ACT
+      //ASSERT
       Assert.Throws<ArgumentNullException>(() => new ConstantConnectionStringProvider(null));
     }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using AdoExecutor.Core.Configuration.Infrastructure;
-using AdoExecutor.Core.Context.Infrastructure;
 using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ParameterExtractor.Infrastructure;
 
@@ -18,7 +17,7 @@ namespace AdoExecutor.Core.Query.Internal
       _configuration = configuration;
     }
 
-    public void ExtractParameter(Context.Infrastructure.Context context)
+    public void ExtractParameter(Context.Infrastructure.AdoExecutorContext context)
     {
       if (context.Parameters == null)
         return;

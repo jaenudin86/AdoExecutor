@@ -54,7 +54,7 @@ namespace AdoExecutor.Utilities.PrimitiveTypes
 
     public virtual Type[] GetAllSqlPrimitiveTypes()
     {
-      return PrimitiveDataTypes;
+      return PrimitiveDataTypes.ToArray();
     }
   }
 }

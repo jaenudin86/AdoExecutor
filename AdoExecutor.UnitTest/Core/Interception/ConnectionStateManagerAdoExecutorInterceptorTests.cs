@@ -7,7 +7,7 @@ using FakeItEasy;
 using FakeItEasy.ExtensionSyntax.Full;
 using NUnit.Framework;
 
-namespace AdoExecutor.UnitTest.Interception
+namespace AdoExecutor.UnitTest.Core.Interception
 {
   [TestFixture]
   public class ConnectionStateManagerAdoExecutorInterceptorTests
@@ -25,7 +25,7 @@ namespace AdoExecutor.UnitTest.Interception
     {
       //ARRANGE
       var connectionFake = A.Fake<IDbConnection>();
-      var context = new Context(
+      var context = new AdoExecutorContext(
         "test",
         null,
         typeof (string),

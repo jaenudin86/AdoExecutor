@@ -67,7 +67,7 @@
     <Compile Include="Core\ConnectionString\AppConfigConnectionStringProvider.cs" />
     <Compile Include="Core\ConnectionString\ConstantConnectionStringProvider.cs" />
     <Compile Include="Core\ConnectionString\Infrastructure\IConnectionStringProvider.cs" />
-    <Compile Include="Core\Context\Infrastructure\Context.cs" />
+    <Compile Include="Core\Context\Infrastructure\AdoExecutorContext.cs" />
     <Compile Include="Core\Context\Infrastructure\InvokeMethod.cs" />
     <Compile Include="Core\DataObjectFactory\Infrastructure\IDataObjectFactory.cs" />
     <Compile Include="Core\DataObjectFactory\OdbcDataObjectFactory.cs" />
@@ -85,7 +85,7 @@
     <Compile Include="Core\ObjectBuilder\DynamicObjectBuilder.cs" />
     <Compile Include="Core\ObjectBuilder\Infrastructure\IObjectBuilder.cs" />
     <Compile Include="Core\ObjectBuilder\SimpleTypeObjectBuilder.cs" />
-    <Compile Include="Core\ParameterExtractor\ArrayParameterExtractor.cs" />
+    <Compile Include="Core\ParameterExtractor\EnumerableParameterExtractor.cs" />
     <Compile Include="Core\ParameterExtractor\Infrastructure\IParameterExtractor.cs" />
     <Compile Include="Core\ParameterExtractor\ObjectPropertyParameterExtractor.cs" />
     <Compile Include="Core\ParameterExtractor\SpecifiedParameterParameterExtractor.cs" />

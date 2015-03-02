@@ -8,7 +8,7 @@ using AdoExecutor.Utilities.Adapter.DataTable;
 using FakeItEasy;
 using NUnit.Framework;
 
-namespace AdoExecutor.UnitTest.ObjectBuilder
+namespace AdoExecutor.UnitTest.Core.ObjectBuilder
 {
   [TestFixture]
   public class DataTableAdoExecutorObjectBuilderTests
