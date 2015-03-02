@@ -49,6 +49,9 @@
     <Compile Include="Core\ConnectionString\AppConfigConnectionStringProviderTest.cs" />
     <Compile Include="Core\ConnectionString\ConstantConnectionStringProviderTests.cs" />
     <Compile Include="Core\Context\Infrastructure\AdoExecutorContextTests.cs" />
+    <Compile Include="Core\DataObjectFactory\SqlDataObjectFactoryTests.cs" />
+    <Compile Include="Core\DataObjectFactory\OleDbDataObjectFactory.cs" />
+    <Compile Include="Core\DataObjectFactory\OdbcDataObjectFactoryTests.cs" />
     <Compile Include="Utilities\SqlPrimitiveDataTypesTests.cs" />
     <Compile Include="Core\Interception\ConnectionStateManagerAdoExecutorInterceptorTests.cs" />
     <Compile Include="Core\ObjectBuilder\DataTableAdoExecutorObjectBuilderTests.cs" />
