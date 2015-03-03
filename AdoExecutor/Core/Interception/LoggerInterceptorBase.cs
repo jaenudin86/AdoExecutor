@@ -8,7 +8,7 @@ namespace AdoExecutor.Core.Interception
 {
   public abstract class LoggerInterceptorBase : IInterceptor
   {
-    void IInterceptor.OnEntry(Context.Infrastructure.AdoExecutorContext context)
+    void IInterceptor.OnEntry(AdoExecutorContext context)
     {
       StringBuilder logMessage = PrepareLogMessage(context);
       LogOnEntry(context, logMessage.ToString());
@@ -37,7 +37,7 @@ namespace AdoExecutor.Core.Interception
       LogOnExit(context, logMessage.ToString());
     }
 
-    protected virtual void LogOnEntry(Context.Infrastructure.AdoExecutorContext context, string logMessage)
+    protected virtual void LogOnEntry(AdoExecutorContext context, string logMessage)
     {
     }
 
@@ -53,7 +53,7 @@ namespace AdoExecutor.Core.Interception
     {
     }
 
-    protected virtual StringBuilder PrepareLogMessage(Context.Infrastructure.AdoExecutorContext context)
+    protected virtual StringBuilder PrepareLogMessage(AdoExecutorContext context)
     {
       var result = new StringBuilder();
       result.AppendLine("*** QUERY ***");

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Runtime.Remoting.Messaging;
-using AdoExecutor.Core.Configuration;
 using AdoExecutor.Core.Configuration.Infrastructure;
 using AdoExecutor.Core.ConnectionString;
 using AdoExecutor.Core.DataObjectFactory;
 using AdoExecutor.Core.Interception;
 using AdoExecutor.Core.ObjectBuilder;
 using AdoExecutor.Core.ParameterExtractor;
-using AdoExecutor.Core.Query;
 using AdoExecutor.Core.Query.Infrastructure;
 using AdoExecutor.Core.QueryFactory.Infrastructure;
 using AdoExecutor.Utilities.Adapter.DataTable;
@@ -29,13 +26,13 @@ namespace AdoExecutor.Core.QueryFactory
       _connectionStringAppConfigKey = connectionStringAppConfigKey;
     }
 
-    public IQuery CreateQuery()
+    public virtual IQuery CreateQuery()
     {
       IConfiguration configuration = CreateConfiguration();
       return new Query.Query(configuration);
     }
 
-    private IConfiguration CreateConfiguration()
+    protected virtual IConfiguration CreateConfiguration()
     {
       var configuration = new Configuration.Configuration();
       configuration.ConnectionStringProvider = new AppConfigConnectionStringProvider(_connectionStringAppConfigKey);

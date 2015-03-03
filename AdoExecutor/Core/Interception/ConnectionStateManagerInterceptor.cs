@@ -5,7 +5,7 @@ namespace AdoExecutor.Core.Interception
 {
   public class ConnectionStateManagerInterceptor : IInterceptor
   {
-    public void OnEntry(Context.Infrastructure.AdoExecutorContext context)
+    public void OnEntry(AdoExecutorContext context)
     {
       context.Connection.Open();
     }
