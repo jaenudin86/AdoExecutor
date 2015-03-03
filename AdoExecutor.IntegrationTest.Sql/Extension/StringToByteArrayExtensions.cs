@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AdoExecutor.IntegrationTest.Sql.Extensions
+namespace AdoExecutor.IntegrationTest.Sql.Extension
 {
   public static class StringToByteArrayExtensions
   {

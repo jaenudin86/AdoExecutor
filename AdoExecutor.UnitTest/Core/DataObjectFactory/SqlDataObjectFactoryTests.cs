@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace AdoExecutor.UnitTest.Core.DataObjectFactory
 {
-  [TestFixture]
+  [TestFixture(Category = "Unit")]
   public class SqlDataObjectFactoryTests
   {
     private SqlDataObjectFactory _dataObjectFactory;

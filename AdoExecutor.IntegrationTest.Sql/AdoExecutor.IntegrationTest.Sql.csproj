@@ -42,9 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\StringToByteArrayExtensions.cs" />
+    <Compile Include="Select\DataTableRowAssertBase.cs" />
+    <Compile Include="Select\SelectToDataSet.cs" />
+    <Compile Include="Select\SelectToDataTable.cs" />
+    <Compile Include="Extension\StringToByteArrayExtensions.cs" />
+    <Compile Include="Helper\TestDbTypeTable\ITestDbTypeTableRow.cs" />
+    <Compile Include="Helper\TestDbTypeTable\TestDbTypeTable.cs" />
+    <Compile Include="Helper\TestDbTypeTable\TestDbTypeTableRow2.cs" />
+    <Compile Include="Helper\TestDbTypeTable\TestDbTypeTableRow1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Dynamic\SelectToDynamic.cs" />
+    <Compile Include="Select\SelectToDynamic.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -58,6 +65,7 @@
       <Name>AdoExecutor</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -10,7 +10,7 @@ using NUnit.Framework;
 
 namespace AdoExecutor.UnitTest.Core.ObjectBuilder
 {
-  [TestFixture]
+  [TestFixture(Category = "Unit")]
   public class DataTableAdoExecutorObjectBuilderTests
   {
     private DataTableObjectBuilder _objectBuilder;

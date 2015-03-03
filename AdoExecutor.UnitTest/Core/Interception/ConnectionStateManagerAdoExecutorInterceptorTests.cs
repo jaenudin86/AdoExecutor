@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace AdoExecutor.UnitTest.Core.Interception
 {
-  [TestFixture]
+  [TestFixture(Category = "Unit")]
   public class ConnectionStateManagerAdoExecutorInterceptorTests
   {
     private ConnectionStateManagerInterceptor _interceptor;

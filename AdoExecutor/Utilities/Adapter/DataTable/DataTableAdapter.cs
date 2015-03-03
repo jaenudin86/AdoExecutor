@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.Common;
 using AdoExecutor.Utilities.Adapter.DataTable.Infrastructure;
 
@@ -16,7 +17,9 @@ namespace AdoExecutor.Utilities.Adapter.DataTable
     {
       var dataTable = new System.Data.DataTable();
 
-      base.Fill(dataTable, dataReader);
+      Fill(dataTable, dataReader);
+
+      dataTable.TableName = Guid.NewGuid().ToString();
 
       return dataTable;
     }

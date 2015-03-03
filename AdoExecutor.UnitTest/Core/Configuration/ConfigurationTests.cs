@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace AdoExecutor.UnitTest.Core.Configuration
 {
-  [TestFixture]
+  [TestFixture(Category = "Unit")]
   public class ConfigurationTests
   {
     private AdoExecutor.Core.Configuration.Configuration _configuration;

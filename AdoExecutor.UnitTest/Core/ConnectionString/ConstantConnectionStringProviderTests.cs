@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace AdoExecutor.UnitTest.Core.ConnectionString
 {
-  [TestFixture]
+  [TestFixture(Category = "Unit")]
   public class ConstantConnectionStringProviderTests
   {
     [Test]

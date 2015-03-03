@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace AdoExecutor.UnitTest.Utilities
 {
-  [TestFixture]
+  [TestFixture(Category = "Unit")]
   public class SqlPrimitiveDataTypesTests
   {
     [SetUp]

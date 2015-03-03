@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace AdoExecutor.UnitTest.Core.Context.Infrastructure
 {
-  [TestFixture]
+  [TestFixture(Category = "Unit")]
   public class AdoExecutorContextTests
   {
     [Test]
