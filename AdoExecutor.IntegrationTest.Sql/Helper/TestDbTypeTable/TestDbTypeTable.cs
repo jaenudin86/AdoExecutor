@@ -1,7 +1,4 @@
-﻿using System;
-using AdoExecutor.IntegrationTest.Sql.Extension;
-
-namespace AdoExecutor.IntegrationTest.Sql.Helper.TestDbTypeTable
+﻿namespace AdoExecutor.IntegrationTest.Sql.Helper.TestDbTypeTable
 {
   public static class TestDbTypeTable
   {
