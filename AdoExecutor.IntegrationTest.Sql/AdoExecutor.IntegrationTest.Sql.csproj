@@ -46,6 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helper\TestDbTypeTable\TestDbTypeTableRowDefiniedType.cs" />
+    <Compile Include="PassParameter\DataTablePassParameter.cs" />
+    <Compile Include="PassParameter\DictionaryPassParameter.cs" />
+    <Compile Include="PassParameter\ObjectPropertyPassParameter.cs" />
+    <Compile Include="PassParameter\PassParameterBase.cs" />
     <Compile Include="Select\DataTableRowAssertBase.cs" />
     <Compile Include="Select\SelectToDataSet.cs" />
     <Compile Include="Select\SelectToDataTable.cs" />

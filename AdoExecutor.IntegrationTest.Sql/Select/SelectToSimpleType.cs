@@ -392,7 +392,7 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
     [Test]
     public void SelectSingleRowWithSpecifiedId_WhenTypeIsCollection_TinyInt_Fail()
     {
-      //DO NOT SUPPORT COLLECTION OF TINYINT BECOUSE IT USE SAME TYPE (BYTE[]) AS BINARY FORMAT
+      //WARNING: DO NOT SUPPORT COLLECTION OF TINYINT BECOUSE IT USE SAME TYPE (BYTE[]) AS BINARY FORMAT
     }
 
     [Test]
