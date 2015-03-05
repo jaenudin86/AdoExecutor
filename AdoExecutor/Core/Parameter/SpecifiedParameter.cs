@@ -45,9 +45,9 @@ namespace AdoExecutor.Core.Parameter
       _dataParameter = dataParameter;
     }
 
-    public object GetOutputValue()
+    public T GetOutputValue<T>()
     {
-      return _dataParameter.Value;
+      return (T)_dataParameter.Value;
     }
   }
 }
