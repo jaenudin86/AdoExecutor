@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using AdoExecutor.Core.QueryFactory;
 using AdoExecutor.Core.QueryFactory.Infrastructure;
 using AdoExecutor.IntegrationTest.Sql.Helper.TestDbTypeTable;
@@ -35,7 +37,61 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
     }
 
     [Test]
-    public void SelectMultipleRowWithSpecifiedIds()
+    public void SelectMultipleRowWithSpecifiedIds_AsArray()
+    {
+      SelectMultipleRowWithSpecifiedIds<dynamic[]>();
+    }
+
+    [Test]
+    public void SelectMultipleRowWithSpecifiedIds_AsList()
+    {
+      SelectMultipleRowWithSpecifiedIds<List<dynamic>>();
+    }
+
+    [Test]
+    public void SelectMultipleRowWithSpecifiedIds_AsCollection()
+    {
+      SelectMultipleRowWithSpecifiedIds<Collection<dynamic>>();
+    }
+
+    [Test]
+    public void SelectMultipleRowWithSpecifiedIds_AsObservableCollection()
+    {
+      SelectMultipleRowWithSpecifiedIds<ObservableCollection<dynamic>>();
+    }
+
+    [Test]
+    public void SelectMultipleRowWithSpecifiedIds_AsIList()
+    {
+      SelectMultipleRowWithSpecifiedIds<IList<dynamic>>();
+    }
+
+    [Test]
+    public void SelectMultipleRowWithSpecifiedIds_AsICollection()
+    {
+      SelectMultipleRowWithSpecifiedIds<ICollection<dynamic>>();
+    }
+
+    [Test]
+    public void SelectMultipleRowWithSpecifiedIds_AsIEnumerable()
+    {
+      SelectMultipleRowWithSpecifiedIds<IEnumerable<dynamic>>();
+    }
+
+    [Test]
+    public void SelectMultipleRowWithSpecifiedIds_AsReadOnlyCollection()
+    {
+      SelectMultipleRowWithSpecifiedIds<ReadOnlyCollection<dynamic>>();
+    }
+
+    [Test]
+    public void SelectMultipleRowWithSpecifiedIds_AsReadOnlyObservableCollection()
+    {
+      SelectMultipleRowWithSpecifiedIds<ReadOnlyObservableCollection<dynamic>>();
+    }
+
+    public void SelectMultipleRowWithSpecifiedIds<T>()
+      where T : IEnumerable<object>
     {
       //ARRANGE
       const string queryText = @"select * 
