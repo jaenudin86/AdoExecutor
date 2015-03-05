@@ -48,10 +48,15 @@ namespace AdoExecutor.Core.ObjectBuilder
       if (context.DataReader.FieldCount != 1)
         throw new AdoExecutorException("Sql query must return exacly one column");
 
-      IListAdapter listAdapter = _listAdapterFactory.CreateListAdapter(context.ResultType);
-
-      if (listAdapter != null)
+      if (_sqlPrimitiveDataTypes.IsSqlPrimitiveType(context.ResultType))
       {
+        if (context.DataReader.Read() && !context.DataReader.IsClosed)
+          return _objectConverter.ChangeType(context.ResultType, context.DataReader.GetValue(0));
+      }
+      else
+      {
+        IListAdapter listAdapter = _listAdapterFactory.CreateListAdapter(context.ResultType);
+
         while (context.DataReader.Read() && !context.DataReader.IsClosed)
         {
           object convertedValue = _objectConverter.ChangeType(listAdapter.ElementType, context.DataReader.GetValue(0));
@@ -59,11 +64,6 @@ namespace AdoExecutor.Core.ObjectBuilder
         }
 
         return listAdapter.ConverToSourceList();
-      }
-      else
-      {
-        if (context.DataReader.Read() && !context.DataReader.IsClosed)
-          return _objectConverter.ChangeType(context.ResultType, context.DataReader.GetValue(0));
       }
 
       throw new AdoExecutorException("Cannot read data from reader.");
