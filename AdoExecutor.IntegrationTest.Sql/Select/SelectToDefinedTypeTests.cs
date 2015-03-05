@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace AdoExecutor.IntegrationTest.Sql.Select
 {
   [TestFixture(Category = "Integration")]
-  public class SelectToDefinedType
+  public class SelectToDefinedTypeTests
   {
     private IQueryFactory _queryFactory;
 

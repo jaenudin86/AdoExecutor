@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace AdoExecutor.IntegrationTest.Sql.PassParameter
 {
   [TestFixture(Category = "Integration")]
-  public class ObjectPropertyPassParameter : PassParameterBase
+  public class ObjectPropertyPassParameterTests : PassParameterBase
   {
     private const string ExecuteProcQuery = @"
       EXECUTE [dbo].[spTestDbType] 

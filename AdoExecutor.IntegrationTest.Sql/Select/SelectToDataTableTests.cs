@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace AdoExecutor.IntegrationTest.Sql.Select
 {
   [TestFixture(Category = "Integration")]
-  public class SelectToDataTable : DataTableRowAssertBase
+  public class SelectToDataTableTests : DataTableRowAssertBase
   {
     private IQueryFactory _queryFactory;
 

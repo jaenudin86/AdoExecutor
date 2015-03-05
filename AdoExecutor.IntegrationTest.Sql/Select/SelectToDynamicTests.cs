@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace AdoExecutor.IntegrationTest.Sql.Select
 {
   [TestFixture(Category = "Integration")]
-  public class SelectToDynamic
+  public class SelectToDynamicTests
   {
     private IQueryFactory _queryFactory;
 
