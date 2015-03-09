@@ -5,7 +5,7 @@ using AdoExecutor.Core.Context.Infrastructure;
 
 namespace AdoExecutor.Core.Interception.Infrastructure
 {
-  public class InterceptorSuccessContext : Context.Infrastructure.AdoExecutorContext
+  public class InterceptorSuccessContext : AdoExecutorContext
   {
     public InterceptorSuccessContext(
       string query, 

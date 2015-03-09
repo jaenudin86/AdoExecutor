@@ -23,10 +23,11 @@ namespace AdoExecutor.Core.Interception
     void IInterceptor.OnError(InterceptorErrorContext context)
     {
       StringBuilder logMessage = PrepareLogMessage(context);
-      
+
+      logMessage.AppendLine(Environment.NewLine);
       logMessage.AppendLine("*** EXCEPTION ***");
       logMessage.AppendLine(context.Exception.ToString());
-      logMessage.AppendLine("*** END OF EXCEPTION ***");
+      logMessage.Append("*** END OF EXCEPTION ***");
 
       LogOnError(context, logMessage.ToString());
     }
@@ -34,6 +35,15 @@ namespace AdoExecutor.Core.Interception
     void IInterceptor.OnExit(InterceptorExitContext context)
     {
       StringBuilder logMessage = PrepareLogMessage(context);
+
+      if (context.Exception != null)
+      {
+        logMessage.AppendLine(Environment.NewLine);
+        logMessage.AppendLine("*** EXCEPTION ***");
+        logMessage.AppendLine(context.Exception.ToString());
+        logMessage.Append("*** END OF EXCEPTION ***");
+      }
+
       LogOnExit(context, logMessage.ToString());
     }
 
@@ -58,21 +68,19 @@ namespace AdoExecutor.Core.Interception
       var result = new StringBuilder();
       result.AppendLine("*** QUERY ***");
       result.AppendLine(context.Query);
-      result.AppendLine("*** END OF QUERY ***");
-      result.AppendLine(Environment.NewLine);
-
+      result.Append("*** END OF QUERY ***");
+      
       if (context.Command.Parameters.Count > 0)
       {
+        result.AppendLine(Environment.NewLine);
         result.AppendLine("*** PARAMETERS ***");
 
         foreach (IDbDataParameter parameter in context.Command.Parameters)
         {
-          result.AppendLine(string.Format("Name: {0}, Value: {1}, DbType: {2}", parameter.ParameterName, parameter.Value,
-            parameter.DbType));
+          result.AppendLine(string.Format("Name: {0}, Value: {1}, DbType: {2}", parameter.ParameterName, parameter.Value, parameter.DbType));
         }
 
-        result.AppendLine("*** END OF PARAMETERS ***");
-        result.AppendLine(Environment.NewLine);
+        result.Append("*** END OF PARAMETERS ***");
       }
 
       return result;

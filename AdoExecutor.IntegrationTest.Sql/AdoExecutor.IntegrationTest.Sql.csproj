@@ -48,6 +48,7 @@
     <Compile Include="Helper\TestDbTypeTable\TestDbTypeTableRowDefiniedType.cs" />
     <Compile Include="PassParameter\DataTablePassParameterTests.cs" />
     <Compile Include="PassParameter\DictionaryPassParameterTests.cs" />
+    <Compile Include="PassParameter\EnumerablePassParameterTests.cs" />
     <Compile Include="PassParameter\ObjectPropertyPassParameterTests.cs" />
     <Compile Include="PassParameter\PassParameterBase.cs" />
     <Compile Include="PassParameter\SpecifiedPassParameterTests.cs" />

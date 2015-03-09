@@ -52,6 +52,12 @@
     <Compile Include="Core\DataObjectFactory\SqlDataObjectFactoryTests.cs" />
     <Compile Include="Core\DataObjectFactory\OleDbDataObjectFactory.cs" />
     <Compile Include="Core\DataObjectFactory\OdbcDataObjectFactoryTests.cs" />
+    <Compile Include="Core\Exception\Infrastructure\AdoExecutorExceptionTests.cs" />
+    <Compile Include="Core\Interception\ConsoleLoggerInterceptorTests.cs" />
+    <Compile Include="Core\Interception\Infrastructure\InterceptorErrorContextTests.cs" />
+    <Compile Include="Core\Interception\Infrastructure\InterceptorExitContextTests.cs" />
+    <Compile Include="Core\Interception\Infrastructure\InterceptorSuccessContextTests.cs" />
+    <Compile Include="Core\Interception\LoggerInterceptorBaseTests.cs" />
     <Compile Include="Utilities\SqlPrimitiveDataTypesTests.cs" />
     <Compile Include="Core\Interception\ConnectionStateManagerAdoExecutorInterceptorTests.cs" />
     <Compile Include="Core\ObjectBuilder\DataTableAdoExecutorObjectBuilderTests.cs" />

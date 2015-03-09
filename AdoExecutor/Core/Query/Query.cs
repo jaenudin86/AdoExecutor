@@ -14,9 +14,8 @@ namespace AdoExecutor.Core.Query
     private readonly IConfiguration _configuration;
     private readonly InterceptoInvoker _interceptoInvoker;
     private readonly ObjectBuilderInvoker _objectBuilderInvoker;
-    private readonly ParameterExtractorInvoker _parameterExtractorInvoker;
     private readonly QueryOptionsConfigurator _optionsConfigurator;
-
+    private readonly ParameterExtractorInvoker _parameterExtractorInvoker;
     private IDbConnection _connection;
 
     public Query(IConfiguration configuration)
@@ -30,6 +29,8 @@ namespace AdoExecutor.Core.Query
       _objectBuilderInvoker = new ObjectBuilderInvoker(_configuration);
       _optionsConfigurator = new QueryOptionsConfigurator();
     }
+
+    public IDbTransaction Transaction { get; private set; }
 
     public IDbConnection Connection
     {
@@ -47,7 +48,7 @@ namespace AdoExecutor.Core.Query
     {
       Func<IDbCommand, T> selectFunc = command =>
       {
-        IDataReader dataReader = command.ExecuteReader();
+        var dataReader = command.ExecuteReader();
 
         return
           (T) _objectBuilderInvoker.CreateInstance(new ObjectBuilderContext(query, parameters, typeof (T),
@@ -57,26 +58,42 @@ namespace AdoExecutor.Core.Query
       return InvokeFlow(query, parameters, options, InvokeMethod.Select, selectFunc);
     }
 
+    public void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
+    {
+      Transaction = Connection.BeginTransaction();
+    }
+
+    public void CommitTransaction()
+    {
+      Transaction.Commit();
+    }
+
+    public void RollbackTransaction()
+    {
+      Transaction.Rollback();
+    }
+
     protected virtual T InvokeFlow<T>(string query, object parameters, QueryOptions options, InvokeMethod invokeMethod,
       Func<IDbCommand, T> executeCommandFunc)
     {
-      Type resultType = typeof (T);
+      var resultType = typeof (T);
 
-      using (IDbCommand command = _configuration.DataObjectFactory.CreateCommand())
+      using (var command = _configuration.DataObjectFactory.CreateCommand())
       {
         command.CommandText = query;
         command.Connection = Connection;
+        command.Transaction = Transaction;
 
         _optionsConfigurator.ConfigureCommand(command, options);
 
-        _interceptoInvoker.OnEntry(new Context.Infrastructure.AdoExecutorContext(query, parameters, resultType, invokeMethod, Connection,
+        _interceptoInvoker.OnEntry(new AdoExecutorContext(query, parameters, resultType, invokeMethod, Connection,
           command, _configuration));
 
-        _parameterExtractorInvoker.ExtractParameter(new Context.Infrastructure.AdoExecutorContext(query, parameters, resultType, invokeMethod,
+        _parameterExtractorInvoker.ExtractParameter(new AdoExecutorContext(query, parameters, resultType, invokeMethod,
           Connection, command, _configuration));
 
         System.Exception exception = null;
-        T result = default(T);
+        var result = default(T);
 
         try
         {
@@ -105,8 +122,8 @@ namespace AdoExecutor.Core.Query
 
     protected virtual IDbConnection PrepareConnection()
     {
-      string connectionString = _configuration.ConnectionStringProvider.ConnectionString;
-      IDbConnection connection = _configuration.DataObjectFactory.CreateConnection();
+      var connectionString = _configuration.ConnectionStringProvider.ConnectionString;
+      var connection = _configuration.DataObjectFactory.CreateConnection();
 
       connection.ConnectionString = connectionString;
 
@@ -128,6 +145,9 @@ namespace AdoExecutor.Core.Query
       if (!_isDisposed)
       {
         Connection.Dispose();
+
+        if (Transaction != null)
+          Transaction.Dispose();
       }
 
       _isDisposed = true;

@@ -121,7 +121,7 @@ namespace AdoExecutor.IntegrationTest.Sql.PassParameter
 
       //ACT
       var result = query.Select<dynamic>(ExecuteProcQuery, dataTable);
-
+      
       //ASSERT
       AssertSingleDynamicObjectWithSingleRow(TestDbTypeTable.Row1, result);
     }
