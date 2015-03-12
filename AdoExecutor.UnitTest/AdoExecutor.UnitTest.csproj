@@ -58,6 +58,7 @@
     <Compile Include="Core\Interception\Infrastructure\InterceptorExitContextTests.cs" />
     <Compile Include="Core\Interception\Infrastructure\InterceptorSuccessContextTests.cs" />
     <Compile Include="Core\Interception\LoggerInterceptorBaseTests.cs" />
+    <Compile Include="Core\ObjectBuilder\DataSetObjectBuilderTests.cs" />
     <Compile Include="Utilities\SqlPrimitiveDataTypesTests.cs" />
     <Compile Include="Core\Interception\ConnectionStateManagerAdoExecutorInterceptorTests.cs" />
     <Compile Include="Core\ObjectBuilder\DataTableAdoExecutorObjectBuilderTests.cs" />

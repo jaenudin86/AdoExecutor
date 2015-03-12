@@ -26,12 +26,17 @@ namespace AdoExecutor.Core.ObjectBuilder
     {
       var dataSet = new DataSet();
 
-      do
+      while (!context.DataReader.IsClosed)
       {
-        DataTable dataTable = _dataTableAdapter.Load(context.DataReader);
+        if (context.DataReader.FieldCount != 0)
+        {
+          DataTable dataTable = _dataTableAdapter.Load(context.DataReader);
+          dataSet.Tables.Add(dataTable);
+        }
 
-        dataSet.Tables.Add(dataTable);
-      } while (context.DataReader.NextResult() && !context.DataReader.IsClosed);
+        if (!context.DataReader.NextResult())
+          break;
+      }
 
       return dataSet;
     }
