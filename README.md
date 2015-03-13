@@ -85,7 +85,7 @@ Table below contains supported object types, that can be passed as a input param
 |---------------------|-----------------------|
 |```DataTable```|Columns names are mapped as input parameters names and the values from first row are mapped as a parameters values.|
 |```IDictionary<string, object>```|Dictionary keys are mapped as input parameters names and dictionary values are mapped as a parameters values. The dictionary value cannot be null because the library must be able to recognise object type. The object type must be primitive.|
-|```IEnumerable```|The parameters names are equal to collection indexer (@0, @1, @2 etc.) and parameters values are retrieved from enumerator. The dictionary value cannot be null because the library must be able to recognise object type. The object type must be primitive.|
+|```IEnumerable```|The parameters names are equal to collection indexer (@0, @1, @2 etc.) and parameters values are retrieved from enumerator. The enumerator value cannot be null because the library must be able to recognise object type. The object type must be primitive.|
 |Anonymous type|Properties types must be primitive.|
 |Custom user type|Properties types must be primitive.|
 |```SpecifiedParameter```|Support output parameters.|
