@@ -45,9 +45,9 @@ Table below contains objects types that are supported by ```Select<T>``` method.
 
 |Supported object type|Additional informations|
 |---------------------|-----------------------|
-|DataSet|Supports many result from one query (many DataTables)|
-|DataTable||
-|dynamic|Supports also: ```T[], List<T>, Collection<T>, ObserableCollection<T>, IList<T>, ICollection<T>, IEnumerable<T>, ReadOnlyCollection<T>, ReadOnlyObservableCollection<T>```.|
+|```DataSet```|Supports many result from one query (many DataTables)|
+|```DataTable```||
+|```dynamic```|Supports also: ```T[], List<T>, Collection<T>, ObserableCollection<T>, IList<T>, ICollection<T>, IEnumerable<T>, ReadOnlyCollection<T>, ReadOnlyObservableCollection<T>```.|
 |Custom user type|It must have public, parameterless constructor. Properties in that type must have same names as columns returned by the query (ignore case). All other properties that doesn't meet this requirements are ignored. Supports also: ```T[], List<T>, Collection<T>, ObserableCollection<T>, IList<T>, ICollection<T>, IEnumerable<T>, ReadOnlyCollection<T>, ReadOnlyObservableCollection<T>```.|
 |All primitive types and nullable of primitive types|Supports also: ```T[], List<T>, Collection<T>, ObserableCollection<T>, IList<T>, ICollection<T>, IEnumerable<T>, ReadOnlyCollection<T>, ReadOnlyObservableCollection<T>```.|
 
@@ -83,12 +83,12 @@ Table below contains supported object types, that can be passed as a input param
 
 |Supported object type|Additional informations|
 |---------------------|-----------------------|
-|DataTable|Columns names are mapped as input parameters names and the values from first row are mapped as a parameters values.|
-|IDictionary<string, object>|Dictionary keys are mapped as input parameters names and dictionary values are mapped as a parameters values. The dictionary value cannot be null because the library must be able to recognise object type. The object type must be primitive.|
-|IEnumerable|The parameters names are equal to collection indexer (@0, @1, @2 etc.) and parameters values are retrieved from enumerator. The dictionary value cannot be null because the library must be able to recognise object type. The object type must be primitive.|
+|```DataTable```|Columns names are mapped as input parameters names and the values from first row are mapped as a parameters values.|
+|```IDictionary<string, object>```|Dictionary keys are mapped as input parameters names and dictionary values are mapped as a parameters values. The dictionary value cannot be null because the library must be able to recognise object type. The object type must be primitive.|
+|```IEnumerable```|The parameters names are equal to collection indexer (@0, @1, @2 etc.) and parameters values are retrieved from enumerator. The dictionary value cannot be null because the library must be able to recognise object type. The object type must be primitive.|
 |Anonymous type|Properties types must be primitive.|
 |Custom user type|Properties types must be primitive.|
-|SpecifiedParameter|Support output parameters.|
+|```SpecifiedParameter```|Support output parameters.|
 
 #### 6. Options of executing queries
 While executing ```Select<T>``` and ```Execute``` methods You can pass optional parameter ```QueryOptions```. ```QueryOptions``` parameter allows to manipulate Timeout and CommandType values.
