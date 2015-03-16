@@ -64,6 +64,7 @@
     <Compile Include="Select\SelectToDefinedTypeTests.cs" />
     <Compile Include="Select\SelectToDynamicTests.cs" />
     <Compile Include="Select\SelectToSimpleTypeTests.cs" />
+    <Compile Include="Transaction\InvokeInTransactionTests.cs" />
     <Content Include="SqlScripts\RecreateTablesAndData.sql" />
   </ItemGroup>
   <ItemGroup>

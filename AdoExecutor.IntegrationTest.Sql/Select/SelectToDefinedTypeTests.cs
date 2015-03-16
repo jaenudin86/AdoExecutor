@@ -36,6 +36,8 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
 
       //ASSERT
       AssertCompareObject(expectedDefiniedType, result);
+
+      query.Dispose();
     }
 
     [Test]
@@ -116,6 +118,8 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
 
       AssertCompareObject(expectedDefiniedType1, resultArray[0]);
       AssertCompareObject(expectedDefiniedType2, resultArray[1]);
+
+      query.Dispose();
     }
 
     private void AssertCompareObject(TestDbTypeTableRowDefiniedType expected, TestDbTypeTableRowDefiniedType actually)

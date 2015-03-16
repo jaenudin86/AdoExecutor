@@ -35,6 +35,8 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
       //ASSERT
       Assert.AreEqual(1, result.Rows.Count);
       AssertSingleDynamicObjectWithSingleRow(rowObject1, result.Rows[0]);
+
+      query.Dispose();
     }
 
     [Test]
@@ -58,6 +60,8 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
 
       AssertSingleDynamicObjectWithSingleRow(rowObject1, result.Rows[0]);
       AssertSingleDynamicObjectWithSingleRow(rowObject2, result.Rows[1]);
+
+      query.Dispose();
     }
   }
 }

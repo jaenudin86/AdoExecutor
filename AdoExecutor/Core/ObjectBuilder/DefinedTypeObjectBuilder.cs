@@ -83,7 +83,6 @@ namespace AdoExecutor.Core.ObjectBuilder
       throw new AdoExecutorException("Cannot read data from reader.");
     }
 
-    //todo cache
     private object CreateSingleInstance(IDataReader dataReader, Type instanceType)
     {
       object instance = Activator.CreateInstance(instanceType);

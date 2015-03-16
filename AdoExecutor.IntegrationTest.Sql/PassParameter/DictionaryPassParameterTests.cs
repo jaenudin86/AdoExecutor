@@ -89,6 +89,8 @@ namespace AdoExecutor.IntegrationTest.Sql.PassParameter
 
       //ASSERT
       AssertSingleDynamicObjectWithSingleRow(TestDbTypeTable.Row1, result);
+
+      query.Dispose();
     }
   }
 }

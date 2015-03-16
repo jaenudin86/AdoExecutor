@@ -59,14 +59,13 @@
     <Compile Include="Core\Interception\Infrastructure\InterceptorSuccessContextTests.cs" />
     <Compile Include="Core\Interception\LoggerInterceptorBaseTests.cs" />
     <Compile Include="Core\ObjectBuilder\DataSetObjectBuilderTests.cs" />
-    <Compile Include="Utilities\SqlPrimitiveDataTypesTests.cs" />
-    <Compile Include="Core\Interception\ConnectionStateManagerAdoExecutorInterceptorTests.cs" />
+    <Compile Include="Core\ObjectBuilder\DynamicObjectBuilderTests.cs" />
+    <Compile Include="Core\QueryFactory\QueryFactoryTests.cs" />
+    <Compile Include="Utilities\PrimitiveTypes\SqlPrimitiveDataTypesTests.cs" />
     <Compile Include="Core\ObjectBuilder\DataTableAdoExecutorObjectBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utilities\PrimitiveTypes\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

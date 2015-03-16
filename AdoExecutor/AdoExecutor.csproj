@@ -77,7 +77,6 @@
     <Compile Include="Core\Interception\Infrastructure\InterceptorErrorContext.cs" />
     <Compile Include="Core\Interception\Infrastructure\InterceptorExitContext.cs" />
     <Compile Include="Core\Interception\Infrastructure\InterceptorSuccessContext.cs" />
-    <Compile Include="Core\Interception\ConnectionStateManagerInterceptor.cs" />
     <Compile Include="Core\Interception\Infrastructure\IInterceptor.cs" />
     <Compile Include="Core\ObjectBuilder\Infrastructure\ObjectBuilderContext.cs" />
     <Compile Include="Core\ObjectBuilder\DataSetObjectBuilder.cs" />

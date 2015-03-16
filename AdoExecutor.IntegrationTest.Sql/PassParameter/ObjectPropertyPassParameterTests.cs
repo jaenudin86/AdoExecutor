@@ -60,6 +60,8 @@ namespace AdoExecutor.IntegrationTest.Sql.PassParameter
 
       //ASSERT
       AssertSingleDynamicObjectWithSingleRow(rowObject1, result);
+
+      query.Dispose();
     }
 
     private TestDbTypeTableRowDefiniedType CreateDefiniedTypeFromRowObject(ITestDbTypeTableRow rowObject)

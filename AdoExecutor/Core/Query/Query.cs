@@ -2,6 +2,7 @@
 using System.Data;
 using AdoExecutor.Core.Configuration.Infrastructure;
 using AdoExecutor.Core.Context.Infrastructure;
+using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.Interception.Infrastructure;
 using AdoExecutor.Core.ObjectBuilder.Infrastructure;
 using AdoExecutor.Core.Query.Infrastructure;
@@ -60,17 +61,27 @@ namespace AdoExecutor.Core.Query
 
     public void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
     {
+      TryOpenTransaction();
+
       Transaction = Connection.BeginTransaction();
     }
 
     public void CommitTransaction()
     {
+      if (Transaction == null)
+        throw new AdoExecutorException("Transaction must be begin first.");
+
       Transaction.Commit();
+      CloseTransaction();
     }
 
     public void RollbackTransaction()
     {
+      if (Transaction == null)
+        throw new AdoExecutorException("Transaction must be begin first.");
+
       Transaction.Rollback();
+      CloseTransaction();
     }
 
     protected virtual T InvokeFlow<T>(string query, object parameters, QueryOptions options, InvokeMethod invokeMethod,
@@ -97,6 +108,7 @@ namespace AdoExecutor.Core.Query
 
         try
         {
+          TryOpenTransaction();
           result = executeCommandFunc(command);
 
           _interceptoInvoker.OnSuccess(new InterceptorSuccessContext(query, parameters, resultType,
@@ -130,6 +142,18 @@ namespace AdoExecutor.Core.Query
       return connection;
     }
 
+    private void TryOpenTransaction()
+    {
+      if (Connection.State == ConnectionState.Closed)
+        Connection.Open();
+    }
+
+    private void CloseTransaction()
+    {
+      Transaction.Dispose();
+      Transaction = null;
+    }
+
     #region IDisposable
 
     private bool _isDisposed;
@@ -147,7 +171,7 @@ namespace AdoExecutor.Core.Query
         Connection.Dispose();
 
         if (Transaction != null)
-          Transaction.Dispose();
+          CloseTransaction();
       }
 
       _isDisposed = true;

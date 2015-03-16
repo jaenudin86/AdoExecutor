@@ -94,6 +94,8 @@ namespace AdoExecutor.IntegrationTest.Sql.PassParameter
 
       //ASSERT
       AssertSingleDynamicObjectWithSingleRow(TestDbTypeTable.Row1, result);
+
+      query.Dispose();
     }
 
     [Test]
@@ -113,6 +115,8 @@ namespace AdoExecutor.IntegrationTest.Sql.PassParameter
 
       //ASSERT
       Assert.AreEqual(duplicateText, parameter.GetOutputValue<string>());
+
+      query.Dispose();
     }
   }
 }

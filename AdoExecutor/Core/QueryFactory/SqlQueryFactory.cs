@@ -2,7 +2,6 @@
 using AdoExecutor.Core.Configuration.Infrastructure;
 using AdoExecutor.Core.ConnectionString;
 using AdoExecutor.Core.DataObjectFactory;
-using AdoExecutor.Core.Interception;
 using AdoExecutor.Core.ObjectBuilder;
 using AdoExecutor.Core.ParameterExtractor;
 using AdoExecutor.Core.Query.Infrastructure;
@@ -66,7 +65,6 @@ namespace AdoExecutor.Core.QueryFactory
 
     protected virtual void ConfigureInterceptors(Configuration.Configuration configuration)
     {
-      configuration.Interceptors.Add(new ConnectionStateManagerInterceptor());
     }
 
     protected virtual void ConfigureParameterExtractors(Configuration.Configuration configuration)

@@ -472,6 +472,8 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
 
       //ASSERT
       Assert.AreEqual(expectedValue, result);
+
+      query.Dispose();
     }
 
     private void SelectMultipleRowsWithSpecifiedIds_WhenTypeIsCollectionAndItemIsNullable_CheckAllPosibilities<TResult>(string columnName,
@@ -506,6 +508,8 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
 
       //ASSERT
       CollectionAssert.AreEqual(new[] {firstElementExpectedValue, null}, result);
+
+      query.Dispose();
     }
 
     private void SelectMultipleRowsWithSpecifiedIds_WhenTypeIsCollectionAndItemIsNotNullable_CheckAllPosibilities<TResult>(string columnName,
@@ -540,6 +544,8 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
 
       //ASSERT
       CollectionAssert.AreEqual(expectedResult, result);
+
+      query.Dispose();
     }
 
     #endregion

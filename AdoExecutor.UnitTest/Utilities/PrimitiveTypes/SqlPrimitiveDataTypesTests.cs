@@ -4,7 +4,7 @@ using System.Data;
 using AdoExecutor.Utilities.PrimitiveTypes;
 using NUnit.Framework;
 
-namespace AdoExecutor.UnitTest.Utilities
+namespace AdoExecutor.UnitTest.Utilities.PrimitiveTypes
 {
   [TestFixture(Category = "Unit")]
   public class SqlPrimitiveDataTypesTests
