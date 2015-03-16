@@ -32,6 +32,9 @@ public interface IQuery : IDisposable
 }
 ```
 
+> Connection is auto-open when You use ```Execute```, ```Select``` or ```BeginTransaction```. You can also invoke ```Connection.Open()```.
+> For close connection use ```Dispose``` or ```Connection.Close()``` 
+
 #### 2. Selecting data
 While conducting database query, that returns any dataset You should use generic method ```Select<T>``` from ```IQuery``` interface.
 
