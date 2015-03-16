@@ -1,10 +1,10 @@
 ## Informations
 Assumption of library (overlay) AdoExecutor is to assist users to query a database using ADO.NET driver.
 Library is similar to [Dapper](https://github.com/StackExchange/dapper-dot-net), however while creating it i was guided by few rules:
-* extensibility - possibility of easy extending and modifying classes - all elements of subsystem are built upon interfaces and where it is possible virtual methods are used 
-* testability - possibility to use mocks of data access layer (library doesn't use extensions methods)
-* easiness of use - after reading this document You should have the knowledge to configure the library and execute database query
-* adaptable to many database engines - those that support ADO.NET driver
+* Extensibility - possibility of easy extending and modifying classes - all elements of subsystem are built upon interfaces and where it is possible virtual methods are used.
+* Testability - possibility to use mocks of data access layer (library doesn't use extensions methods).
+* Easiness of use - after reading this document You should have the knowledge to configure the library and execute database query.
+* Adaptable to many database engines - those that support ADO.NET driver.
 
 ## Quick start:
 
@@ -33,7 +33,7 @@ public interface IQuery : IDisposable
 ```
 
 > Connection is auto-open when You use ```Execute```, ```Select``` or ```BeginTransaction```. You can also invoke ```Connection.Open()```.
-> For close connection use ```Dispose``` or ```Connection.Close()``` 
+> For close connection use ```Dispose``` or ```Connection.Close()```.
 
 #### 2. Selecting data
 While conducting database query, that returns any dataset You should use generic method ```Select<T>``` from ```IQuery``` interface.
