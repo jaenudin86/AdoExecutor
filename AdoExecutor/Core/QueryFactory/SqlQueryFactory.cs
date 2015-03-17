@@ -71,7 +71,7 @@ namespace AdoExecutor.Core.QueryFactory
     {
       configuration.ParameterExtractors.Add(new SpecifiedParameterParameterExtractor());
       configuration.ParameterExtractors.Add(new DataTableParameterExtractor());
-      configuration.ParameterExtractors.Add(new DictionaryParameterExtractor());
+      configuration.ParameterExtractors.Add(new DictionaryParameterExtractor(new SqlPrimitiveDataTypes()));
       configuration.ParameterExtractors.Add(new EnumerableParameterExtractor(new SqlPrimitiveDataTypes()));
       configuration.ParameterExtractors.Add(new ObjectPropertyParameterExtractor(new SqlPrimitiveDataTypes()));
     }

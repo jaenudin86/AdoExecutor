@@ -9,13 +9,13 @@ namespace AdoExecutor.UnitTest.Utilities.PrimitiveTypes
   [TestFixture(Category = "Unit")]
   public class SqlPrimitiveDataTypesTests
   {
+    private SqlPrimitiveDataTypes _sqlPrimitiveDataTypes;
+
     [SetUp]
     public void SetUp()
     {
       _sqlPrimitiveDataTypes = new SqlPrimitiveDataTypes();
     }
-
-    private SqlPrimitiveDataTypes _sqlPrimitiveDataTypes;
 
     [Test]
     [TestCase(typeof (object))]
@@ -25,7 +25,7 @@ namespace AdoExecutor.UnitTest.Utilities.PrimitiveTypes
     public void IsSqlPrimitiveType_ShouldReturnFalse_WhenTypeIsNotPrimitiveType(Type notPrimitiveType)
     {
       //ACT
-      bool isPrimitiveType = _sqlPrimitiveDataTypes.IsSqlPrimitiveType(notPrimitiveType);
+      var isPrimitiveType = _sqlPrimitiveDataTypes.IsSqlPrimitiveType(notPrimitiveType);
 
       //ASSERT
       Assert.IsFalse(isPrimitiveType);
@@ -72,10 +72,62 @@ namespace AdoExecutor.UnitTest.Utilities.PrimitiveTypes
     public void IsSqlPrimitiveType_ShouldReturnTrue_WhenTypeIsPrimitiveType(Type primitiveType)
     {
       //ACT
-      bool isPrimitiveType = _sqlPrimitiveDataTypes.IsSqlPrimitiveType(primitiveType);
+      var isPrimitiveType = _sqlPrimitiveDataTypes.IsSqlPrimitiveType(primitiveType);
 
       //ASSERT
       Assert.IsTrue(isPrimitiveType);
+    }
+
+    [Test]
+    public void GetAllSqlPrimitiveTypes_ShouldReturnArrayWithExceptedPrimitivesTypes()
+    {
+      //ARRANGE
+      Type[] exptectedPrimitivesTypes =
+      {
+        typeof (bool),
+        typeof (bool?),
+        typeof (byte),
+        typeof (byte?),
+        typeof (sbyte),
+        typeof (sbyte?),
+        typeof (byte[]),
+        typeof (char),
+        typeof (char?),
+        typeof (char[]),
+        typeof (string),
+        typeof (short),
+        typeof (short?),
+        typeof (ushort),
+        typeof (ushort?),
+        typeof (int),
+        typeof (int?),
+        typeof (uint),
+        typeof (uint?),
+        typeof (long),
+        typeof (long?),
+        typeof (ulong),
+        typeof (ulong?),
+        typeof (float),
+        typeof (float?),
+        typeof (double),
+        typeof (double?),
+        typeof (decimal),
+        typeof (decimal?),
+        typeof (DateTime),
+        typeof (DateTime?),
+        typeof (DateTimeOffset),
+        typeof (DateTimeOffset?),
+        typeof (TimeSpan),
+        typeof (TimeSpan?),
+        typeof (Guid),
+        typeof (Guid?)
+      };
+
+      //ACT
+      var primitivesTypes = _sqlPrimitiveDataTypes.GetAllSqlPrimitiveTypes();
+
+      //ASSERT
+      CollectionAssert.AreEqual(exptectedPrimitivesTypes, primitivesTypes);
     }
   }
 }

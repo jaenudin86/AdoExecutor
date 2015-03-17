@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using AdoExecutor.Core.Configuration.Infrastructure;
 using AdoExecutor.Core.Context.Infrastructure;
 using AdoExecutor.Core.DataObjectFactory.Infrastructure;
 using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ParameterExtractor;
+using AdoExecutor.Utilities.PrimitiveTypes.Infrastructure;
 using FakeItEasy;
 using FakeItEasy.ExtensionSyntax.Full;
 using NUnit.Framework;
@@ -12,12 +14,13 @@ using NUnit.Framework;
 namespace AdoExecutor.UnitTest.Core.ParameterExtractor
 {
   [TestFixture(Category = "Unit")]
-  public class DataTableParameterExtractorTests
+  public class DictionaryParameterExtractorTests
   {
     private IDbCommand _commandFake;
     private IConfiguration _configurationFake;
     private IDbConnection _connectionFake;
-    private DataTableParameterExtractor _parameterExtractor;
+    private ISqlPrimitiveDataTypes _sqlPrimitiveDataTypesFake;
+    private DictionaryParameterExtractor _parameterExtractor;
 
     [SetUp]
     public void SetUp()
@@ -25,15 +28,22 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
       _commandFake = A.Fake<IDbCommand>();
       _connectionFake = A.Fake<IDbConnection>();
       _configurationFake = A.Fake<IConfiguration>();
+      _sqlPrimitiveDataTypesFake = A.Fake<ISqlPrimitiveDataTypes>();
 
-      _parameterExtractor = new DataTableParameterExtractor();
+      _parameterExtractor = new DictionaryParameterExtractor(_sqlPrimitiveDataTypesFake);
     }
 
     [Test]
-    public void CanProcess_ShouldReturnTrue_WhenParametersTypeIsDataTable()
+    public void Constructor_ShouldThrowArgumentNullException_WhenAnyArgumentsIsNull()
+    {
+      Assert.Throws<ArgumentNullException>(() => new DictionaryParameterExtractor(null));
+    }
+
+    [Test]
+    public void CanProcess_ShouldReturnTrue_WhenParametersTypeIsDictionary()
     {
       //ARRANGE
-      var context = CreateContext(new DataTable());
+      var context = CreateContext(new Dictionary<string, object>());
 
       //ACT
       var canProcess = _parameterExtractor.CanProcess(context);
@@ -43,7 +53,7 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
     }
 
     [Test]
-    public void CanProcess_ShouldReturnFalse_WhenParametersTypeIsNotDataTable()
+    public void CanProcess_ShouldReturnFalse_WhenParametersTypeIsNotDictionary()
     {
       //ARRANGE
       var context = CreateContext(new DataSet());
@@ -55,19 +65,40 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
       Assert.IsFalse(canProcess);
     }
 
-    [TestCase(0)]
-    [TestCase(2)]
-    [TestCase(10)]
-    public void ExtractParameter_ShouldThrowAdoExecutorException_WhenDataTableHasLessOrMoreThanOneRow(int rowCount)
+    [Test]
+    public void ExtractParameter_ShouldThrowAdoExecutorException_WhenParameterKeyIsStringEmpty()
     {
       //ARRANGE
-      var dataTable = new DataTable();
-      dataTable.Columns.Add("testColumn", typeof (string));
+      var dictionary = new Dictionary<string, object>();
+      dictionary[string.Empty] = "testValue";
+      var context = CreateContext(dictionary);
 
-      for (var i = 0; i < rowCount; i++)
-        dataTable.Rows.Add("test" + i);
+      //ASSERT
+      Assert.Throws<AdoExecutorException>(() => _parameterExtractor.ExtractParameter(context));
+    }
 
-      var context = CreateContext(dataTable);
+    [Test]
+    public void ExtractParameter_ShouldThrowAdoExecutorException_WhenParameterValueIsNull()
+    {
+      //ARRANGE
+      var dictionary = new Dictionary<string, object>();
+      dictionary["testParameter"] = null;
+      var context = CreateContext(dictionary);
+
+      //ASSERT
+      Assert.Throws<AdoExecutorException>(() => _parameterExtractor.ExtractParameter(context));
+    }
+
+    [Test]
+    public void ExtrtactParameter_ShouldThrowAdoExecutorException_WhenParameterTypeIsNotPrimitive()
+    {
+      //ARRANGE
+      var dictionary = new Dictionary<string, object>();
+      dictionary["testParameter"] = "testValue";
+      var context = CreateContext(dictionary);
+
+      _sqlPrimitiveDataTypesFake.CallsTo(x => x.IsSqlPrimitiveType(A<Type>._))
+        .Returns(false);
 
       //ASSERT
       Assert.Throws<AdoExecutorException>(() => _parameterExtractor.ExtractParameter(context));
@@ -77,11 +108,9 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
     public void ExtractParameter_ShouldAddEqualParametersThanDataRowColumns()
     {
       //ARRANGE
-      var dataTable = new DataTable();
-      dataTable.Columns.Add("testColumn1", typeof (string));
-      dataTable.Columns.Add("testColumn2", typeof (int));
-
-      dataTable.Rows.Add("testValue1", 2);
+      var dictionary = new Dictionary<string, object>();
+      dictionary["testColumn1"] = "testValue1";
+      dictionary["testColumn2"] = 2;
 
       var dataObjectFactory = A.Fake<IDataObjectFactory>();
       _configurationFake.CallsTo(x => x.DataObjectFactory)
@@ -91,7 +120,10 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
       _commandFake.CallsTo(x => x.Parameters)
         .Returns(dataParameterCollectionFake);
 
-      var context = CreateContext(dataTable);
+      var context = CreateContext(dictionary);
+
+      _sqlPrimitiveDataTypesFake.CallsTo(x => x.IsSqlPrimitiveType(A<Type>._))
+        .Returns(true);
 
       //ACT
       _parameterExtractor.ExtractParameter(context);
@@ -104,7 +136,7 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
 
       dataParameterCollectionFake.CallsTo(
         x => x.Add(A<IDbDataParameter>.That.Matches(
-          parameter => parameter.ParameterName == "testColumn2" && (int) parameter.Value == 2)))
+          parameter => parameter.ParameterName == "testColumn2" && (int)parameter.Value == 2)))
         .MustHaveHappened(Repeated.Exactly.Once);
 
       dataObjectFactory.CallsTo(x => x.CreateDataParameter())
@@ -116,7 +148,7 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
       return new AdoExecutorContext(
         string.Empty,
         parameters,
-        typeof (string),
+        typeof(string),
         InvokeMethod.Select,
         _connectionFake,
         _commandFake,
