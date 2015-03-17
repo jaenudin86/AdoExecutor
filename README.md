@@ -22,7 +22,6 @@ Most important AdoExecutor interface is ```IQuery```.
 ```csharp
 public interface IQuery : IDisposable
 {
-  IDbTransaction Transaction { get; }
   IDbConnection Connection { get; }
   int Execute(string query, object parameters = null, QueryOptions options = null);
   T Select<T>(string query, object parameters = null, QueryOptions options = null);
@@ -70,7 +69,7 @@ To execute database query in transaction You should use methods from ```IQuery``
 query.BeginTransaction();
 try
 {
-  query.Execute("update dbo.User set name = @name where id = @id", new { name = "test", id = 5 });
+  query.Execute("update dbo.User set name = @name where id = @id", new {name = "test", id = 5 });
   query.Execute("update dbo.User set name = @name where id = @id", new {name = "test1", id = 10});
 
   query.CommitTransaction();
