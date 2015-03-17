@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using AdoExecutor.Core.Configuration.Infrastructure;
 using AdoExecutor.Core.Context.Infrastructure;
 using AdoExecutor.Core.DataObjectFactory.Infrastructure;
@@ -99,7 +98,7 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
       //ASSERT
       dataParameterCollectionFake.CallsTo(
         x => x.Add(A<IDbDataParameter>.That.Matches(
-          parameter => parameter.ParameterName == "testColumn1" && parameter.Value == "testValue1")))
+          parameter => parameter.ParameterName == "testColumn1" && (string)parameter.Value == "testValue1")))
         .MustHaveHappened(Repeated.Exactly.Once);
 
       dataParameterCollectionFake.CallsTo(

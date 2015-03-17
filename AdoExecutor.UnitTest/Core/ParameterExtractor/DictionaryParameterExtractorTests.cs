@@ -131,7 +131,7 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
       //ASSERT
       dataParameterCollectionFake.CallsTo(
         x => x.Add(A<IDbDataParameter>.That.Matches(
-          parameter => parameter.ParameterName == "testColumn1" && parameter.Value == "testValue1")))
+          parameter => parameter.ParameterName == "testColumn1" && (string)parameter.Value == "testValue1")))
         .MustHaveHappened(Repeated.Exactly.Once);
 
       dataParameterCollectionFake.CallsTo(
