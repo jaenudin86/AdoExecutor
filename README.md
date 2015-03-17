@@ -69,7 +69,7 @@ To execute database query in transaction You should use methods from ```IQuery``
 query.BeginTransaction();
 try
 {
-  query.Execute("update dbo.User set name = @name where id = @id", new {name = "test", id = 5 });
+  query.Execute("update dbo.User set name = @name where id = @id", new {name = "test", id = 5});
   query.Execute("update dbo.User set name = @name where id = @id", new {name = "test1", id = 10});
 
   query.CommitTransaction();
@@ -96,5 +96,5 @@ Table below contains supported object types, that can be passed as a input param
 While executing ```Select<T>``` and ```Execute``` methods You can pass optional parameter ```QueryOptions```. ```QueryOptions``` parameter allows to manipulate Timeout and CommandType values.
 
 ```csharp
-query.Execute("update dbo.User set name = @name where id = @id", new { name = "test", id = 5 }, QueryOptions.SetTimeout(1000));
+query.Execute("update dbo.User set name = @name where id = @id", new {name = "test", id = 5}, QueryOptions.SetTimeout(1000));
 ```
