@@ -17,21 +17,21 @@ namespace AdoExecutor.Core.Query
     private readonly ObjectBuilderInvoker _objectBuilderInvoker;
     private readonly QueryOptionsConfigurator _optionsConfigurator;
     private readonly ParameterExtractorInvoker _parameterExtractorInvoker;
+    
     private IDbConnection _connection;
+    private IDbTransaction _transaction;
 
     public Query(IConfiguration configuration)
     {
       if (configuration == null)
         throw new ArgumentNullException("configuration");
-
+      
       _configuration = configuration;
       _interceptoInvoker = new InterceptoInvoker(_configuration);
       _parameterExtractorInvoker = new ParameterExtractorInvoker(_configuration);
       _objectBuilderInvoker = new ObjectBuilderInvoker(_configuration);
       _optionsConfigurator = new QueryOptionsConfigurator();
     }
-
-    public IDbTransaction Transaction { get; private set; }
 
     public IDbConnection Connection
     {
@@ -61,27 +61,30 @@ namespace AdoExecutor.Core.Query
 
     public void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
     {
-      TryOpenTransaction();
+      TryOpenConnection();
 
-      Transaction = Connection.BeginTransaction();
+      if(_transaction != null)
+        throw new AdoExecutorException("Commit or rollback earlier transaction.");
+
+      _transaction = Connection.BeginTransaction();
     }
 
     public void CommitTransaction()
     {
-      if (Transaction == null)
+      if (_transaction == null)
         throw new AdoExecutorException("Transaction must be begin first.");
 
-      Transaction.Commit();
-      CloseTransaction();
+      _transaction.Commit();
+      DisposeTransaction();
     }
 
     public void RollbackTransaction()
     {
-      if (Transaction == null)
+      if (_transaction == null)
         throw new AdoExecutorException("Transaction must be begin first.");
 
-      Transaction.Rollback();
-      CloseTransaction();
+      _transaction.Rollback();
+      DisposeTransaction();
     }
 
     protected virtual T InvokeFlow<T>(string query, object parameters, QueryOptions options, InvokeMethod invokeMethod,
@@ -93,7 +96,7 @@ namespace AdoExecutor.Core.Query
       {
         command.CommandText = query;
         command.Connection = Connection;
-        command.Transaction = Transaction;
+        command.Transaction = _transaction;
 
         _optionsConfigurator.ConfigureCommand(command, options);
 
@@ -108,7 +111,7 @@ namespace AdoExecutor.Core.Query
 
         try
         {
-          TryOpenTransaction();
+          TryOpenConnection();
           result = executeCommandFunc(command);
 
           _interceptoInvoker.OnSuccess(new InterceptorSuccessContext(query, parameters, resultType,
@@ -142,16 +145,10 @@ namespace AdoExecutor.Core.Query
       return connection;
     }
 
-    private void TryOpenTransaction()
+    private void TryOpenConnection()
     {
       if (Connection.State == ConnectionState.Closed)
         Connection.Open();
-    }
-
-    private void CloseTransaction()
-    {
-      Transaction.Dispose();
-      Transaction = null;
     }
 
     #region IDisposable
@@ -169,9 +166,7 @@ namespace AdoExecutor.Core.Query
       if (!_isDisposed)
       {
         Connection.Dispose();
-
-        if (Transaction != null)
-          CloseTransaction();
+        DisposeTransaction();
       }
 
       _isDisposed = true;
@@ -180,6 +175,15 @@ namespace AdoExecutor.Core.Query
     ~Query()
     {
       InternalDispose();
+    }
+
+    private void DisposeTransaction()
+    {
+      if (_transaction != null)
+      {
+        _transaction.Dispose();
+        _transaction = null;
+      }
     }
 
     #endregion

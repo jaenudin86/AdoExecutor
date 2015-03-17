@@ -36,7 +36,7 @@ namespace AdoExecutor.Core.ParameterExtractor
         if (parameter.Value == null)
           throw new AdoExecutorException("Dictionary item value cannot be null.");
 
-        var parameterType = parameter.GetType();
+        var parameterType = parameter.Value.GetType();
 
         if (!_sqlPrimitiveDataTypes.IsSqlPrimitiveType(parameterType))
           throw new AdoExecutorException("Array item must be sql primitive type.");
