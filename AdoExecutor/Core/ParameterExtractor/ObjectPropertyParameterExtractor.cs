@@ -42,7 +42,7 @@ namespace AdoExecutor.Core.ParameterExtractor
           throw new AdoExecutorException("Object property must be sql primitive type.");
 
         IDbDataParameter dataParameter = context.Configuration.DataObjectFactory.CreateDataParameter();
-        dataParameter.ParameterName = string.Format("@{0}", propertyInfo.Name);
+        dataParameter.ParameterName = propertyInfo.Name;
         dataParameter.Value = propertyInfo.GetValue(context.Parameters, null);
 
         context.Command.Parameters.Add(dataParameter);

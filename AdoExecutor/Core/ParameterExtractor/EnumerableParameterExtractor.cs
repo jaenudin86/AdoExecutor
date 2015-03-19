@@ -43,7 +43,7 @@ namespace AdoExecutor.Core.ParameterExtractor
           throw new AdoExecutorException("Array item must be sql primitive type.");
 
         IDbDataParameter dataParameter = context.Configuration.DataObjectFactory.CreateDataParameter();
-        dataParameter.ParameterName = string.Format("@{0}", counter++);
+        dataParameter.ParameterName = counter++.ToString();
         dataParameter.Value = parameter;
 
         context.Command.Parameters.Add(dataParameter);
