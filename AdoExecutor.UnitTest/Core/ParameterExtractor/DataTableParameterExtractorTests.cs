@@ -1,6 +1,4 @@
 ﻿using System.Data;
-using AdoExecutor.Core.Configuration.Infrastructure;
-using AdoExecutor.Core.Context.Infrastructure;
 using AdoExecutor.Core.DataObjectFactory.Infrastructure;
 using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ParameterExtractor;
@@ -11,19 +9,14 @@ using NUnit.Framework;
 namespace AdoExecutor.UnitTest.Core.ParameterExtractor
 {
   [TestFixture(Category = "Unit")]
-  public class DataTableParameterExtractorTests
+  public class DataTableParameterExtractorTests : ParameterExtractorTestsBase
   {
-    private IDbCommand _commandFake;
-    private IConfiguration _configurationFake;
-    private IDbConnection _connectionFake;
     private DataTableParameterExtractor _parameterExtractor;
 
     [SetUp]
-    public void SetUp()
+    public override void SetUp()
     {
-      _commandFake = A.Fake<IDbCommand>();
-      _connectionFake = A.Fake<IDbConnection>();
-      _configurationFake = A.Fake<IConfiguration>();
+      base.SetUp();
 
       _parameterExtractor = new DataTableParameterExtractor();
     }
@@ -83,11 +76,11 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
       dataTable.Rows.Add("testValue1", 2);
 
       var dataObjectFactory = A.Fake<IDataObjectFactory>();
-      _configurationFake.CallsTo(x => x.DataObjectFactory)
+      ConfigurationFake.CallsTo(x => x.DataObjectFactory)
         .Returns(dataObjectFactory);
 
       var dataParameterCollectionFake = A.Fake<IDataParameterCollection>();
-      _commandFake.CallsTo(x => x.Parameters)
+      CommandFake.CallsTo(x => x.Parameters)
         .Returns(dataParameterCollectionFake);
 
       var context = CreateContext(dataTable);
@@ -98,7 +91,7 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
       //ASSERT
       dataParameterCollectionFake.CallsTo(
         x => x.Add(A<IDbDataParameter>.That.Matches(
-          parameter => parameter.ParameterName == "testColumn1" && (string)parameter.Value == "testValue1")))
+          parameter => parameter.ParameterName == "testColumn1" && (string) parameter.Value == "testValue1")))
         .MustHaveHappened(Repeated.Exactly.Once);
 
       dataParameterCollectionFake.CallsTo(
@@ -108,18 +101,6 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
 
       dataObjectFactory.CallsTo(x => x.CreateDataParameter())
         .MustHaveHappened(Repeated.Exactly.Twice);
-    }
-
-    private AdoExecutorContext CreateContext(object parameters)
-    {
-      return new AdoExecutorContext(
-        string.Empty,
-        parameters,
-        typeof (string),
-        InvokeMethod.Select,
-        _connectionFake,
-        _commandFake,
-        _configurationFake);
     }
   }
 }

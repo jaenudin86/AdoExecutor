@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using AdoExecutor.Core.Configuration.Infrastructure;
-using AdoExecutor.Core.Context.Infrastructure;
 using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ObjectBuilder;
-using AdoExecutor.Core.ObjectBuilder.Infrastructure;
 using AdoExecutor.Utilities.Adapter.List.Infrastructure;
 using FakeItEasy;
 using FakeItEasy.ExtensionSyntax.Full;
@@ -14,7 +11,7 @@ using NUnit.Framework;
 namespace AdoExecutor.UnitTest.Core.ObjectBuilder
 {
   [TestFixture(Category = "Unit")]
-  public class DynamicObjectBuilderTests
+  public class DynamicObjectBuilderTests : ObjectBuilderTestsBase
   {
     private DynamicObjectBuilder _dynamicObjectBuilder;
     private IListAdapterFactory _listAdapterFactoryFake;
@@ -69,9 +66,9 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
     }
 
     [Test]
-    [TestCase(typeof(string))]
-    [TestCase(typeof(int))]
-    [TestCase(typeof(Tuple<string, int>))]
+    [TestCase(typeof (string))]
+    [TestCase(typeof (int))]
+    [TestCase(typeof (Tuple<string, int>))]
     public void CanProcess_ShouldReturnFalse_WhenResultTypeIsNotObject(Type resultType)
     {
       //ARRANGE
@@ -86,9 +83,9 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
     }
 
     [Test]
-    [TestCase(typeof(string))]
-    [TestCase(typeof(int))]
-    [TestCase(typeof(Tuple<string, int>))]
+    [TestCase(typeof (string))]
+    [TestCase(typeof (int))]
+    [TestCase(typeof (Tuple<string, int>))]
     public void CanProcess_ShouldReturnFalse_WhenElementListIsNotObject(Type elementType)
     {
       //ARRANGE
@@ -135,10 +132,10 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
     {
       //ARRANGE
       var dataTable = new DataTable();
-      dataTable.Columns.Add("testColumn", typeof(string));
+      dataTable.Columns.Add("testColumn", typeof (string));
       dataTable.Rows.Add("testValue1");
       dataTable.Rows.Add("testValue2");
-      
+
       var adapterList = new List<object>();
 
       var listAdapterFake = A.Fake<IListAdapter>();
@@ -151,15 +148,15 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
         .Returns(listAdapterFake);
 
       var dataTableReader = new DataTableReader(dataTable);
-      var context = CreateContext(typeof(object), dataTableReader);
+      var context = CreateContext(typeof (object), dataTableReader);
 
       //ACT
       var instance = _dynamicObjectBuilder.CreateInstance(context);
 
       //ASSERT
       Assert.IsNotNull(instance);
-      Assert.AreEqual("testValue1", ((dynamic)adapterList[0]).testColumn);
-      Assert.AreEqual("testValue2", ((dynamic)adapterList[1]).testColumn);
+      Assert.AreEqual("testValue1", ((dynamic) adapterList[0]).testColumn);
+      Assert.AreEqual("testValue2", ((dynamic) adapterList[1]).testColumn);
     }
 
     [Test]
@@ -173,7 +170,7 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
       dataReaderFake.CallsTo(x => x.IsClosed)
         .Returns(true);
 
-      var context = CreateContext(typeof(object), dataReaderFake);
+      var context = CreateContext(typeof (object), dataReaderFake);
 
       //ASSERT
       Assert.Throws<AdoExecutorException>(() => _dynamicObjectBuilder.CreateInstance(context));
@@ -190,7 +187,7 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
       dataReaderFake.CallsTo(x => x.Read())
         .Returns(false);
 
-      var context = CreateContext(typeof(object), dataReaderFake);
+      var context = CreateContext(typeof (object), dataReaderFake);
 
       //ASSERT
       Assert.Throws<AdoExecutorException>(() => _dynamicObjectBuilder.CreateInstance(context));
@@ -204,7 +201,7 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
 
       var listAdapterFake = A.Fake<IListAdapter>();
       listAdapterFake.CallsTo(x => x.ElementType)
-        .Returns(typeof(object));
+        .Returns(typeof (object));
       listAdapterFake.CallsTo(x => x.AdapterList)
         .Returns(adapterList);
 
@@ -215,7 +212,7 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
       dataReaderFake.CallsTo(x => x.IsClosed)
         .Returns(true);
 
-      var context = CreateContext(typeof(object), dataReaderFake);
+      var context = CreateContext(typeof (object), dataReaderFake);
 
       //ASSERT
       CollectionAssert.IsEmpty(adapterList);
@@ -229,7 +226,7 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
 
       var listAdapterFake = A.Fake<IListAdapter>();
       listAdapterFake.CallsTo(x => x.ElementType)
-        .Returns(typeof(object));
+        .Returns(typeof (object));
       listAdapterFake.CallsTo(x => x.AdapterList)
         .Returns(adapterList);
 
@@ -240,23 +237,10 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
       dataReaderFake.CallsTo(x => x.Read())
         .Returns(false);
 
-      var context = CreateContext(typeof(object), dataReaderFake);
+      var context = CreateContext(typeof (object), dataReaderFake);
 
       //ASSERT
       CollectionAssert.IsEmpty(adapterList);
-    }
-
-    private ObjectBuilderContext CreateContext(Type resultType, IDataReader dataReader)
-    {
-      return new ObjectBuilderContext(
-        "testQuery",
-        null,
-        resultType,
-        InvokeMethod.Select,
-        A.Fake<IDbConnection>(),
-        A.Fake<IDbCommand>(),
-        A.Fake<IConfiguration>(),
-        dataReader);
     }
   }
 }

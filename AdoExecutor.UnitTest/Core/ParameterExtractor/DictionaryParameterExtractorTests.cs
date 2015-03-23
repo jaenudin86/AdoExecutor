@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using AdoExecutor.Core.Configuration.Infrastructure;
 using AdoExecutor.Core.Context.Infrastructure;
 using AdoExecutor.Core.DataObjectFactory.Infrastructure;
 using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ParameterExtractor;
-using AdoExecutor.Utilities.PrimitiveTypes.Infrastructure;
 using FakeItEasy;
 using FakeItEasy.ExtensionSyntax.Full;
 using NUnit.Framework;
@@ -14,23 +12,16 @@ using NUnit.Framework;
 namespace AdoExecutor.UnitTest.Core.ParameterExtractor
 {
   [TestFixture(Category = "Unit")]
-  public class DictionaryParameterExtractorTests
+  public class DictionaryParameterExtractorTests : ParameterExtractorTestsBase
   {
-    private IDbCommand _commandFake;
-    private IConfiguration _configurationFake;
-    private IDbConnection _connectionFake;
-    private ISqlPrimitiveDataTypes _sqlPrimitiveDataTypesFake;
     private DictionaryParameterExtractor _parameterExtractor;
 
     [SetUp]
-    public void SetUp()
+    public override void SetUp()
     {
-      _commandFake = A.Fake<IDbCommand>();
-      _connectionFake = A.Fake<IDbConnection>();
-      _configurationFake = A.Fake<IConfiguration>();
-      _sqlPrimitiveDataTypesFake = A.Fake<ISqlPrimitiveDataTypes>();
+      base.SetUp();
 
-      _parameterExtractor = new DictionaryParameterExtractor(_sqlPrimitiveDataTypesFake);
+      _parameterExtractor = new DictionaryParameterExtractor(SqlPrimitiveDataTypesFake);
     }
 
     [Test]
@@ -97,7 +88,7 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
       dictionary["testParameter"] = "testValue";
       var context = CreateContext(dictionary);
 
-      _sqlPrimitiveDataTypesFake.CallsTo(x => x.IsSqlPrimitiveType(A<Type>._))
+      SqlPrimitiveDataTypesFake.CallsTo(x => x.IsSqlPrimitiveType(A<Type>._))
         .Returns(false);
 
       //ASSERT
@@ -113,16 +104,16 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
       dictionary["testColumn2"] = 2;
 
       var dataObjectFactory = A.Fake<IDataObjectFactory>();
-      _configurationFake.CallsTo(x => x.DataObjectFactory)
+      ConfigurationFake.CallsTo(x => x.DataObjectFactory)
         .Returns(dataObjectFactory);
 
       var dataParameterCollectionFake = A.Fake<IDataParameterCollection>();
-      _commandFake.CallsTo(x => x.Parameters)
+      CommandFake.CallsTo(x => x.Parameters)
         .Returns(dataParameterCollectionFake);
 
       var context = CreateContext(dictionary);
 
-      _sqlPrimitiveDataTypesFake.CallsTo(x => x.IsSqlPrimitiveType(A<Type>._))
+      SqlPrimitiveDataTypesFake.CallsTo(x => x.IsSqlPrimitiveType(A<Type>._))
         .Returns(true);
 
       //ACT
@@ -131,28 +122,16 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
       //ASSERT
       dataParameterCollectionFake.CallsTo(
         x => x.Add(A<IDbDataParameter>.That.Matches(
-          parameter => parameter.ParameterName == "testColumn1" && (string)parameter.Value == "testValue1")))
+          parameter => parameter.ParameterName == "testColumn1" && (string) parameter.Value == "testValue1")))
         .MustHaveHappened(Repeated.Exactly.Once);
 
       dataParameterCollectionFake.CallsTo(
         x => x.Add(A<IDbDataParameter>.That.Matches(
-          parameter => parameter.ParameterName == "testColumn2" && (int)parameter.Value == 2)))
+          parameter => parameter.ParameterName == "testColumn2" && (int) parameter.Value == 2)))
         .MustHaveHappened(Repeated.Exactly.Once);
 
       dataObjectFactory.CallsTo(x => x.CreateDataParameter())
         .MustHaveHappened(Repeated.Exactly.Twice);
-    }
-
-    private AdoExecutorContext CreateContext(object parameters)
-    {
-      return new AdoExecutorContext(
-        string.Empty,
-        parameters,
-        typeof(string),
-        InvokeMethod.Select,
-        _connectionFake,
-        _commandFake,
-        _configurationFake);
     }
   }
 }

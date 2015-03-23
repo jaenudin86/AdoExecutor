@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Data;
-using AdoExecutor.Core.Configuration.Infrastructure;
-using AdoExecutor.Core.Context.Infrastructure;
 using AdoExecutor.Core.ObjectBuilder;
-using AdoExecutor.Core.ObjectBuilder.Infrastructure;
 using AdoExecutor.Utilities.Adapter.DataTable.Infrastructure;
 using FakeItEasy;
 using FakeItEasy.ExtensionSyntax.Full;
@@ -12,10 +9,10 @@ using NUnit.Framework;
 namespace AdoExecutor.UnitTest.Core.ObjectBuilder
 {
   [TestFixture(Category = "Unit")]
-  public class DataSetObjectBuilderTests
+  public class DataSetObjectBuilderTests : ObjectBuilderTestsBase
   {
-    private IDataTableAdapter _dataTableAdapterFake;
     private DataSetObjectBuilder _dataSetObjectBuilder;
+    private IDataTableAdapter _dataTableAdapterFake;
 
     [SetUp]
     public void SetUp()
@@ -38,23 +35,23 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
       var context = CreateContext(typeof (DataSet), A.Fake<IDataReader>());
 
       //ACT
-      bool canProcess = _dataSetObjectBuilder.CanProcess(context);
+      var canProcess = _dataSetObjectBuilder.CanProcess(context);
 
       //ASSERT
       Assert.IsTrue(canProcess);
     }
 
     [Test]
-    [TestCase(typeof(int))]
-    [TestCase(typeof(string))]
-    [TestCase(typeof(object))]
+    [TestCase(typeof (int))]
+    [TestCase(typeof (string))]
+    [TestCase(typeof (object))]
     public void CanProcess_ShouldReturnFalse_WhenContextResultTypeIsNotDataSet(Type resultType)
     {
       //ARRANGE
       var context = CreateContext(resultType, A.Fake<IDataReader>());
 
       //ACT
-      bool canProcess = _dataSetObjectBuilder.CanProcess(context);
+      var canProcess = _dataSetObjectBuilder.CanProcess(context);
 
       //ASSERT
       Assert.IsFalse(canProcess);
@@ -67,11 +64,11 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
       var dataReader = A.Fake<IDataReader>();
       dataReader.CallsTo(x => x.NextResult())
         .Returns(false);
-      
+
       var context = CreateContext(typeof (DataSet), dataReader);
 
       //ACT
-      var dataSet = (DataSet)_dataSetObjectBuilder.CreateInstance(context);
+      var dataSet = (DataSet) _dataSetObjectBuilder.CreateInstance(context);
 
       //ASSERT
       Assert.AreEqual(0, dataSet.Tables.Count);
@@ -84,11 +81,11 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
       var dataReader = A.Fake<IDataReader>();
       dataReader.CallsTo(x => x.IsClosed)
         .Returns(false);
-      
-      var context = CreateContext(typeof(DataSet), dataReader);
+
+      var context = CreateContext(typeof (DataSet), dataReader);
 
       //ACT
-      var dataSet = (DataSet)_dataSetObjectBuilder.CreateInstance(context);
+      var dataSet = (DataSet) _dataSetObjectBuilder.CreateInstance(context);
 
       //ASSERT
       Assert.AreEqual(0, dataSet.Tables.Count);
@@ -99,7 +96,7 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
     {
       //ARRANGE
       const string columnName = "testColumn";
-      Type columnType = typeof(string);
+      var columnType = typeof (string);
       const string testValue = "testValue";
 
       var dataTable = new DataTable();
@@ -113,10 +110,10 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
       dataReaderFake.CallsTo(x => x.FieldCount)
         .Returns(1);
 
-      var context = CreateContext(typeof(DataSet), dataReaderFake);
+      var context = CreateContext(typeof (DataSet), dataReaderFake);
 
       //ACT
-      var dataSet = (DataSet)_dataSetObjectBuilder.CreateInstance(context);
+      var dataSet = (DataSet) _dataSetObjectBuilder.CreateInstance(context);
 
       //ASSERT
       Assert.AreEqual(1, dataSet.Tables.Count);
@@ -132,9 +129,9 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
     {
       //ARRANGE
       const string columnName = "testColumn";
-      Type columnType = typeof (string);
+      var columnType = typeof (string);
       const string testValue = "testValue";
-      
+
       Func<DataTable> createDataTableFunc = () =>
       {
         var dataTable = new DataTable();
@@ -151,51 +148,38 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
       dataReaderFake.CallsTo(x => x.FieldCount)
         .Returns(1);
 
-      int returnResultSet = 0;
+      var returnResultSet = 0;
       dataReaderFake.CallsTo(x => x.NextResult())
         .ReturnsLazily(x => ++returnResultSet < 3);
 
-      var context = CreateContext(typeof(DataSet), dataReaderFake);
+      var context = CreateContext(typeof (DataSet), dataReaderFake);
 
       //ACT
-      var dataSet = (DataSet)_dataSetObjectBuilder.CreateInstance(context);
+      var dataSet = (DataSet) _dataSetObjectBuilder.CreateInstance(context);
 
       //ASSERT
       Assert.AreEqual(3, dataSet.Tables.Count);
 
-      DataTable dataTable1 = dataSet.Tables[0];
+      var dataTable1 = dataSet.Tables[0];
       Assert.AreEqual(1, dataTable1.Columns.Count);
       Assert.AreEqual(columnName, dataTable1.Columns[0].ColumnName);
       Assert.AreEqual(columnType, dataTable1.Columns[0].DataType);
       Assert.AreEqual(1, dataTable1.Rows.Count);
       Assert.AreEqual(testValue, dataTable1.Rows[0][0]);
 
-      DataTable dataTable2 = dataSet.Tables[0];
+      var dataTable2 = dataSet.Tables[0];
       Assert.AreEqual(1, dataTable2.Columns.Count);
       Assert.AreEqual(columnName, dataTable2.Columns[0].ColumnName);
       Assert.AreEqual(columnType, dataTable2.Columns[0].DataType);
       Assert.AreEqual(1, dataTable2.Rows.Count);
       Assert.AreEqual(testValue, dataTable2.Rows[0][0]);
 
-      DataTable dataTable3 = dataSet.Tables[0];
+      var dataTable3 = dataSet.Tables[0];
       Assert.AreEqual(1, dataTable3.Columns.Count);
       Assert.AreEqual(columnName, dataTable3.Columns[0].ColumnName);
       Assert.AreEqual(columnType, dataTable3.Columns[0].DataType);
       Assert.AreEqual(1, dataTable3.Rows.Count);
       Assert.AreEqual(testValue, dataTable3.Rows[0][0]);
-    }
-
-    private ObjectBuilderContext CreateContext(Type resultType, IDataReader dataReader)
-    {
-      return new ObjectBuilderContext(
-        "testQuery",
-        null,
-        resultType,
-        InvokeMethod.Select,
-        A.Fake<IDbConnection>(),
-        A.Fake<IDbCommand>(),
-        A.Fake<IConfiguration>(),
-        dataReader);
     }
   }
 }

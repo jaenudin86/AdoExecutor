@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Data;
-using AdoExecutor.Core.Configuration.Infrastructure;
-using AdoExecutor.Core.Context.Infrastructure;
 using AdoExecutor.Core.DataObjectFactory.Infrastructure;
 using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ParameterExtractor;
-using AdoExecutor.Utilities.PrimitiveTypes.Infrastructure;
 using FakeItEasy;
 using FakeItEasy.ExtensionSyntax.Full;
 using NUnit.Framework;
@@ -13,23 +10,16 @@ using NUnit.Framework;
 namespace AdoExecutor.UnitTest.Core.ParameterExtractor
 {
   [TestFixture(Category = "Unit")]
-  public class EnumerableParameterExtractorTests
+  public class EnumerableParameterExtractorTests : ParameterExtractorTestsBase
   {
-    private IDbCommand _commandFake;
-    private IConfiguration _configurationFake;
-    private IDbConnection _connectionFake;
     private EnumerableParameterExtractor _parameterExtractor;
-    private ISqlPrimitiveDataTypes _sqlPrimitiveDataTypesFake;
 
     [SetUp]
-    public void SetUp()
+    public override void SetUp()
     {
-      _commandFake = A.Fake<IDbCommand>();
-      _connectionFake = A.Fake<IDbConnection>();
-      _configurationFake = A.Fake<IConfiguration>();
-      _sqlPrimitiveDataTypesFake = A.Fake<ISqlPrimitiveDataTypes>();
+      base.SetUp();
 
-      _parameterExtractor = new EnumerableParameterExtractor(_sqlPrimitiveDataTypesFake);
+      _parameterExtractor = new EnumerableParameterExtractor(SqlPrimitiveDataTypesFake);
     }
 
     [Test]
@@ -69,7 +59,7 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
     {
       //ARRANGE
       var context = CreateContext(new string[0]);
-      _sqlPrimitiveDataTypesFake.CallsTo(x => x.IsSqlPrimitiveType(A<Type>._))
+      SqlPrimitiveDataTypesFake.CallsTo(x => x.IsSqlPrimitiveType(A<Type>._))
         .Returns(true);
 
       //ACT
@@ -112,14 +102,14 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
       var context = CreateContext(array);
 
       var dataObjectFactory = A.Fake<IDataObjectFactory>();
-      _configurationFake.CallsTo(x => x.DataObjectFactory)
+      ConfigurationFake.CallsTo(x => x.DataObjectFactory)
         .Returns(dataObjectFactory);
 
       var dataParameterCollectionFake = A.Fake<IDataParameterCollection>();
-      _commandFake.CallsTo(x => x.Parameters)
+      CommandFake.CallsTo(x => x.Parameters)
         .Returns(dataParameterCollectionFake);
 
-      _sqlPrimitiveDataTypesFake.CallsTo(x => x.IsSqlPrimitiveType(A<Type>._))
+      SqlPrimitiveDataTypesFake.CallsTo(x => x.IsSqlPrimitiveType(A<Type>._))
         .Returns(true);
 
       //ACT
@@ -138,18 +128,6 @@ namespace AdoExecutor.UnitTest.Core.ParameterExtractor
 
       dataObjectFactory.CallsTo(x => x.CreateDataParameter())
         .MustHaveHappened(Repeated.Exactly.Twice);
-    }
-
-    private AdoExecutorContext CreateContext(object parameters)
-    {
-      return new AdoExecutorContext(
-        string.Empty,
-        parameters,
-        typeof (string),
-        InvokeMethod.Select,
-        _connectionFake,
-        _commandFake,
-        _configurationFake);
     }
   }
 }
