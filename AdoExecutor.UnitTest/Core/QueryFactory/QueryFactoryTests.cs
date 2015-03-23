@@ -1,5 +1,4 @@
 ﻿using System;
-using AdoExecutor.Core.Query;
 using AdoExecutor.Core.QueryFactory;
 using NUnit.Framework;
 
@@ -30,7 +29,7 @@ namespace AdoExecutor.UnitTest.Core.QueryFactory
       var query = _sqlQueryFactory.CreateQuery();
 
       //ASSET
-      Assert.IsInstanceOf<Query>(query);
+      Assert.IsInstanceOf<AdoExecutor.Core.Query.Query> (query);
 
     }
   }

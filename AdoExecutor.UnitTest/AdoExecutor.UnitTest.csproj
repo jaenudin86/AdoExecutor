@@ -65,9 +65,10 @@
     <Compile Include="Core\ParameterExtractor\DictionaryParameterExtractorTests.cs" />
     <Compile Include="Core\ParameterExtractor\EnumerableParameterExtractorTests.cs" />
     <Compile Include="Core\ParameterExtractor\ObjectPropertyParameterExtractorTests.cs" />
+    <Compile Include="Core\Parameter\SpecifiedParameterTests.cs" />
     <Compile Include="Core\QueryFactory\QueryFactoryTests.cs" />
+    <Compile Include="Core\Query\Infrastructure\QueryOptionsTests.cs" />
     <Compile Include="Utilities\PrimitiveTypes\SqlPrimitiveDataTypesTests.cs" />
-    <Compile Include="Core\ObjectBuilder\DataTableAdoExecutorObjectBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
