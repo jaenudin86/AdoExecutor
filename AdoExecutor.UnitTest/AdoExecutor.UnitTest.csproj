@@ -72,6 +72,9 @@
     <Compile Include="Core\QueryFactory\QueryFactoryTests.cs" />
     <Compile Include="Core\Query\Infrastructure\QueryOptionsTests.cs" />
     <Compile Include="Utilities\Adapter\DataTable\DataTableAdapterTests.cs" />
+    <Compile Include="Utilities\Adapter\List\ArrayListAdapterTests.cs" />
+    <Compile Include="Utilities\Adapter\List\GenericListAdapterTests.cs" />
+    <Compile Include="Utilities\Adapter\List\ListAdapterFactoryTests.cs" />
     <Compile Include="Utilities\PrimitiveTypes\SqlPrimitiveDataTypesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

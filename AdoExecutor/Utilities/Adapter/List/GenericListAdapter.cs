@@ -11,16 +11,16 @@ namespace AdoExecutor.Utilities.Adapter.List
     public GenericListAdapter(Type sourceListType)
     {
       if (sourceListType == null)
-        throw new ArgumentNullException("SourceListType");
+        throw new ArgumentNullException("sourceListType");
 
       if (!sourceListType.IsGenericType)
-        throw new ArgumentException("SourceListType must be generic type.");
+        throw new ArgumentException("sourceListType must be generic type.");
 
       if (sourceListType.GetInterface(typeof (IList).FullName) == null)
-        throw new ArgumentException("SourceListType must implements System.Collections.IList");
+        throw new ArgumentException("sourceListType must implements System.Collections.IList");
 
       if (sourceListType.IsAbstract || sourceListType.IsInterface)
-        throw new ArgumentException("SourceListType cannot be interface or abstract class");
+        throw new ArgumentException("sourceListType cannot be interface or abstract class");
 
       Type[] genericArguments = sourceListType.GetGenericArguments();
 

@@ -11,10 +11,10 @@ namespace AdoExecutor.Utilities.Adapter.List
     public ArrayListAdapter(Type sourceListType)
     {
       if (sourceListType == null)
-        throw new ArgumentNullException("SourceListType");
+        throw new ArgumentNullException("sourceListType");
 
       if (!sourceListType.IsArray)
-        throw new ArgumentException("SourceListType must be array type.");
+        throw new ArgumentException("sourceListType must be array type.");
 
       SourceListType = sourceListType;
       ElementType = sourceListType.GetElementType();

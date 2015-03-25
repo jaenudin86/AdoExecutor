@@ -32,6 +32,7 @@ namespace AdoExecutor.UnitTest.Utilities.Adapter.DataTable
       //ACT
       var result = _dataTableAdapter.Load(dataTableReader);
 
+      //ASSERT
       Assert.AreEqual(2, result.Columns.Count);
       Assert.AreEqual(dataTable.Columns[0].ColumnName, result.Columns[0].ColumnName);
       Assert.AreEqual(dataTable.Columns[0].DataType, result.Columns[0].DataType);
