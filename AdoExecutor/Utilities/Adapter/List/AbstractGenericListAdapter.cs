@@ -28,6 +28,9 @@ namespace AdoExecutor.Utilities.Adapter.List
       if (adapterType.GetInterface(typeof (IList).FullName) == null)
         throw new ArgumentException("adapterType must implements System.Collections.IList");
 
+      if (adapterType.IsAbstract || adapterType.IsInterface)
+        throw new ArgumentException("adapterType cannot be interface or abstract class type.");
+
       Type[] genericArguments = sourceListType.GetGenericArguments();
 
       if (genericArguments.Length != 1)

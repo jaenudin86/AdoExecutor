@@ -12,20 +12,17 @@ namespace AdoExecutor.Utilities.Adapter.List
     public ReadOnlyObservableCollectionListAdapter(Type sourceListType)
     {
       if (sourceListType == null)
-        throw new ArgumentNullException("SourceListType");
+        throw new ArgumentNullException("sourceListType");
 
       if (!sourceListType.IsGenericType)
-        throw new ArgumentException("SourceListType must be generic type.");
+        throw new ArgumentException("sourceListType must be generic type.");
 
       Type genericTypeDefinition = sourceListType.GetGenericTypeDefinition();
 
       if (genericTypeDefinition != typeof (ReadOnlyObservableCollection<>))
-        throw new ArgumentException("SourceListType must be ReadOnlyObservableCollection<> type.");
+        throw new ArgumentException("sourceListType must be ReadOnlyObservableCollection<> type.");
 
       Type[] genericArguments = sourceListType.GetGenericArguments();
-
-      if (genericArguments.Length != 1)
-        throw new ArgumentException("Type must has exactly one generic arguments.");
 
       SourceListType = sourceListType;
       ElementType = genericArguments[0];
