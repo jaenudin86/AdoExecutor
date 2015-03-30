@@ -57,8 +57,7 @@ namespace AdoExecutor.Core.ParameterExtractor
       if (parameter.Size.HasValue)
         dataParameter.Size = parameter.Size.Value;
 
-      if (parameter.Direction != ParameterDirection.Input)
-        parameter.SetParameter(dataParameter);
+      parameter.SetParameter(dataParameter);
 
       context.Command.Parameters.Add(dataParameter);
     }
