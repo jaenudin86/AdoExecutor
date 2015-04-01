@@ -63,6 +63,7 @@
     <Compile Include="Core\ObjectBuilder\DynamicObjectBuilderTests.cs" />
     <Compile Include="Core\ObjectBuilder\Infrastructure\ObjectBuilderContextTests.cs" />
     <Compile Include="Core\ObjectBuilder\ObjectBuilderTestsBase.cs" />
+    <Compile Include="Core\ObjectBuilder\SimpleTypeObjectBuilderTests.cs" />
     <Compile Include="Core\ParameterExtractor\DataTableParameterExtractorTests.cs" />
     <Compile Include="Core\ParameterExtractor\DictionaryParameterExtractorTests.cs" />
     <Compile Include="Core\ParameterExtractor\EnumerableParameterExtractorTests.cs" />
