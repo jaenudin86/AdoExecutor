@@ -2,6 +2,9 @@
 Assumption of library (overlay) AdoExecutor is to assist users to query a database using ADO.NET driver.
 Library is similar to [Dapper](https://github.com/StackExchange/dapper-dot-net), however while creating it i was guided by few rules:
 * Extensibility - possibility of easy extending and modifying classes - all elements of subsystem are built upon interfaces and where it is possible virtual methods are used.
+  * Interception - possibility of intercept into query execution process. For example it is very helpful when You must add logging to all executed queries into Your application - more informations in paragraph 7.
+  * Add support to own select data types - more informations in paragraph 2 and 8.
+  * Add support to own input parameter types - more informations in paragraph 5 and 9.
 * Testability - possibility to use mocks of data access layer (library doesn't use extensions methods).
 * Easiness of use - after reading this document You should have the knowledge to configure the library and execute database query.
 * Adaptable to many database engines - those that support ADO.NET driver.
@@ -98,3 +101,18 @@ While executing ```Select<T>``` and ```Execute``` methods You can pass optional 
 ```csharp
 query.Execute("update dbo.User set name = @name where id = @id", new {name = "test", id = 5}, QueryOptions.SetTimeout(1000));
 ```
+
+## Extensibility
+
+#### 7.Interceptors
+For intercept into query execution process You should implement ```IInterceptor```. The interface has specified methods, who will be invoked in times:
+* ```OnEntry``` - before execution query on database
+* ```OnSuccess``` - when executing query is not throw exception
+* ```OnError``` - when executing query is throw exception
+* ```OnExit``` - regardless of whether executing query is throw or not throw exception
+
+You can also use built-in helper class for logging - ```LoggerInterceptorBase```. This class prepare by self full query message (query text and list of parameters with informations about parameter name, value and type).
+
+#### 8. Add own select data type support
+
+#### 9. Add own input parameter type support
