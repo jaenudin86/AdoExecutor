@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ObjectBuilder;
 using AdoExecutor.Utilities.Adapter.List.Infrastructure;
 using FakeItEasy;
@@ -74,6 +73,9 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
       //ARRANGE
       var fakeDataReader = A.Fake<IDataReader>();
       var context = CreateContext(resultType, fakeDataReader);
+
+      _listAdapterFactoryFake.CallsTo(x => x.CreateListAdapter(A<Type>._))
+        .Returns(null);
 
       //ACT
       var canProcess = _dynamicObjectBuilder.CanProcess(context);
@@ -160,7 +162,7 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
     }
 
     [Test]
-    public void CreateInstance_ShouldThrowAdoExecutorException_WhenReaderIsClosedAndResultTypeIsObject()
+    public void CreateInstance_ShouldReturnNull_WhenReaderIsClosedAndResultTypeIsObject()
     {
       //ARRANGE
       _listAdapterFactoryFake.CallsTo(x => x.CreateListAdapter(A<Type>._))
@@ -172,12 +174,15 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
 
       var context = CreateContext(typeof (object), dataReaderFake);
 
+      //ACT
+      var result = _dynamicObjectBuilder.CreateInstance(context);
+
       //ASSERT
-      Assert.Throws<AdoExecutorException>(() => _dynamicObjectBuilder.CreateInstance(context));
+      Assert.IsNull(result);
     }
 
     [Test]
-    public void CreateInstance_ShouldThrowAdoExecutorException_WhenReaderHasNoResultAndResultTypeIsObject()
+    public void CreateInstance_ShouldReturnNull_WhenReaderHasNoResultAndResultTypeIsObject()
     {
       //ARRANGE
       _listAdapterFactoryFake.CallsTo(x => x.CreateListAdapter(A<Type>._))
@@ -189,8 +194,11 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
 
       var context = CreateContext(typeof (object), dataReaderFake);
 
+      //ACT
+      var result = _dynamicObjectBuilder.CreateInstance(context);
+
       //ASSERT
-      Assert.Throws<AdoExecutorException>(() => _dynamicObjectBuilder.CreateInstance(context));
+      Assert.IsNull(result);
     }
 
     [Test]

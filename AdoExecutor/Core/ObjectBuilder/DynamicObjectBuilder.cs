@@ -48,9 +48,9 @@ namespace AdoExecutor.Core.ObjectBuilder
       {
         if (context.DataReader.Read() && !context.DataReader.IsClosed)
           return CreateDynamicObject(context.DataReader);
-      }
 
-      throw new AdoExecutorException("Cannot read data from reader.");
+        return null;
+      }
     }
 
     private object CreateDynamicObject(IDataReader dataReader)

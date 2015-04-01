@@ -52,6 +52,8 @@ namespace AdoExecutor.Core.ObjectBuilder
       {
         if (context.DataReader.Read() && !context.DataReader.IsClosed)
           return _objectConverter.ChangeType(context.ResultType, context.DataReader.GetValue(0));
+
+        return _objectConverter.ChangeType(context.ResultType, null);
       }
       else
       {
@@ -65,8 +67,6 @@ namespace AdoExecutor.Core.ObjectBuilder
 
         return listAdapter.ConverToSourceList();
       }
-
-      throw new AdoExecutorException("Cannot read data from reader.");
     }
   }
 }

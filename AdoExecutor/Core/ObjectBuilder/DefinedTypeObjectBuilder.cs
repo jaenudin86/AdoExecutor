@@ -77,10 +77,16 @@ namespace AdoExecutor.Core.ObjectBuilder
 
         return listAdapter.ConverToSourceList();
       }
-      while (context.DataReader.Read() && !context.DataReader.IsClosed)
-        return CreateSingleInstance(context.DataReader, context.ResultType);
+      else
+      {
+        while (context.DataReader.Read() && !context.DataReader.IsClosed)
+          return CreateSingleInstance(context.DataReader, context.ResultType);
 
-      throw new AdoExecutorException("Cannot read data from reader.");
+        if(!context.ResultType.IsValueType)
+          return null;
+
+        throw new AdoExecutorException("Cannot read data from reader.");
+      }
     }
 
     private object CreateSingleInstance(IDataReader dataReader, Type instanceType)
