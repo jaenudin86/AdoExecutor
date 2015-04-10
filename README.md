@@ -127,3 +127,6 @@ Other utility is ```ISqlPrimitiveDataTypes``` interface and ```SqlPrimitiveDataT
 Third helpful thing is ```IObjectConverter``` interface and ```ObjectConverter``` implementation with support object conversion. It also support for example DbNull and nullable types conversion.
 
 #### 9. Add own input parameter type support
+For add own input parameter type support You should implements ```IParameterExtractor``` interface. This interface has two methods:
+* ```CanProcess``` - should return true when Your implememntation can process input parameter passed into ```Select``` or ```Execute``` methods of ```Query``` object.
+* ```ExtractParameter``` - should extract input parameter value and convert it into ```IDbDataParameter``` and add it into ```Command``` property which exists in context.
