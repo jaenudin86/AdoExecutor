@@ -104,6 +104,8 @@ query.Execute("update dbo.User set name = @name where id = @id", new {name = "te
 
 ## Extensibility
 
+> ```Interceptors```, ```ObjectBuilders``` and ```ParameterExtractors``` require configuration. If You use default ```SqlQueryFactory```, You can override one of methods: ```ConfigureInterceptors```, ```ConfigureObjectBuilders``` or ```ConfigureParameterExtractors```.
+
 #### 7.Interceptors
 For inject into query execution process You should implement ```IInterceptor```. The interface has specified methods, who will be invoked in times:
 * ```OnEntry``` - before execution query on database
@@ -114,5 +116,14 @@ For inject into query execution process You should implement ```IInterceptor```.
 You can also use built-in helper class for logging - ```LoggerInterceptorBase```. This class prepare by self full query message (query text and list of parameters with informations about parameter name, value and type).
 
 #### 8. Add own select data type support
+If You want add support for new data type to generic ```Select``` method (in ```Query``` class), You should implements ```IObjectBuilder``` interface. The interface has two methods:
+* ```CanProcess``` - should return true when Your implmenentation can build object from informations exists in ```ObjectBuilderContext```, otherwise false. For most scenarios, You will probably use ```ResultType``` property from context which has information about generic type used in ```Select``` method of ```Query``` object.
+* ```CreateInstance``` - should return object instance created from ```DataReader``` existed in context.
+
+When You create implementation of ```IObjectBuilder``` You should look up at ```IListAdapterFactory``` interface and this implementation ```ListAdapterFactory```, which will return abstraction for collections.
+
+Other utility is ```ISqlPrimitiveDataTypes``` interface and ```SqlPrimitiveDataTypes``` class which has infromation about all types supported by SQL Server.
+
+Third helpful thing is ```IObjectConverter``` interface and ```ObjectConverter``` implementation with support object conversion. It also support for example DbNull and nullable types conversion.
 
 #### 9. Add own input parameter type support
