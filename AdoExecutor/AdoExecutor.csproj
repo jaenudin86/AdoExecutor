@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Configuration\Configuration.cs" />
+    <Compile Include="Core\QueryFactory\QueryFactoryBase.cs" />
     <Compile Include="Utilities\Adapter\DataTable\DataTableAdapter.cs">
       <SubType>Component</SubType>
     </Compile>
