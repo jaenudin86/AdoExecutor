@@ -45,6 +45,11 @@ namespace AdoExecutor.Core.Query
       return InvokeFlow(query, parameters, options, InvokeMethod.Execute, executeFunc);
     }
 
+    public virtual int Execute(Command command)
+    {
+      return Execute(command.Query, command.Parameters, command.Options);
+    }
+
     public virtual T Select<T>(string query, object parameters = null, QueryOptions options = null)
     {
       Func<IDbCommand, T> selectFunc = command =>
@@ -57,6 +62,11 @@ namespace AdoExecutor.Core.Query
       };
 
       return InvokeFlow(query, parameters, options, InvokeMethod.Select, selectFunc);
+    }
+
+    public virtual T Select<T>(Command command)
+    {
+      return Select<T>(command.Query, command.Parameters, command.Options);
     }
 
     public void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
