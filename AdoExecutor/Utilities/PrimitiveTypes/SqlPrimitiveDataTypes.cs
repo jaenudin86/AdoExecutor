@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using AdoExecutor.Utilities.PrimitiveTypes.Infrastructure;
 
@@ -6,55 +8,65 @@ namespace AdoExecutor.Utilities.PrimitiveTypes
 {
   public class SqlPrimitiveDataTypes : ISqlPrimitiveDataTypes
   {
-    private static readonly Type[] PrimitiveDataTypes =
+    private static readonly IDictionary<Type, DbType> PrimitiveDataTypes = new Dictionary<Type, DbType>
     {
-      typeof (bool),
-      typeof (bool?),
-      typeof (byte),
-      typeof (byte?),
-      typeof (sbyte),
-      typeof (sbyte?),
-      typeof (byte[]),
-      typeof (char),
-      typeof (char?),
-      typeof (char[]),
-      typeof (string),
-      typeof (short),
-      typeof (short?),
-      typeof (ushort),
-      typeof (ushort?),
-      typeof (int),
-      typeof (int?),
-      typeof (uint),
-      typeof (uint?),
-      typeof (long),
-      typeof (long?),
-      typeof (ulong),
-      typeof (ulong?),
-      typeof (float),
-      typeof (float?),
-      typeof (double),
-      typeof (double?),
-      typeof (decimal),
-      typeof (decimal?),
-      typeof (DateTime),
-      typeof (DateTime?),
-      typeof (DateTimeOffset),
-      typeof (DateTimeOffset?),
-      typeof (TimeSpan),
-      typeof (TimeSpan?),
-      typeof (Guid),
-      typeof (Guid?)
+      {typeof (bool), DbType.Boolean},
+      {typeof (bool?), DbType.Boolean},
+      {typeof (byte), DbType.Byte},
+      {typeof (byte?), DbType.Byte},
+      {typeof (sbyte), DbType.SByte},
+      {typeof (sbyte?), DbType.SByte},
+      {typeof (byte[]), DbType.Binary},
+      {typeof (char), DbType.StringFixedLength},
+      {typeof (char?), DbType.StringFixedLength},
+      {typeof (char[]), DbType.String},
+      {typeof (string), DbType.String},
+      {typeof (short), DbType.Int16},
+      {typeof (short?), DbType.Int16},
+      {typeof (ushort), DbType.UInt16},
+      {typeof (ushort?), DbType.UInt16},
+      {typeof (int), DbType.Int32},
+      {typeof (int?), DbType.Int32},
+      {typeof (uint), DbType.UInt32},
+      {typeof (uint?), DbType.UInt32},
+      {typeof (long), DbType.Int64},
+      {typeof (long?), DbType.Int64},
+      {typeof (ulong), DbType.UInt64},
+      {typeof (ulong?), DbType.UInt64},
+      {typeof (float), DbType.Single},
+      {typeof (float?), DbType.Single},
+      {typeof (double), DbType.Double},
+      {typeof (double?), DbType.Double},
+      {typeof (decimal), DbType.Decimal},
+      {typeof (decimal?), DbType.Decimal},
+      {typeof (DateTime), DbType.DateTime},
+      {typeof (DateTime?), DbType.DateTime},
+      {typeof (DateTimeOffset), DbType.DateTimeOffset},
+      {typeof (DateTimeOffset?), DbType.DateTimeOffset},
+      {typeof (TimeSpan), DbType.Time},
+      {typeof (TimeSpan?), DbType.Time},
+      {typeof (Guid), DbType.Guid},
+      {typeof (Guid?), DbType.Guid}
     };
 
     public virtual bool IsSqlPrimitiveType(Type dataType)
     {
-      return PrimitiveDataTypes.Contains(dataType);
+      return PrimitiveDataTypes.Keys.Contains(dataType);
     }
 
     public virtual Type[] GetAllSqlPrimitiveTypes()
     {
-      return PrimitiveDataTypes.ToArray();
+      return PrimitiveDataTypes.Keys.ToArray();
+    }
+
+    public bool IsNull(object value)
+    {
+      return value == null || Convert.IsDBNull(value);
+    }
+
+    public DbType ConvertTypeToDbType(Type type)
+    {
+      return PrimitiveDataTypes[type];
     }
   }
 }

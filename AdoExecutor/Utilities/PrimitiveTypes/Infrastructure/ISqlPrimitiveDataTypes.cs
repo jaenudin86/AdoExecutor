@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 
 namespace AdoExecutor.Utilities.PrimitiveTypes.Infrastructure
 {
@@ -6,5 +7,7 @@ namespace AdoExecutor.Utilities.PrimitiveTypes.Infrastructure
   {
     bool IsSqlPrimitiveType(Type dataType);
     Type[] GetAllSqlPrimitiveTypes();
+    bool IsNull(object value);
+    DbType ConvertTypeToDbType(Type type);
   }
 }

@@ -45,6 +45,9 @@ namespace AdoExecutor.Core.ParameterExtractor
         dataParameter.ParameterName = propertyInfo.Name;
         dataParameter.Value = propertyInfo.GetValue(context.Parameters, null);
 
+        if (_sqlPrimitiveDataTypes.IsNull(dataParameter.Value))
+          dataParameter.DbType = _sqlPrimitiveDataTypes.ConvertTypeToDbType(propertyInfo.PropertyType);
+
         context.Command.Parameters.Add(dataParameter);
       }
     }
