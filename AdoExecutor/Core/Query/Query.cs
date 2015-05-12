@@ -54,11 +54,12 @@ namespace AdoExecutor.Core.Query
     {
       Func<IDbCommand, T> selectFunc = command =>
       {
-        var dataReader = command.ExecuteReader();
-
-        return
-          (T) _objectBuilderInvoker.CreateInstance(new ObjectBuilderContext(query, parameters, typeof (T),
-            InvokeMethod.Select, Connection, command, _configuration, dataReader));
+        using (var dataReader = command.ExecuteReader())
+        {
+          return
+            (T) _objectBuilderInvoker.CreateInstance(new ObjectBuilderContext(query, parameters, typeof (T),
+              InvokeMethod.Select, Connection, command, _configuration, dataReader));
+        }
       };
 
       return InvokeFlow(query, parameters, options, InvokeMethod.Select, selectFunc);
