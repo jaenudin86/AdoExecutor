@@ -1,13 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoExecutor", "AdoExecutor\AdoExecutor.csproj", "{5EE4034A-03D7-4385-AC9C-9F5214F711EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoExecutor.UnitTest", "AdoExecutor.UnitTest\AdoExecutor.UnitTest.csproj", "{725A14E1-133B-4F0E-B037-D64CA0D53CE6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoExecutor.IntegrationTest.Sql", "AdoExecutor.IntegrationTest.Sql\AdoExecutor.IntegrationTest.Sql.csproj", "{2DBFE8FC-B71D-497D-AC36-67CD62886562}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E44EB980-9A09-4A5C-B1DA-5FE6555AF504}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

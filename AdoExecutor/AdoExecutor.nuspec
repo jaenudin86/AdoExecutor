@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>AdoExecutor</id>
+    <version>1.0.9</version>
+    <title>AdoExecutor</title>
+    <authors>Tomasz Reformat</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Helpers for execute ADO Queries</description>
+    <tags>ADO.NET, ADO, SQL, Database</tags>
+  </metadata>
+  <files>
+    <file src="..\Bin\AdoExecutor.dll" target="lib\net40\" />
+    <file src="..\Bin\AdoExecutor.pdb" target="lib\net40\" />
+  </files>
+</package>
