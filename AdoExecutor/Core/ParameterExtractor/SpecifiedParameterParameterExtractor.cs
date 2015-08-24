@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using AdoExecutor.Core.Parameter;
 using AdoExecutor.Core.ParameterExtractor.Infrastructure;
@@ -40,7 +41,7 @@ namespace AdoExecutor.Core.ParameterExtractor
     {
       IDbDataParameter dataParameter = context.Configuration.DataObjectFactory.CreateDataParameter();
       dataParameter.ParameterName = parameter.ParameterName;
-      dataParameter.Value = parameter.Value;
+      dataParameter.Value = parameter.Value ?? DBNull.Value;
 
       if (parameter.DbType.HasValue)
         dataParameter.DbType = parameter.DbType.Value;

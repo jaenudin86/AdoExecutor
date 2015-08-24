@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ParameterExtractor.Infrastructure;
 
@@ -22,7 +23,7 @@ namespace AdoExecutor.Core.ParameterExtractor
       {
         IDbDataParameter dataParameter = context.Configuration.DataObjectFactory.CreateDataParameter();
         dataParameter.ParameterName = column.ColumnName;
-        dataParameter.Value = parameters.Rows[0][column];
+        dataParameter.Value = parameters.Rows[0][column] ?? DBNull.Value;
 
         context.Command.Parameters.Add(dataParameter);
       }
