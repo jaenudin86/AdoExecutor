@@ -30,7 +30,7 @@ namespace AdoExecutor.Core.ParameterExtractor
 
       foreach (var parameter in parameters)
       {
-        if (string.IsNullOrWhiteSpace(parameter.Key))
+        if (string.IsNullOrEmpty(parameter.Key))
           throw new AdoExecutorException("Dictionary item key cannot be null or empty.");
 
         if (parameter.Value == null)

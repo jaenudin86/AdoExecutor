@@ -1,31 +1,52 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoExecutor", "AdoExecutor\AdoExecutor.csproj", "{5EE4034A-03D7-4385-AC9C-9F5214F711EE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoExecutor.UnitTest", "AdoExecutor.UnitTest\AdoExecutor.UnitTest.csproj", "{725A14E1-133B-4F0E-B037-D64CA0D53CE6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoExecutor.IntegrationTest.Sql", "AdoExecutor.IntegrationTest.Sql\AdoExecutor.IntegrationTest.Sql.csproj", "{2DBFE8FC-B71D-497D-AC36-67CD62886562}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E44EB980-9A09-4A5C-B1DA-5FE6555AF504}"
 	ProjectSection(SolutionItems) = preProject
+		.nuget\AdoExecutor.nuspec = .nuget\AdoExecutor.nuspec
+		.nuget\CreateNupkg.bat = .nuget\CreateNupkg.bat
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoExecutor.NET20", "AdoExecutor.NET20\AdoExecutor.NET20.csproj", "{79EBE69C-1409-4DC6-BBEB-071723C1D791}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoExecutor.NET30", "AdoExecutor.NET30\AdoExecutor.NET30.csproj", "{FCEF76F4-0EB8-491E-B0C1-2EBE1A05CBC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoExecutor.NET35", "AdoExecutor.NET35\AdoExecutor.NET35.csproj", "{2C652282-B26D-4ADD-BA42-88D008C44D8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoExecutor.NET40", "AdoExecutor.NET40\AdoExecutor.NET40.csproj", "{08082E56-1B91-4E5F-93EE-EA6C7627D119}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoExecutor.NET45", "AdoExecutor.NET45\AdoExecutor.NET45.csproj", "{4F4B638E-2A3E-4DCD-8497-F80A76F7F67A}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AdoExecutor.Shared", "AdoExecutor.Shared\AdoExecutor.Shared.shproj", "{9FBECD8E-1CFE-491B-B04E-BFF217695309}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assembly", "Assembly", "{B41C147F-CC49-436C-B312-E5072BE845EC}"
+	ProjectSection(SolutionItems) = preProject
+		Assembly\SharedAssemblyInfo.cs = Assembly\SharedAssemblyInfo.cs
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		AdoExecutor.Shared\AdoExecutor.Shared.projitems*{4f4b638e-2a3e-4dcd-8497-f80a76f7f67a}*SharedItemsImports = 4
+		AdoExecutor.Shared\AdoExecutor.Shared.projitems*{fcef76f4-0eb8-491e-b0c1-2ebe1a05cbc5}*SharedItemsImports = 4
+		AdoExecutor.Shared\AdoExecutor.Shared.projitems*{08082e56-1b91-4e5f-93ee-ea6c7627d119}*SharedItemsImports = 4
+		AdoExecutor.Shared\AdoExecutor.Shared.projitems*{2c652282-b26d-4add-ba42-88d008c44d8c}*SharedItemsImports = 4
+		AdoExecutor.Shared\AdoExecutor.Shared.projitems*{9fbecd8e-1cfe-491b-b04e-bff217695309}*SharedItemsImports = 13
+		AdoExecutor.Shared\AdoExecutor.Shared.projitems*{79ebe69c-1409-4dc6-bbeb-071723c1d791}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5EE4034A-03D7-4385-AC9C-9F5214F711EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5EE4034A-03D7-4385-AC9C-9F5214F711EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5EE4034A-03D7-4385-AC9C-9F5214F711EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5EE4034A-03D7-4385-AC9C-9F5214F711EE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{725A14E1-133B-4F0E-B037-D64CA0D53CE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{725A14E1-133B-4F0E-B037-D64CA0D53CE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{725A14E1-133B-4F0E-B037-D64CA0D53CE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -34,6 +55,26 @@ Global
 		{2DBFE8FC-B71D-497D-AC36-67CD62886562}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DBFE8FC-B71D-497D-AC36-67CD62886562}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DBFE8FC-B71D-497D-AC36-67CD62886562}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79EBE69C-1409-4DC6-BBEB-071723C1D791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79EBE69C-1409-4DC6-BBEB-071723C1D791}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79EBE69C-1409-4DC6-BBEB-071723C1D791}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79EBE69C-1409-4DC6-BBEB-071723C1D791}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCEF76F4-0EB8-491E-B0C1-2EBE1A05CBC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCEF76F4-0EB8-491E-B0C1-2EBE1A05CBC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCEF76F4-0EB8-491E-B0C1-2EBE1A05CBC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCEF76F4-0EB8-491E-B0C1-2EBE1A05CBC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C652282-B26D-4ADD-BA42-88D008C44D8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C652282-B26D-4ADD-BA42-88D008C44D8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C652282-B26D-4ADD-BA42-88D008C44D8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C652282-B26D-4ADD-BA42-88D008C44D8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08082E56-1B91-4E5F-93EE-EA6C7627D119}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08082E56-1B91-4E5F-93EE-EA6C7627D119}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08082E56-1B91-4E5F-93EE-EA6C7627D119}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08082E56-1B91-4E5F-93EE-EA6C7627D119}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F4B638E-2A3E-4DCD-8497-F80A76F7F67A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F4B638E-2A3E-4DCD-8497-F80A76F7F67A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F4B638E-2A3E-4DCD-8497-F80A76F7F67A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F4B638E-2A3E-4DCD-8497-F80A76F7F67A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

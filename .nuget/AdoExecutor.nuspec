@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>AdoExecutor</id>
+    <version>1.0.10</version>
+    <title>AdoExecutor</title>
+    <authors>Tomasz Reformat</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Helpers for execute ADO Queries</description>
+    <tags>ADO.NET, ADO, SQL, Database</tags>
+    <projectUrl>https://github.com/treformat/AdoExecutor</projectUrl>
+  </metadata>
+  <files>
+    <file src="Bin\NET20\AdoExecutor.dll" target="lib\net20\" />
+    <file src="Bin\NET20\AdoExecutor.pdb" target="lib\net20\" />
+
+    <file src="Bin\NET30\AdoExecutor.dll" target="lib\net30\" />
+    <file src="Bin\NET30\AdoExecutor.pdb" target="lib\net30\" />
+
+    <file src="Bin\NET35\AdoExecutor.dll" target="lib\net35\" />
+    <file src="Bin\NET35\AdoExecutor.pdb" target="lib\net35\" />
+    
+    <file src="Bin\NET40\AdoExecutor.dll" target="lib\net40\" />
+    <file src="Bin\NET40\AdoExecutor.pdb" target="lib\net40\" />
+
+    <file src="Bin\NET45\AdoExecutor.dll" target="lib\net45\" />
+    <file src="Bin\NET45\AdoExecutor.pdb" target="lib\net45\" />
+  </files>
+</package>

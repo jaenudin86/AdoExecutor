@@ -38,9 +38,11 @@ namespace AdoExecutor.Core.Query
       get { return _connection ?? (_connection = PrepareConnection()); }
     }
 
+    protected delegate T ExecuteCommandDelegate<out T>(IDbCommand command); 
+
     public virtual int Execute(string query, object parameters = null, QueryOptions options = null)
     {
-      Func<IDbCommand, int> executeFunc = command => command.ExecuteNonQuery();
+      ExecuteCommandDelegate<int> executeFunc = command => command.ExecuteNonQuery();
 
       return InvokeFlow(query, parameters, options, InvokeMethod.Execute, executeFunc);
     }
@@ -52,7 +54,7 @@ namespace AdoExecutor.Core.Query
 
     public virtual T Select<T>(string query, object parameters = null, QueryOptions options = null)
     {
-      Func<IDbCommand, T> selectFunc = command =>
+      ExecuteCommandDelegate<T> selectFunc = command =>
       {
         using (var dataReader = command.ExecuteReader())
         {
@@ -99,7 +101,7 @@ namespace AdoExecutor.Core.Query
     }
 
     protected virtual T InvokeFlow<T>(string query, object parameters, QueryOptions options, InvokeMethod invokeMethod,
-      Func<IDbCommand, T> executeCommandFunc)
+      ExecuteCommandDelegate<T> executeCommandFunc)
     {
       var resultType = typeof (T);
 

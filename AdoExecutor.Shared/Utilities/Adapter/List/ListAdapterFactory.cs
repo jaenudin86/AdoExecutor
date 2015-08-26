@@ -16,9 +16,12 @@ namespace AdoExecutor.Utilities.Adapter.List
       {
         Type sourceGenericTypeDefinition = sourceListType.GetGenericTypeDefinition();
 
-        if (sourceGenericTypeDefinition == typeof (List<>) ||
-            sourceGenericTypeDefinition == typeof (Collection<>) ||
-            sourceGenericTypeDefinition == typeof (ObservableCollection<>))
+        if (sourceGenericTypeDefinition == typeof (List<>) 
+            || sourceGenericTypeDefinition == typeof (Collection<>)
+            #if NET30 || NET35 || NET40 || NET45
+            || sourceGenericTypeDefinition == typeof (ObservableCollection<>)
+            #endif
+            )
         {
           return new GenericListAdapter(sourceListType);
         }
@@ -35,8 +38,10 @@ namespace AdoExecutor.Utilities.Adapter.List
         if (sourceGenericTypeDefinition == typeof (ReadOnlyCollection<>))
           return new ReadOnlyCollectionListAdapter(sourceListType);
 
+        #if NET30 || NET35 || NET40 || NET45
         if (sourceGenericTypeDefinition == typeof (ReadOnlyObservableCollection<>))
           return new ReadOnlyObservableCollectionListAdapter(sourceListType);
+        #endif
       }
 
       return null;

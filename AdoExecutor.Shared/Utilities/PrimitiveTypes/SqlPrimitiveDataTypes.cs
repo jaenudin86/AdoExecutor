@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using AdoExecutor.Utilities.PrimitiveTypes.Infrastructure;
 
 namespace AdoExecutor.Utilities.PrimitiveTypes
@@ -56,7 +55,11 @@ namespace AdoExecutor.Utilities.PrimitiveTypes
 
     public virtual Type[] GetAllSqlPrimitiveTypes()
     {
-      return PrimitiveDataTypes.Keys.ToArray();
+      Type[] primitivesTypes = new Type[PrimitiveDataTypes.Count];
+
+      PrimitiveDataTypes.Keys.CopyTo(primitivesTypes, 0);
+
+      return primitivesTypes;
     }
 
     public bool IsNull(object value)

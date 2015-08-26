@@ -42,7 +42,10 @@ namespace AdoExecutor.Core.QueryFactory
         new ObjectConverter()));
       configuration.ObjectBuilders.Add(new DefinedTypeObjectBuilder(new ListAdapterFactory(),
         new SqlPrimitiveDataTypes(), new ObjectConverter()));
+
+      #if NET40 || NET45
       configuration.ObjectBuilders.Add(new DynamicObjectBuilder(new ListAdapterFactory()));
+      #endif
     }
 
     protected virtual void ConfigureInterceptors(Configuration.Configuration configuration)

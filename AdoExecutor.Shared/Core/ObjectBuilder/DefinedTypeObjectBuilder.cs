@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Data;
-using System.Linq;
 using System.Reflection;
 using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ObjectBuilder.Infrastructure;
@@ -97,8 +96,7 @@ namespace AdoExecutor.Core.ObjectBuilder
       for (int i = 0; i < dataReader.FieldCount; i++)
       {
         string columnName = dataReader.GetName(i);
-        PropertyInfo property =
-          typeProperties.SingleOrDefault(x => x.Name.Equals(columnName, StringComparison.OrdinalIgnoreCase));
+        PropertyInfo property = GetPropertyInfo(typeProperties, columnName);
 
         if (property != null)
         {
@@ -109,6 +107,17 @@ namespace AdoExecutor.Core.ObjectBuilder
       }
 
       return instance;
+    }
+
+    private PropertyInfo GetPropertyInfo(PropertyInfo[] properties, string columnName)
+    {
+      foreach (PropertyInfo propertyInfo in properties)
+      {
+        if (propertyInfo.Name.Equals(columnName, StringComparison.OrdinalIgnoreCase))
+          return propertyInfo;
+      }
+
+      return null;
     }
   }
 }

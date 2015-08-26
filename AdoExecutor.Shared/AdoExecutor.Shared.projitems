@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>9fbecd8e-1cfe-491b-b04e-bff217695309</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>AdoExecutor.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Configuration\Configuration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Configuration\Infrastructure\IConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ConnectionString\AppConfigConnectionStringProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ConnectionString\ConstantConnectionStringProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ConnectionString\Infrastructure\IConnectionStringProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Context\Infrastructure\AdoExecutorContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Context\Infrastructure\InvokeMethod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\DataObjectFactory\Infrastructure\IDataObjectFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\DataObjectFactory\OdbcDataObjectFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\DataObjectFactory\OleDbDataObjectFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\DataObjectFactory\SqlDataObjectFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Exception\Infrastructure\AdoExecutorException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Interception\ConsoleLoggerInterceptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Interception\Infrastructure\IInterceptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Interception\Infrastructure\InterceptorErrorContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Interception\Infrastructure\InterceptorExitContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Interception\Infrastructure\InterceptorSuccessContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Interception\LoggerInterceptorBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\DataSetObjectBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\DataTableObjectBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\DefinedTypeObjectBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\DynamicObjectBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\Infrastructure\IObjectBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\Infrastructure\ObjectBuilderContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\SimpleTypeObjectBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ParameterExtractor\DataTableParameterExtractor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ParameterExtractor\DictionaryParameterExtractor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ParameterExtractor\EnumerableParameterExtractor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ParameterExtractor\Infrastructure\IParameterExtractor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ParameterExtractor\ObjectPropertyParameterExtractor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ParameterExtractor\SpecifiedParameterParameterExtractor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Parameter\SpecifiedParameter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\QueryFactory\Infrastructure\IQueryFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\QueryFactory\QueryFactoryBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\QueryFactory\SqlQueryFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Query\Infrastructure\Command.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Query\Infrastructure\IQuery.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Query\Infrastructure\QueryOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Query\Internal\InterceptoInvoker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Query\Internal\ObjectBuilderInvoker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Query\Internal\ParameterExtractorInvoker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Query\Internal\QueryOptionsConfigurator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Query\Query.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Adapter\DataTable\DataTableAdapter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Adapter\DataTable\Infrastructure\IDataTableAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Adapter\List\AbstractGenericListAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Adapter\List\ArrayListAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Adapter\List\GenericListAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Adapter\List\Infrastructure\IListAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Adapter\List\Infrastructure\IListAdapterFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Adapter\List\ListAdapterFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Adapter\List\ReadOnlyCollectionListAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Adapter\List\ReadOnlyObservableCollectionListAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ObjectConverter\Infrastructure\IObjectConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ObjectConverter\ObjectConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\PrimitiveTypes\Infrastructure\ISqlPrimitiveDataTypes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\PrimitiveTypes\SqlPrimitiveDataTypes.cs" />
+  </ItemGroup>
+</Project>

@@ -76,12 +76,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AdoExecutor\AdoExecutor.csproj">
-      <Project>{5ee4034a-03d7-4385-ac9c-9f5214f711ee}</Project>
-      <Name>AdoExecutor</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="SqlScripts\CreateDatabase.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
