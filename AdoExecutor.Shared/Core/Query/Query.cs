@@ -170,24 +170,24 @@ namespace AdoExecutor.Core.Query
 
     public void Dispose()
     {
-      InternalDispose();
-      GC.SuppressFinalize(this);
-    }
-
-    protected void InternalDispose()
-    {
       if (!_isDisposed)
       {
-        Connection.Dispose();
+        DisposeConnection();
         DisposeTransaction();
       }
 
       _isDisposed = true;
+
+      GC.SuppressFinalize(this);
     }
 
-    ~Query()
+    private void DisposeConnection()
     {
-      InternalDispose();
+      if (_connection != null)
+      {
+        _connection.Dispose();
+        _connection = null;
+      }
     }
 
     private void DisposeTransaction()
