@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("AdoExecutor")]
@@ -15,3 +16,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.11")]
 [assembly: AssemblyFileVersion("1.0.11")]
 [assembly: AssemblyInformationalVersion("1.0.11")]
+
+#if !SNK
+[assembly: InternalsVisibleTo("AdoExecutor.UnitTest")]
+#endif

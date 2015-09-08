@@ -219,3 +219,5 @@ pip-log.txt
 OpenCover/
 packages/*
 !packages/repositories.config
+Bin/
+Tests/
