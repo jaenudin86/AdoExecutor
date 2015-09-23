@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Data;
 using System.Reflection;
+using AdoExecutor.Core.Entities;
 using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ParameterExtractor.Infrastructure;
 using AdoExecutor.Utilities.PrimitiveTypes.Infrastructure;
@@ -41,8 +42,10 @@ namespace AdoExecutor.Core.ParameterExtractor
         if (!_sqlPrimitiveDataTypes.IsSqlPrimitiveType(propertyInfo.PropertyType))
           throw new AdoExecutorException("Object property must be sql primitive type.");
 
+        var sqlNameAttribute = Attribute.GetCustomAttribute(propertyInfo, typeof (SqlNameAttribute)) as SqlNameAttribute;
+
         IDbDataParameter dataParameter = context.Configuration.DataObjectFactory.CreateDataParameter();
-        dataParameter.ParameterName = propertyInfo.Name;
+        dataParameter.ParameterName = sqlNameAttribute != null ? sqlNameAttribute.Name : propertyInfo.Name;
         dataParameter.Value = propertyInfo.GetValue(context.Parameters, null) ?? DBNull.Value;
 
         if (_sqlPrimitiveDataTypes.IsNull(dataParameter.Value))
