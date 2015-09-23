@@ -53,7 +53,7 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder.Infrastructure
       Assert.AreSame(connection, context.Connection);
       Assert.AreSame(command, context.Command);
       Assert.AreSame(configuration, context.Configuration);
-      Assert.AreSame(dataReader, context.DataReader);
+      Assert.AreSame(dataReader, context.DataReaderAdapter);
 
       CollectionAssert.IsEmpty(context.Bag);
     }

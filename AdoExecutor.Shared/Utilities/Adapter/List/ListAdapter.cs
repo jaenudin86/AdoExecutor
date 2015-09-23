@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections;
 using AdoExecutor.Utilities.Adapter.List.Infrastructure;
+using System.Collections.Generic;
 
 namespace AdoExecutor.Shared.Utilities.Adapter.List
 {
-  public class ArrayListAdapter : IListAdapter
+  public class ListAdapter : IListAdapter
   {
-    private readonly ArrayList _innerList;
+    private readonly IList _innerList;
 
-    public ArrayListAdapter(Type itemType)
+    public ListAdapter(Type itemType)
     {
       ItemType = itemType;
-      _innerList = new ArrayList();
+
+      var listType = typeof(List<>).MakeGenericType(itemType);
+      _innerList = (IList)Activator.CreateInstance(listType);
     }
 
     public void AddItem(object item)
@@ -21,7 +24,7 @@ namespace AdoExecutor.Shared.Utilities.Adapter.List
 
     public IList GetCollection()
     {
-      return _innerList.ToArray(ItemType);
+      return _innerList;
     }
 
     public Type ItemType { get; private set; }

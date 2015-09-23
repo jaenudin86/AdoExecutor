@@ -1,67 +1,45 @@
 ﻿#if NET40 || NET45
 
-using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Dynamic;
-using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ObjectBuilder.Infrastructure;
-using AdoExecutor.Utilities.Adapter.List.Infrastructure;
+using AdoExecutor.Shared.Utilities.Adapter.DataReader.Infrastructure;
 
 namespace AdoExecutor.Core.ObjectBuilder
 {
   public class DynamicObjectBuilder : IObjectBuilder
   {
-    private readonly IListAdapterFactory _listAdapterFactory;
-
-    public DynamicObjectBuilder(IListAdapterFactory listAdapterFactory)
-    {
-      if (listAdapterFactory == null)
-        throw new ArgumentNullException("listAdapterFactory");
-
-      _listAdapterFactory = listAdapterFactory;
-    }
-
     public bool CanProcess(ObjectBuilderContext context)
     {
       if (context.ResultType == typeof (object))
         return true;
-
-      IListAdapter listAdapter = _listAdapterFactory.CreateListAdapter(context.ResultType);
-
-      if (listAdapter != null)
-        return listAdapter.ElementType == typeof (object);
 
       return false;
     }
 
     public object CreateInstance(ObjectBuilderContext context)
     {
-      IListAdapter listAdapter = _listAdapterFactory.CreateListAdapter(context.ResultType);
-
-      if (listAdapter != null)
+      if (!context.DataReaderAdapter.IsOpen)
       {
-        while (context.DataReader.Read() && !context.DataReader.IsClosed)
-          listAdapter.AdapterList.Add(CreateDynamicObject(context.DataReader));
+        context.DataReaderAdapter.Open();
 
-        return listAdapter.ConverToSourceList();
+        if(!context.DataReaderAdapter.Read())
+          return null;
       }
-      else
-      {
-        if (context.DataReader.Read() && !context.DataReader.IsClosed)
-          return CreateDynamicObject(context.DataReader);
 
-        return null;
-      }
+      if (!context.DataReaderAdapter.IsClosed)
+        return CreateDynamicObject(context.DataReaderAdapter);
+
+      return null;
     }
 
-    private object CreateDynamicObject(IDataReader dataReader)
+    private object CreateDynamicObject(IDataReaderAdapter dataReaderAdapter)
     {
       var result = new ExpandoObject();
       var dictionaryResult = (IDictionary<string, object>) result;
 
-      for (int i = 0; i < dataReader.FieldCount; i++)
-        dictionaryResult[dataReader.GetName(i)] = dataReader[i];
+      for (var i = 0; i < dataReaderAdapter.FieldCount; i++)
+        dictionaryResult[dataReaderAdapter.GetName(i)] = dataReaderAdapter[i];
 
       return result;
     }

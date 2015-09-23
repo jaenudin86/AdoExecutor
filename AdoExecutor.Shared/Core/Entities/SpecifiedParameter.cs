@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 
-namespace AdoExecutor.Core.Parameter
+namespace AdoExecutor.Core.Entities
 {
   public class SpecifiedParameter
   {

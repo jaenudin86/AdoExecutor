@@ -16,7 +16,7 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
   public class SimpleTypeObjectBuilderTests : ObjectBuilderTestsBase
   {
     private IListAdapterFactory _listAdapterFactoryFake;
-    private SimpleTypeObjectBuilder _objectBuilder;
+    private SqlSimpleTypeObjectBuilder _objectBuilder;
     private IObjectConverter _objectConverter;
     private ISqlPrimitiveDataTypes _sqlPrimitiveDataTypes;
 
@@ -26,7 +26,7 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
       _listAdapterFactoryFake = A.Fake<IListAdapterFactory>();
       _sqlPrimitiveDataTypes = A.Fake<ISqlPrimitiveDataTypes>();
       _objectConverter = A.Fake<IObjectConverter>();
-      _objectBuilder = new SimpleTypeObjectBuilder(_sqlPrimitiveDataTypes, _listAdapterFactoryFake, _objectConverter);
+      _objectBuilder = new SqlSimpleTypeObjectBuilder(_sqlPrimitiveDataTypes, _listAdapterFactoryFake, _objectConverter);
     }
 
     [Test]
@@ -34,11 +34,11 @@ namespace AdoExecutor.UnitTest.Core.ObjectBuilder
     {
       //ASSERT
       Assert.Throws<ArgumentNullException>(
-        () => new SimpleTypeObjectBuilder(null, _listAdapterFactoryFake, _objectConverter));
+        () => new SqlSimpleTypeObjectBuilder(null, _listAdapterFactoryFake, _objectConverter));
       Assert.Throws<ArgumentNullException>(
-        () => new SimpleTypeObjectBuilder(_sqlPrimitiveDataTypes, null, _objectConverter));
+        () => new SqlSimpleTypeObjectBuilder(_sqlPrimitiveDataTypes, null, _objectConverter));
       Assert.Throws<ArgumentNullException>(
-        () => new SimpleTypeObjectBuilder(_sqlPrimitiveDataTypes, _listAdapterFactoryFake, null));
+        () => new SqlSimpleTypeObjectBuilder(_sqlPrimitiveDataTypes, _listAdapterFactoryFake, null));
     }
 
     [Test]

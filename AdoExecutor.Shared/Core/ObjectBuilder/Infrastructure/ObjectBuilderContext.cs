@@ -1,29 +1,23 @@
 ﻿using System;
-using System.Data;
-using AdoExecutor.Core.Configuration.Infrastructure;
-using AdoExecutor.Core.Context.Infrastructure;
+using AdoExecutor.Shared.Utilities.Adapter.DataReader.Infrastructure;
 
 namespace AdoExecutor.Core.ObjectBuilder.Infrastructure
 {
-  public class ObjectBuilderContext : AdoExecutorContext
+  public class ObjectBuilderContext
   {
-    public ObjectBuilderContext(
-      string query, 
-      object parameters, 
-      Type resultType,
-      InvokeMethod invokeMethod, 
-      IDbConnection connection, 
-      IDbCommand command,
-      IConfiguration configuration, 
-      IDataReader dataReader)
-      : base(query, parameters, resultType, invokeMethod, connection, command, configuration)
+    public ObjectBuilderContext(Type resultType, IDataReaderAdapter dataReaderAdapter)
     {
-      if (dataReader == null)
-        throw new ArgumentNullException("dataReader");
+      if (resultType == null)
+        throw new ArgumentNullException(nameof(resultType));
 
-      DataReader = dataReader;
+      if (dataReaderAdapter == null)
+        throw new ArgumentNullException(nameof(dataReaderAdapter));
+
+      ResultType = resultType;
+      DataReaderAdapter = dataReaderAdapter;
     }
 
-    public IDataReader DataReader { get; private set; }
+    public Type ResultType { get; private set; }
+    public IDataReaderAdapter DataReaderAdapter { get; private set; }
   }
 }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
-using System.Data;
 using System.Reflection;
+using AdoExecutor.Core.Entities;
 using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ObjectBuilder.Infrastructure;
-using AdoExecutor.Utilities.Adapter.List.Infrastructure;
+using AdoExecutor.Shared.Utilities.Adapter.DataReader.Infrastructure;
 using AdoExecutor.Utilities.ObjectConverter.Infrastructure;
 using AdoExecutor.Utilities.PrimitiveTypes.Infrastructure;
 
@@ -12,51 +12,40 @@ namespace AdoExecutor.Core.ObjectBuilder
 {
   public class DefinedTypeObjectBuilder : IObjectBuilder
   {
-    private readonly IListAdapterFactory _listAdapterFactory;
     private readonly IObjectConverter _objectConverter;
     private readonly ISqlPrimitiveDataTypes _sqlPrimitiveDataTypes;
 
-    public DefinedTypeObjectBuilder(IListAdapterFactory listAdapterFactory, ISqlPrimitiveDataTypes sqlPrimitiveDataTypes,
+    public DefinedTypeObjectBuilder(ISqlPrimitiveDataTypes sqlPrimitiveDataTypes,
       IObjectConverter objectConverter)
     {
-      if (listAdapterFactory == null)
-        throw new ArgumentNullException("listAdapterFactory");
-
       if (sqlPrimitiveDataTypes == null)
-        throw new ArgumentNullException("sqlPrimitiveDataTypes");
+        throw new ArgumentNullException(nameof(sqlPrimitiveDataTypes));
 
       if (objectConverter == null)
-        throw new ArgumentNullException("objectConverter");
+        throw new ArgumentNullException(nameof(objectConverter));
 
-      _listAdapterFactory = listAdapterFactory;
       _sqlPrimitiveDataTypes = sqlPrimitiveDataTypes;
       _objectConverter = objectConverter;
     }
 
     public bool CanProcess(ObjectBuilderContext context)
     {
-      IListAdapter listAdapter = _listAdapterFactory.CreateListAdapter(context.ResultType);
-      Type resultType = listAdapter != null ? listAdapter.ElementType : context.ResultType;
-
-      if (resultType.IsValueType)
+      if (context.ResultType.IsAbstract || context.ResultType.IsInterface)
         return false;
 
-      if (resultType.IsAbstract || resultType.IsInterface)
+      if (Nullable.GetUnderlyingType(context.ResultType) != null)
         return false;
 
-      if (Nullable.GetUnderlyingType(resultType) != null)
+      if (context.ResultType.GetInterface(typeof (IEnumerable).FullName) != null)
         return false;
 
-      if (resultType.GetInterface(typeof (IEnumerable).FullName) != null)
+      if (context.ResultType == typeof (object))
         return false;
 
-      if (resultType == typeof (object))
+      if (_sqlPrimitiveDataTypes.IsSqlPrimitiveType(context.ResultType))
         return false;
 
-      if (_sqlPrimitiveDataTypes.IsSqlPrimitiveType(resultType))
-        return false;
-
-      if (resultType.GetConstructor(Type.EmptyTypes) == null)
+      if (context.ResultType.GetConstructor(Type.EmptyTypes) == null)
         return false;
 
       return true;
@@ -64,44 +53,39 @@ namespace AdoExecutor.Core.ObjectBuilder
 
     public object CreateInstance(ObjectBuilderContext context)
     {
-      IListAdapter listAdapter = _listAdapterFactory.CreateListAdapter(context.ResultType);
-
-      if (listAdapter != null)
+      if (!context.DataReaderAdapter.IsOpen)
       {
-        while (context.DataReader.Read() && !context.DataReader.IsClosed)
+        context.DataReaderAdapter.Open();
+
+        if (!context.DataReaderAdapter.Read())
         {
-          object objectInstance = CreateSingleInstance(context.DataReader, listAdapter.ElementType);
-          listAdapter.AdapterList.Add(objectInstance);
+          if (!context.ResultType.IsValueType)
+            return null;
+
+          throw new AdoExecutorException("Cannot read data from reader.");
         }
-
-        return listAdapter.ConverToSourceList();
       }
-      else
-      {
-        while (context.DataReader.Read() && !context.DataReader.IsClosed)
-          return CreateSingleInstance(context.DataReader, context.ResultType);
 
-        if(!context.ResultType.IsValueType)
-          return null;
+      if (!context.DataReaderAdapter.IsClosed)
+        return CreateSingleInstance(context.DataReaderAdapter, context.ResultType);
 
-        throw new AdoExecutorException("Cannot read data from reader.");
-      }
+      throw new AdoExecutorException("Cannot read data from reader.");
     }
 
-    private object CreateSingleInstance(IDataReader dataReader, Type instanceType)
+    private object CreateSingleInstance(IDataReaderAdapter dataReaderAdapter, Type instanceType)
     {
-      object instance = Activator.CreateInstance(instanceType);
-      PropertyInfo[] typeProperties = instanceType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+      var instance = Activator.CreateInstance(instanceType);
+      var typeProperties = instanceType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-      for (int i = 0; i < dataReader.FieldCount; i++)
+      for (var i = 0; i < dataReaderAdapter.FieldCount; i++)
       {
-        string columnName = dataReader.GetName(i);
-        PropertyInfo property = GetPropertyInfo(typeProperties, columnName);
+        var columnName = dataReaderAdapter.GetName(i);
+        var property = GetPropertyInfo(typeProperties, columnName);
 
         if (property != null)
         {
-          object value = dataReader.GetValue(i);
-          object convertedValue = _objectConverter.ChangeType(property.PropertyType, value);
+          var value = dataReaderAdapter.GetValue(i);
+          var convertedValue = _objectConverter.ChangeType(property.PropertyType, value);
           property.SetValue(instance, convertedValue, null);
         }
       }
@@ -111,8 +95,17 @@ namespace AdoExecutor.Core.ObjectBuilder
 
     private PropertyInfo GetPropertyInfo(PropertyInfo[] properties, string columnName)
     {
-      foreach (PropertyInfo propertyInfo in properties)
+      foreach (var propertyInfo in properties)
       {
+        var propertyAttribute =
+          Attribute.GetCustomAttribute(propertyInfo, typeof (SqlNameAttribute)) as SqlNameAttribute;
+
+        if (propertyAttribute != null)
+        {
+          if (propertyInfo.Name.Equals(propertyAttribute.Name, StringComparison.OrdinalIgnoreCase))
+            return propertyInfo;
+        }
+
         if (propertyInfo.Name.Equals(columnName, StringComparison.OrdinalIgnoreCase))
           return propertyInfo;
       }

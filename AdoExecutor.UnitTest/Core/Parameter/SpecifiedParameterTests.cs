@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using AdoExecutor.Core.Parameter;
+using AdoExecutor.Core.Entities;
 using FakeItEasy;
 using FakeItEasy.ExtensionSyntax.Full;
 using NUnit.Framework;

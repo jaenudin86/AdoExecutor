@@ -38,7 +38,7 @@ namespace AdoExecutor.Core.QueryFactory
     {
       configuration.ObjectBuilders.Add(new DataSetObjectBuilder(new DataTableAdapter()));
       configuration.ObjectBuilders.Add(new DataTableObjectBuilder(new DataTableAdapter()));
-      configuration.ObjectBuilders.Add(new SimpleTypeObjectBuilder(new SqlPrimitiveDataTypes(), new ListAdapterFactory(),
+      configuration.ObjectBuilders.Add(new SqlSimpleTypeObjectBuilder(new SqlPrimitiveDataTypes(), new ListAdapterFactory(),
         new ObjectConverter()));
       configuration.ObjectBuilders.Add(new DefinedTypeObjectBuilder(new ListAdapterFactory(),
         new SqlPrimitiveDataTypes(), new ObjectConverter()));

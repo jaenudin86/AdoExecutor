@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using AdoExecutor.Core.Parameter;
+using AdoExecutor.Core.Entities;
 using AdoExecutor.Core.QueryFactory;
 using AdoExecutor.Core.QueryFactory.Infrastructure;
 using AdoExecutor.IntegrationTest.Sql.Helper.TestDbTypeTable;
