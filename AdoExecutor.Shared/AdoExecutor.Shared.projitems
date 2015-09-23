@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Configuration\Configuration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Configuration\Infrastructure\IConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ConnectionString\AppConfigConnectionStringProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ConnectionString\AppConfigOrConstantConnectionStringProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ConnectionString\ConstantConnectionStringProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ConnectionString\Infrastructure\IConnectionStringProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Context\Infrastructure\AdoExecutorContext.cs" />

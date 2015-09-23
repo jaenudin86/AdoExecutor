@@ -12,7 +12,7 @@ namespace AdoExecutor.Core.ConnectionString
     public AppConfigConnectionStringProvider(string connectionStringAppConfigKey)
     {
       if (connectionStringAppConfigKey == null)
-        throw new ArgumentNullException("connectionStringAppConfigKey");
+        throw new ArgumentNullException(nameof(connectionStringAppConfigKey));
 
       _connectionStringAppConfigKey = connectionStringAppConfigKey;
     }

@@ -1,24 +1,25 @@
 ﻿using System;
-using AdoExecutor.Core.ConnectionString;
 using AdoExecutor.Core.DataObjectFactory;
+using AdoExecutor.Shared.Core.ConnectionString;
 
 namespace AdoExecutor.Core.QueryFactory
 {
   public class SqlQueryFactory : QueryFactoryBase
   {
-    private readonly string _connectionStringAppConfigKey;
+    private readonly string _connectionStringOrAppConfigKey;
 
-    public SqlQueryFactory(string connectionStringAppConfigKey)
+    public SqlQueryFactory(string connectionStringOrAppConfigKey)
     {
-      if (connectionStringAppConfigKey == null)
-        throw new ArgumentNullException("connectionStringAppConfigKey");
+      if (connectionStringOrAppConfigKey == null)
+        throw new ArgumentNullException(nameof(connectionStringOrAppConfigKey));
 
-      _connectionStringAppConfigKey = connectionStringAppConfigKey;
+      _connectionStringOrAppConfigKey = connectionStringOrAppConfigKey;
     }
 
     protected override void ConfigureConnectionStringProvider(Configuration.Configuration configuration)
     {
-      configuration.ConnectionStringProvider = new AppConfigConnectionStringProvider(_connectionStringAppConfigKey);
+      configuration.ConnectionStringProvider =
+        new AppConfigOrConstantConnectionStringProvider(_connectionStringOrAppConfigKey);
     }
 
     protected override void ConfigureDataObjectFactory(Configuration.Configuration configuration)
