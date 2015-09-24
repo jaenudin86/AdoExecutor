@@ -17,7 +17,10 @@ namespace AdoExecutor.Shared.Core.ObjectBuilder
       if (!context.DataReaderAdapter.IsOpen)
       {
         context.DataReaderAdapter.Open();
+      }
 
+      if (!context.DataReaderAdapter.IsReading)
+      {
         if (!context.DataReaderAdapter.Read())
           return null;
       }

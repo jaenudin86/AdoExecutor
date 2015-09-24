@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET30 || NET35 || NET40 || NET45
+using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using AdoExecutor.Utilities.Adapter.List.Infrastructure;
@@ -30,3 +31,4 @@ namespace AdoExecutor.Shared.Utilities.Adapter.List
     public Type ItemType { get; private set; }
   }
 }
+#endif

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Data;
+using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Shared.Utilities.Adapter.DataReader.Infrastructure;
 
 namespace AdoExecutor.Shared.Utilities.Adapter.DataReader
 {
   public class DataReaderAdapter : IDataReaderAdapter, IDataReaderAccess
   {
-    private readonly IDataReader _dataReader;
+    private IDataReader _dataReader;
 
     public DataReaderAdapter(IDataReader dataReader)
     {
@@ -20,7 +21,7 @@ namespace AdoExecutor.Shared.Utilities.Adapter.DataReader
     {
       if(IsOpen)
         throw new Exception("Reader is already opened."); //TODO
-
+      
       IsOpen = true;
     }
 
@@ -37,33 +38,33 @@ namespace AdoExecutor.Shared.Utilities.Adapter.DataReader
       _dataReader.Close();
     }
 
-    public DataTable GetSchemaTable()
-    {
-      return _dataReader.GetSchemaTable();
-    }
-
     public bool NextResult()
     {
+      CheckIsOpen();
+
+      IsReading = false;
+      CurrentColumnIndex = 0;
+
       return _dataReader.NextResult();
     }
 
     public bool Read()
     {
+      CheckIsOpen();
+
+      IsReading = true;
       return _dataReader.Read();
     }
 
     public object GetValue(int i)
     {
+      CheckIsOpen();
       return _dataReader.GetValue(i);
-    }
-
-    public Type GetFiledType(int i)
-    {
-      return _dataReader.GetFieldType(i);
     }
 
     public string GetName(int i)
     {
+      CheckIsOpen();
       return _dataReader.GetName(i);
     }
 
@@ -82,6 +83,8 @@ namespace AdoExecutor.Shared.Utilities.Adapter.DataReader
       get { return _dataReader.FieldCount; }
     }
 
+    public bool IsReading { get; private set; }
+
     IDataReader IDataReaderAccess.DataReader
     {
       get
@@ -92,7 +95,15 @@ namespace AdoExecutor.Shared.Utilities.Adapter.DataReader
 
     public void Dispose()
     {
+      _dataReader.Close();
       _dataReader.Dispose();
+      _dataReader = null;
+    }
+
+    private void CheckIsOpen()
+    {
+      if (!IsOpen)
+        throw new AdoExecutorException("Before use DataReaderAdapter, first should be invoked Open method");
     }
   }
 }

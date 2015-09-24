@@ -38,6 +38,7 @@ namespace AdoExecutor.Shared.Utilities.Adapter.List
           return new ReadOnlyCollectionAdapter(itemType);
         }
 
+#if NET30 || NET35 || NET40 || NET45
         if (genericTypeDefinition == typeof(ObservableCollection<>))
         {
           return new ObservableCollectionAdapter(itemType);
@@ -47,9 +48,10 @@ namespace AdoExecutor.Shared.Utilities.Adapter.List
         {
           return new ReadOnlyObservableCollectionAdapter(itemType);
         }
+#endif
       }
 
-      throw new NotSupportedException($"Type '{collectionType}' is not supported collection type.");
+      return null;
     }
   }
 }

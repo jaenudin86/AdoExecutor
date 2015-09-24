@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Data;
 using System.Reflection;
 using AdoExecutor.Core.Entities;
 using AdoExecutor.Core.Exception.Infrastructure;
@@ -48,6 +49,9 @@ namespace AdoExecutor.Core.ObjectBuilder
       if (context.ResultType.GetConstructor(Type.EmptyTypes) == null)
         return false;
 
+      if(context.ResultType == typeof(DataTable) || context.ResultType == typeof(DataSet))
+        return false;
+
       return true;
     }
 
@@ -56,7 +60,10 @@ namespace AdoExecutor.Core.ObjectBuilder
       if (!context.DataReaderAdapter.IsOpen)
       {
         context.DataReaderAdapter.Open();
+      }
 
+      if (!context.DataReaderAdapter.IsReading)
+      {
         if (!context.DataReaderAdapter.Read())
         {
           if (!context.ResultType.IsValueType)

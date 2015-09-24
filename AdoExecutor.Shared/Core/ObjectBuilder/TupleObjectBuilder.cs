@@ -14,8 +14,8 @@ namespace AdoExecutor.Shared.Core.ObjectBuilder
   {
     private readonly IObjectBuilder[] _objectBuilders =
     {
+      new SqlSimpleTypeObjectBuilder(new SqlPrimitiveDataTypes(), new ObjectConverter()),
       new DefinedTypeObjectBuilder(new SqlPrimitiveDataTypes(), new ObjectConverter()),
-      new SqlSimpleTypeObjectBuilder(new SqlPrimitiveDataTypes(), new ObjectConverter())
     };
 
     public bool CanProcess(ObjectBuilderContext context)
@@ -39,7 +39,10 @@ namespace AdoExecutor.Shared.Core.ObjectBuilder
       if (!context.DataReaderAdapter.IsOpen)
       {
         context.DataReaderAdapter.Open();
+      }
 
+      if (!context.DataReaderAdapter.IsReading)
+      {
         if (!context.DataReaderAdapter.Read())
           return null;
       }

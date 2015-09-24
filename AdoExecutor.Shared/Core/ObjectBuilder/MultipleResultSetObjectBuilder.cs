@@ -1,5 +1,6 @@
 ﻿#if NET30 || NET35 || NET40 || NET45
 using System;
+using System.Collections.Generic;
 using AdoExecutor.Core.Exception.Infrastructure;
 using AdoExecutor.Core.ObjectBuilder;
 using AdoExecutor.Core.ObjectBuilder.Infrastructure;
@@ -17,13 +18,13 @@ namespace AdoExecutor.Shared.Core.ObjectBuilder
     {
       new CollectionObjectBuilder(new ListAdapterFactory()),
       new DataTableObjectBuilder(new DataTableAdapter()),
-      new DefinedTypeObjectBuilder(new SqlPrimitiveDataTypes(), new ObjectConverter()),
       new DictionaryObjectBuilder(),
       new SqlSimpleTypeObjectBuilder(new SqlPrimitiveDataTypes(), new ObjectConverter()),
 #if NET40 || NET45
       new TupleObjectBuilder(),
       new DynamicObjectBuilder(),
  #endif
+      new DefinedTypeObjectBuilder(new SqlPrimitiveDataTypes(), new ObjectConverter()),
     };
 
     public bool CanProcess(ObjectBuilderContext context)
@@ -34,37 +35,35 @@ namespace AdoExecutor.Shared.Core.ObjectBuilder
     public object CreateInstance(ObjectBuilderContext context)
     {
       var multipleResultSetGenericArguments = context.ResultType.GetGenericArguments();
-      var multipleData = new object[multipleResultSetGenericArguments.Length];
+      var multipleData = new List<object>();
+
+      if(context.DataReaderAdapter.IsOpen)
+        throw new AdoExecutorException("DataReader is already opened.");
 
       context.DataReaderAdapter.Open();
 
-      if (!context.DataReaderAdapter.Read())
-        return null;
-
-      while (!context.DataReaderAdapter.IsClosed)
+      for (int i = 0; i < multipleResultSetGenericArguments.Length; i++)
       {
-        if (context.DataReaderAdapter.FieldCount != 0)
-          throw new AdoExecutorException("DataReader has 0 filed count");
+        if (context.DataReaderAdapter.IsClosed)
+          break;
 
-        for (int i = 0; i < multipleResultSetGenericArguments.Length; i++)
-        {
-          var subContext = new ObjectBuilderContext(multipleResultSetGenericArguments[i], context.DataReaderAdapter);
-          var objectBuilder = GetObjectBuilder(subContext);
+        var subContext = new ObjectBuilderContext(multipleResultSetGenericArguments[i], context.DataReaderAdapter);
+        var objectBuilder = GetObjectBuilder(subContext);
 
-          if (objectBuilder == null)
-            throw new AdoExecutorException("Cannot find supported object builder");
+        if (objectBuilder == null)
+          throw new AdoExecutorException("Cannot find supported object builder");
 
-          multipleData[i] = objectBuilder.CreateInstance(subContext);
-        }
+        var instance = objectBuilder.CreateInstance(subContext);
+        multipleData.Add(instance);
 
         if (!context.DataReaderAdapter.NextResult())
           break;
       }
 
-      if (multipleResultSetGenericArguments.Length != multipleData.Length)
+      if (multipleResultSetGenericArguments.Length != multipleData.Count)
         throw new AdoExecutorException("DataReader results are not equals with MultipleResultSet generic arguments.");
 
-      return Activator.CreateInstance(context.ResultType, multipleData);
+      return Activator.CreateInstance(context.ResultType, multipleData.ToArray());
     }
 
     private IObjectBuilder GetObjectBuilder(ObjectBuilderContext context)

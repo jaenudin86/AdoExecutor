@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET30 || NET35 || NET40 || NET45
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,10 +26,14 @@ namespace AdoExecutor.Shared.Utilities.Adapter.List
 
     public IList GetCollection()
     {
+      var observableCollectionType = typeof (ObservableCollection<>).MakeGenericType(ItemType);
+      IList observableCollection = (IList) Activator.CreateInstance(observableCollectionType, _innerList);
+
       var readOnlyCollectionType = typeof (ReadOnlyObservableCollection<>).MakeGenericType(ItemType);
-      return (IList) Activator.CreateInstance(readOnlyCollectionType, _innerList);
+      return (IList) Activator.CreateInstance(readOnlyCollectionType, observableCollection);
     }
 
     public Type ItemType { get; private set; }
   }
 }
+#endif

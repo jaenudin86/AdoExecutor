@@ -39,6 +39,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\Infrastructure\IObjectBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\Infrastructure\ObjectBuilderContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\MultipleResultSetObjectBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\ObjectBuilderExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\SqlSimpleTypeObjectBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\TupleObjectBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ParameterExtractor\DataTableParameterExtractor.cs" />

@@ -16,7 +16,7 @@ namespace AdoExecutor.Utilities.ObjectConverter
         if (canBeNull)
           return null;
 
-        throw new InvalidCastException(string.Format("Cannot change 'NULL' to type: {0}", destinationType));
+        throw new InvalidCastException($"Cannot change 'NULL' to type: {destinationType}");
       }
 
       Type objectToConvertType = objectToConvert.GetType();

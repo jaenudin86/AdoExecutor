@@ -36,18 +36,17 @@ namespace AdoExecutor.Core.ObjectBuilder
       if (!context.DataReaderAdapter.IsOpen)
       {
         context.DataReaderAdapter.Open();
+      }
+
+      if (!context.DataReaderAdapter.IsReading)
+      {
         if (!context.DataReaderAdapter.Read())
         {
-          if(!context.ResultType.IsValueType)
+          if (!context.ResultType.IsValueType)
             return null;
 
           throw new AdoExecutorException("Cannot read data from reader.");
         }
-
-        if (context.DataReaderAdapter.FieldCount != 1)
-          throw new AdoExecutorException("Sql query must return exacly one column");
-
-        context.DataReaderAdapter.CurrentColumnIndex = 0;
       }
 
       if (!context.DataReaderAdapter.IsClosed)
