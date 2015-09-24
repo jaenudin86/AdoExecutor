@@ -1,5 +1,6 @@
 ﻿#if NET40 || NET45
 
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using AdoExecutor.Core.ObjectBuilder.Infrastructure;
@@ -42,7 +43,13 @@ namespace AdoExecutor.Core.ObjectBuilder
       var dictionaryResult = (IDictionary<string, object>) result;
 
       for (var i = 0; i < dataReaderAdapter.FieldCount; i++)
-        dictionaryResult[dataReaderAdapter.GetName(i)] = dataReaderAdapter[i];
+      {
+        var value = dataReaderAdapter[i];
+        if (value == DBNull.Value)
+          value = null;
+
+        dictionaryResult[dataReaderAdapter.GetName(i)] = value;
+      }
 
       return result;
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AdoExecutor.Core.ObjectBuilder.Infrastructure;
 using AdoExecutor.Shared.Utilities.Adapter.DataReader.Infrastructure;
 
@@ -36,7 +37,13 @@ namespace AdoExecutor.Shared.Core.ObjectBuilder
       var result = new Dictionary<string, object>();
 
       for (var i = 0; i < dataReaderAdapter.FieldCount; i++)
-        result[dataReaderAdapter.GetName(i)] = dataReaderAdapter[i];
+      {
+        var value = dataReaderAdapter[i];
+        if (value == DBNull.Value)
+          value = null;
+            
+        result[dataReaderAdapter.GetName(i)] = value;
+      }
 
       return result;
     }

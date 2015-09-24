@@ -60,12 +60,6 @@
     <Compile Include="Core\Interception\Infrastructure\InterceptorExitContextTests.cs" />
     <Compile Include="Core\Interception\Infrastructure\InterceptorSuccessContextTests.cs" />
     <Compile Include="Core\Interception\LoggerInterceptorBaseTests.cs" />
-    <Compile Include="Core\ObjectBuilder\DataSetObjectBuilderTests.cs" />
-    <Compile Include="Core\ObjectBuilder\DataTableObjectBuilderTests.cs" />
-    <Compile Include="Core\ObjectBuilder\DynamicObjectBuilderTests.cs" />
-    <Compile Include="Core\ObjectBuilder\Infrastructure\ObjectBuilderContextTests.cs" />
-    <Compile Include="Core\ObjectBuilder\ObjectBuilderTestsBase.cs" />
-    <Compile Include="Core\ObjectBuilder\SimpleTypeObjectBuilderTests.cs" />
     <Compile Include="Core\ParameterExtractor\DataTableParameterExtractorTests.cs" />
     <Compile Include="Core\ParameterExtractor\DictionaryParameterExtractorTests.cs" />
     <Compile Include="Core\ParameterExtractor\EnumerableParameterExtractorTests.cs" />
@@ -76,12 +70,6 @@
     <Compile Include="Core\QueryFactory\QueryFactoryTests.cs" />
     <Compile Include="Core\Query\Infrastructure\QueryOptionsTests.cs" />
     <Compile Include="Utilities\Adapter\DataTable\DataTableAdapterTests.cs" />
-    <Compile Include="Utilities\Adapter\List\AbstractGenericListAdapterTests.cs" />
-    <Compile Include="Utilities\Adapter\List\ArrayListAdapterTests.cs" />
-    <Compile Include="Utilities\Adapter\List\GenericListAdapterTests.cs" />
-    <Compile Include="Utilities\Adapter\List\ListAdapterFactoryTests.cs" />
-    <Compile Include="Utilities\Adapter\List\ReadOnlyCollectionListAdapterTests.cs" />
-    <Compile Include="Utilities\Adapter\List\ReadOnlyObservableCollectionListAdapterTests.cs" />
     <Compile Include="Utilities\ObjectConverter\ObjectConverterTests.cs" />
     <Compile Include="Utilities\PrimitiveTypes\SqlPrimitiveDataTypesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -97,6 +85,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\ObjectBuilder\" />
+    <Folder Include="Utilities\Adapter\List\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
