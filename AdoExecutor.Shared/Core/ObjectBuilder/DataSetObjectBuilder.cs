@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using AdoExecutor.Core.ObjectBuilder.Infrastructure;
+using AdoExecutor.Shared.Utilities.Adapter.DataReader.Infrastructure;
 using AdoExecutor.Utilities.Adapter.DataTable.Infrastructure;
 
 namespace AdoExecutor.Core.ObjectBuilder
@@ -12,7 +13,7 @@ namespace AdoExecutor.Core.ObjectBuilder
     public DataSetObjectBuilder(IDataTableAdapter dataTableAdapter)
     {
       if (dataTableAdapter == null)
-        throw new ArgumentNullException("dataTableAdapter");
+        throw new ArgumentNullException(nameof(dataTableAdapter));
 
       _dataTableAdapter = dataTableAdapter;
     }
@@ -24,17 +25,19 @@ namespace AdoExecutor.Core.ObjectBuilder
 
     public object CreateInstance(ObjectBuilderContext context)
     {
+      context.DataReaderAdapter.Open();
+
       var dataSet = new DataSet();
 
-      while (!context.DataReader.IsClosed)
+      while (!context.DataReaderAdapter.IsClosed)
       {
-        if (context.DataReader.FieldCount != 0)
+        if (context.DataReaderAdapter.FieldCount != 0)
         {
-          DataTable dataTable = _dataTableAdapter.Load(context.DataReader);
+          DataTable dataTable = _dataTableAdapter.Load(((IDataReaderAccess)context.DataReaderAdapter).DataReader);
           dataSet.Tables.Add(dataTable);
         }
 
-        if (!context.DataReader.NextResult())
+        if (!context.DataReaderAdapter.NextResult())
           break;
       }
 

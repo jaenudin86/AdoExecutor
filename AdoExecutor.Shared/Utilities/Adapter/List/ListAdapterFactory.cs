@@ -1,47 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using AdoExecutor.Shared.Utilities.Adapter.List.Infrastructure;
 using AdoExecutor.Utilities.Adapter.List.Infrastructure;
 
-namespace AdoExecutor.Utilities.Adapter.List
+namespace AdoExecutor.Shared.Utilities.Adapter.List
 {
   public class ListAdapterFactory : IListAdapterFactory
   {
-    public virtual IListAdapter CreateListAdapter(Type sourceListType)
+    public IListAdapter CreateAdapter(Type collectionType)
     {
-      if (sourceListType.IsArray)
-        return new ArrayListAdapter(sourceListType);
-
-      if (sourceListType.IsGenericType)
+      if (collectionType.IsArray)
       {
-        Type sourceGenericTypeDefinition = sourceListType.GetGenericTypeDefinition();
+        var itemType = collectionType.GetElementType();
+        return new ArrayListAdapter(itemType);
+      }
+      else if (collectionType.IsGenericType)
+      {
+        var genericTypeDefinition = collectionType.GetGenericTypeDefinition();
+        var itemType = collectionType.GetGenericArguments()[0];
 
-        if (sourceGenericTypeDefinition == typeof (List<>) 
-            || sourceGenericTypeDefinition == typeof (Collection<>)
-            #if NET30 || NET35 || NET40 || NET45
-            || sourceGenericTypeDefinition == typeof (ObservableCollection<>)
-            #endif
-            )
+        if (genericTypeDefinition == typeof(List<>)
+          || genericTypeDefinition == typeof(IList<>)
+          || genericTypeDefinition == typeof(IEnumerable<>))
         {
-          return new GenericListAdapter(sourceListType);
+          return new ListAdapter(itemType);
         }
 
-        if (sourceGenericTypeDefinition == typeof (IList<>))
-          return new AbstractGenericListAdapter(sourceListType, typeof (List<>));
+        if (genericTypeDefinition == typeof(Collection<>)
+          || genericTypeDefinition == typeof(ICollection<>))
+        {
+          return new CollectionAdapter(itemType);
+        }
 
-        if (sourceGenericTypeDefinition == typeof (ICollection<>))
-          return new AbstractGenericListAdapter(sourceListType, typeof (Collection<>));
+        if (genericTypeDefinition == typeof(ReadOnlyCollection<>))
+        {
+          return new ReadOnlyCollectionAdapter(itemType);
+        }
 
-        if (sourceGenericTypeDefinition == typeof (IEnumerable<>))
-          return new AbstractGenericListAdapter(sourceListType, typeof (List<>));
+#if NET30 || NET35 || NET40 || NET45
+        if (genericTypeDefinition == typeof(ObservableCollection<>))
+        {
+          return new ObservableCollectionAdapter(itemType);
+        }
 
-        if (sourceGenericTypeDefinition == typeof (ReadOnlyCollection<>))
-          return new ReadOnlyCollectionListAdapter(sourceListType);
-
-        #if NET30 || NET35 || NET40 || NET45
-        if (sourceGenericTypeDefinition == typeof (ReadOnlyObservableCollection<>))
-          return new ReadOnlyObservableCollectionListAdapter(sourceListType);
-        #endif
+        if (genericTypeDefinition == typeof(ReadOnlyObservableCollection<>))
+        {
+          return new ReadOnlyObservableCollectionAdapter(itemType);
+        }
+#endif
       }
 
       return null;

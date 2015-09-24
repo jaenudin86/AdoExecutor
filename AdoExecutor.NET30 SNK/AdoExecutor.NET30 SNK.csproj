@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\Bin\NET30 SNK\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET30</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET30,SNK</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>

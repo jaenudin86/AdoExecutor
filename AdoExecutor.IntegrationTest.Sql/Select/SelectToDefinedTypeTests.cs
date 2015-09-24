@@ -30,7 +30,7 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
       var query = _queryFactory.CreateQuery();
       var rowObject1 = TestDbTypeTable.Row1;
       var expectedDefiniedType = CreateDefiniedTypeFromRowObject(rowObject1);
-      
+
       //ACT
       var result = query.Select<TestDbTypeTableRowDefiniedType>(queryText, new { id = rowObject1.Id });
 

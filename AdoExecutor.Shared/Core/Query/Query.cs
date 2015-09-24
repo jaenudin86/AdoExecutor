@@ -7,6 +7,7 @@ using AdoExecutor.Core.Interception.Infrastructure;
 using AdoExecutor.Core.ObjectBuilder.Infrastructure;
 using AdoExecutor.Core.Query.Infrastructure;
 using AdoExecutor.Core.Query.Internal;
+using AdoExecutor.Shared.Utilities.Adapter.DataReader;
 
 namespace AdoExecutor.Core.Query
 {
@@ -56,11 +57,10 @@ namespace AdoExecutor.Core.Query
     {
       ExecuteCommandDelegate<T> selectFunc = command =>
       {
-        using (var dataReader = command.ExecuteReader())
+        var dataReader = command.ExecuteReader();
+        using (var dataReaderAdapter = new DataReaderAdapter(dataReader))
         {
-          return
-            (T) _objectBuilderInvoker.CreateInstance(new ObjectBuilderContext(query, parameters, typeof (T),
-              InvokeMethod.Select, Connection, command, _configuration, dataReader));
+          return (T)_objectBuilderInvoker.CreateInstance(new ObjectBuilderContext(typeof(T), dataReaderAdapter));
         }
       };
 

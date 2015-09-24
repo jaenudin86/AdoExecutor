@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using AdoExecutor.Core.Parameter;
+using AdoExecutor.Core.Entities;
 using AdoExecutor.Core.ParameterExtractor;
 using FakeItEasy;
 using FakeItEasy.ExtensionSyntax.Full;

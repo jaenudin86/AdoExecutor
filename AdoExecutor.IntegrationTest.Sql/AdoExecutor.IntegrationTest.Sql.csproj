@@ -55,6 +55,7 @@
     <Compile Include="PassParameter\PassParameterBase.cs" />
     <Compile Include="PassParameter\SpecifiedPassParameterTests.cs" />
     <Compile Include="Select\DataTableRowAssertBase.cs" />
+    <Compile Include="Select\MultipleResultSetTests.cs" />
     <Compile Include="Select\SelectToDataSetTests.cs" />
     <Compile Include="Select\SelectToDataTableTests.cs" />
     <Compile Include="Extension\StringToByteArrayExtensions.cs" />
@@ -64,8 +65,10 @@
     <Compile Include="Helper\TestDbTypeTable\TestDbTypeTableRow1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Select\SelectToDefinedTypeTests.cs" />
+    <Compile Include="Select\SelectToDictionaryTests.cs" />
     <Compile Include="Select\SelectToDynamicTests.cs" />
     <Compile Include="Select\SelectToSimpleTypeTests.cs" />
+    <Compile Include="Select\SelectToTupleTests.cs" />
     <Compile Include="Transaction\InvokeInTransactionTests.cs" />
     <Content Include="SqlScripts\RecreateTablesAndData.sql" />
   </ItemGroup>

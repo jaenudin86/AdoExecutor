@@ -1,21 +1,16 @@
-﻿#if NET40 || NET45
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using AdoExecutor.Core.ObjectBuilder.Infrastructure;
 using AdoExecutor.Shared.Utilities.Adapter.DataReader.Infrastructure;
 
-namespace AdoExecutor.Core.ObjectBuilder
+namespace AdoExecutor.Shared.Core.ObjectBuilder
 {
-  public class DynamicObjectBuilder : IObjectBuilder
+  public class DictionaryObjectBuilder : IObjectBuilder
   {
     public bool CanProcess(ObjectBuilderContext context)
     {
-      if (context.ResultType == typeof (object))
-        return true;
-
-      return false;
+      return context.ResultType == typeof (Dictionary<string, object>)
+             || context.ResultType == typeof (IDictionary<string, object>);
     }
 
     public object CreateInstance(ObjectBuilderContext context)
@@ -32,28 +27,25 @@ namespace AdoExecutor.Core.ObjectBuilder
       }
 
       if (!context.DataReaderAdapter.IsClosed)
-        return CreateDynamicObject(context.DataReaderAdapter);
+        return CreateDictionaryObject(context.DataReaderAdapter);
 
       return null;
     }
 
-    private object CreateDynamicObject(IDataReaderAdapter dataReaderAdapter)
+    private object CreateDictionaryObject(IDataReaderAdapter dataReaderAdapter)
     {
-      var result = new ExpandoObject();
-      var dictionaryResult = (IDictionary<string, object>) result;
+      var result = new Dictionary<string, object>();
 
       for (var i = 0; i < dataReaderAdapter.FieldCount; i++)
       {
         var value = dataReaderAdapter[i];
         if (value == DBNull.Value)
           value = null;
-
-        dictionaryResult[dataReaderAdapter.GetName(i)] = value;
+            
+        result[dataReaderAdapter.GetName(i)] = value;
       }
 
       return result;
     }
   }
 }
-
-#endif
