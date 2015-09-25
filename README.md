@@ -55,6 +55,9 @@ Table below contains objects types that are supported by ```Select<T>``` method.
 |```dynamic```|Supports also: ```T[], List<T>, Collection<T>, ObserableCollection<T>, IList<T>, ICollection<T>, IEnumerable<T>, ReadOnlyCollection<T>, ReadOnlyObservableCollection<T>```.|
 |Custom user type|It must have public, parameterless constructor. Properties in that type must have same names as columns returned by the query (ignore case). All other properties that doesn't meet this requirements are ignored. Supports also: ```T[], List<T>, Collection<T>, ObserableCollection<T>, IList<T>, ICollection<T>, IEnumerable<T>, ReadOnlyCollection<T>, ReadOnlyObservableCollection<T>```.|
 |All primitive types and nullable of primitive types|Supports also: ```T[], List<T>, Collection<T>, ObserableCollection<T>, IList<T>, ICollection<T>, IEnumerable<T>, ReadOnlyCollection<T>, ReadOnlyObservableCollection<T>```.|
+|```Tuple```|Supports also: ```T[], List<T>, Collection<T>, ObserableCollection<T>, IList<T>, ICollection<T>, IEnumerable<T>, ReadOnlyCollection<T>, ReadOnlyObservableCollection<T>```.|
+|```Dictionary<string, object>```|Supports also: ```T[], List<T>, Collection<T>, ObserableCollection<T>, IList<T>, ICollection<T>, IEnumerable<T>, ReadOnlyCollection<T>, ReadOnlyObservableCollection<T>```.|
+|```MultipleResultSet```|Supports many result from one query (many DataTables)|
 
 #### 3. Executing query without result
 While executing database query that doesn't returns any result You should use ```Execute``` method from ```IQuery``` interface.
