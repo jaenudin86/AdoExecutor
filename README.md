@@ -61,7 +61,7 @@ Table below contains objects types that are supported by ```Select<T>``` method.
 |```Tuple```|Supports also: ```T[], List<T>, Collection<T>, ObserableCollection<T>, IList<T>, ICollection<T>, IEnumerable<T>, ReadOnlyCollection<T>, ReadOnlyObservableCollection<T>```.|
 |```Dictionary<string, object>```|Supports also: ```T[], List<T>, Collection<T>, ObserableCollection<T>, IList<T>, ICollection<T>, IEnumerable<T>, ReadOnlyCollection<T>, ReadOnlyObservableCollection<T>```.|
 |```MultipleResultSet```|Supports many result from one query (many DataTables)|
-|IDataReader|Return data reader|
+|```IDataReader```|Return data reader|
 
 #### 3. Executing query without result
 While executing database query that doesn't returns any result You should use ```Execute``` method from ```IQuery``` interface.
