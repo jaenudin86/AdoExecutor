@@ -37,6 +37,7 @@ namespace AdoExecutor.Core.QueryFactory
 
     protected virtual void ConfigureObjectBuilders(Configuration.Configuration configuration)
     {
+      configuration.ObjectBuilders.Add(new DataReaderObjectBuilder());
       configuration.ObjectBuilders.Add(new DataSetObjectBuilder(new DataTableAdapter()));
       configuration.ObjectBuilders.Add(new DataTableObjectBuilder(new DataTableAdapter()));
       configuration.ObjectBuilders.Add(new SqlSimpleTypeObjectBuilder(new SqlPrimitiveDataTypes(), new ObjectConverter()));

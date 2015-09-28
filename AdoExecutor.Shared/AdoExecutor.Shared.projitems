@@ -31,6 +31,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Interception\Infrastructure\InterceptorSuccessContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Interception\LoggerInterceptorBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\CollectionObjectBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\DataReaderObjectBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\DataSetObjectBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\DataTableObjectBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\DefinedTypeObjectBuilder.cs" />
