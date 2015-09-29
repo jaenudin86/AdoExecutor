@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using AdoExecutor.Core.Query.Infrastructure;
 using AdoExecutor.Core.QueryFactory;
-using AdoExecutor.IntegrationTest.Sql.Helper.TestDbTypeTable;
+using AdoExecutor.IntegrationTest.Sql.Helpers.TestData;
 using AdoExecutor.Shared.Core.Entities;
 using AdoExecutor.Shared.Core.ObjectBuilder;
 using NUnit.Framework;

@@ -1,44 +1,14 @@
-﻿using System;
-using System.Data;
-using AdoExecutor.Core.QueryFactory;
-using AdoExecutor.Core.QueryFactory.Infrastructure;
-using AdoExecutor.IntegrationTest.Sql.Helper.TestDbTypeTable;
+﻿using System.Data;
+using AdoExecutor.IntegrationTest.Sql.Helpers.Comparators;
+using AdoExecutor.IntegrationTest.Sql.Helpers.Covnerters;
+using AdoExecutor.IntegrationTest.Sql.Helpers.TestData;
+using AdoExecutor.IntegrationTest.Sql.Helpers.Tests;
 using NUnit.Framework;
 
 namespace AdoExecutor.IntegrationTest.Sql.Select
 {
-  [TestFixture(Category = "Integration")]
-  public class SelectToDataTableTests : DataTableRowAssertBase
+  public class SelectToDataTableTests : AdoExecutorTestBase
   {
-    private IQueryFactory _queryFactory;
-
-    [SetUp]
-    public void SetUp()
-    {
-      _queryFactory = new SqlQueryFactory("AdoExecutorTestDb");
-    }
-
-    [Test]
-    public void SelectSingleRowWithSpecifiedId()
-    {
-      //ARRANGE
-      const string queryText = @"select * 
-                                 from dbo.TestDbType 
-                                 where id = @id";
-      var query = _queryFactory.CreateQuery();
-      var rowObject1 = TestDbTypeTable.Row1;
-
-      //ACT
-      var result = query.Select<DataTable>(queryText, new { id = rowObject1.Id });
-      
-      
-      //ASSERT
-      Assert.AreEqual(1, result.Rows.Count);
-      AssertSingleDynamicObjectWithSingleRow(rowObject1, result.Rows[0]);
-
-      query.Dispose();
-    }
-
     [Test]
     public void SelectMultipleRowWithSpecifiedIds()
     {
@@ -48,20 +18,40 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
                                  where id = @id1 or id = @id2
                                  order by id asc";
 
-      var query = _queryFactory.CreateQuery();
-      var rowObject1 = TestDbTypeTable.Row1;
-      var rowObject2 = TestDbTypeTable.Row2;
-
       //ACT
-      var result = query.Select<DataTable>(queryText, new { id1 = rowObject1.Id, id2 = rowObject2.Id });
+      var result = Query.Select<DataTable>(queryText, new {id1 = TestData.Item1.Id, id2 = TestData.Item2.Id});
 
       //ASSERT
       Assert.AreEqual(2, result.Rows.Count);
 
-      AssertSingleDynamicObjectWithSingleRow(rowObject1, result.Rows[0]);
-      AssertSingleDynamicObjectWithSingleRow(rowObject2, result.Rows[1]);
+      var expected = new[] {TestData.Item1Dictionary, TestData.Item2Dictionary};
 
-      query.Dispose();
+      var actual = new[]
+      {
+        DictionaryConverter.ConvertToDictionary(result.Rows[0]),
+        DictionaryConverter.ConvertToDictionary(result.Rows[1])
+      };
+
+      DictionaryComparator.Compare(expected, actual);
+    }
+
+    [Test]
+    public void SelectSingleRowWithSpecifiedId()
+    {
+      //ARRANGE
+      const string queryText = @"select * 
+                                 from dbo.TestDbType 
+                                 where id = @id";
+
+      //ACT
+      var result = Query.Select<DataTable>(queryText, new {id = TestData.Item1.Id});
+
+
+      //ASSERT
+      Assert.AreEqual(1, result.Rows.Count);
+      var actual = DictionaryConverter.ConvertToDictionary(result.Rows[0]);
+
+      DictionaryComparator.Compare(TestData.Item1Dictionary, actual);
     }
   }
 }

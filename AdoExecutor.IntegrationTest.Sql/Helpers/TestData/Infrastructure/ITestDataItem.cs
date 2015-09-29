@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace AdoExecutor.IntegrationTest.Sql.Helper.TestDbTypeTable
+namespace AdoExecutor.IntegrationTest.Sql.Helpers.TestData.Infrastructure
 {
-  public interface ITestDbTypeTableRow
+  public interface ITestDataItem
   {
     Guid Id { get; }
     long BigInt { get; }

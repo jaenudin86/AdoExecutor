@@ -1,9 +1,10 @@
 ﻿using System;
-using AdoExecutor.IntegrationTest.Sql.Extension;
+using AdoExecutor.IntegrationTest.Sql.Helpers.Extension;
+using AdoExecutor.IntegrationTest.Sql.Helpers.TestData.Infrastructure;
 
-namespace AdoExecutor.IntegrationTest.Sql.Helper.TestDbTypeTable
+namespace AdoExecutor.IntegrationTest.Sql.Helpers.TestData
 {
-  public class TestDbTypeTableRow1 : ITestDbTypeTableRow
+  public class TestDataItem1 : ITestDataItem
   {
     public Guid Id
     {

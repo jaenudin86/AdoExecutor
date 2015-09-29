@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using AdoExecutor.Core.QueryFactory;
 using AdoExecutor.Core.QueryFactory.Infrastructure;
-using AdoExecutor.IntegrationTest.Sql.Helper.TestDbTypeTable;
+using AdoExecutor.IntegrationTest.Sql.Helpers.TestData;
 using KellermanSoftware.CompareNetObjects;
 using NUnit.Framework;
 

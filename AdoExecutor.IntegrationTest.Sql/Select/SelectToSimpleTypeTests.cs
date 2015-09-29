@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using AdoExecutor.Core.QueryFactory;
 using AdoExecutor.Core.QueryFactory.Infrastructure;
-using AdoExecutor.IntegrationTest.Sql.Helper.TestDbTypeTable;
+using AdoExecutor.IntegrationTest.Sql.Helpers.TestData;
 using NUnit.Framework;
 
 namespace AdoExecutor.IntegrationTest.Sql.Select

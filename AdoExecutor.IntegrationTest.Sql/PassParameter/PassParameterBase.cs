@@ -1,5 +1,5 @@
 ﻿using System;
-using AdoExecutor.IntegrationTest.Sql.Helper.TestDbTypeTable;
+using AdoExecutor.IntegrationTest.Sql.Helpers.TestData;
 using NUnit.Framework;
 
 namespace AdoExecutor.IntegrationTest.Sql.PassParameter
