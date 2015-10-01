@@ -53,6 +53,8 @@ INSERT [dbo].[TestDbType] ([Id], [BigInt], [Binary50], [Bit], [Char10], [Date], 
 GO
 INSERT [dbo].[TestDbType] ([Id], [BigInt], [Binary50], [Bit], [Char10], [Date], [DateTime], [DateTime2], [DateTimeOffset], [Decimal], [Float], [Image], [Int], [Money], [NChar10], [NText], [Numeric], [NVarchar50], [Real], [SmallDateTime], [SmallInt], [SmallMoney], [Text], [Time], [TinyInt], [Uniqueidentifier], [Varbinary50], [Varchar50], [Xml]) VALUES (N'9aa3b743-0a67-4274-8470-f7e978ddc930', 54354354, 0xABCDEF0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000, 1, N'testChar1 ', CAST(0x8F390B00 AS Date), CAST(0x0000A43400F8AC67 AS DateTime), CAST(0x07A6EB5A7B7E8F390B AS DateTime2), CAST(0x07706E9619768F390B3C00 AS DateTimeOffset), CAST(54.43243 AS Decimal(18, 5)), 214535.43, 0x57B3ACC5454565, 4321, 126.1400, N'testNChar1', N'testNText1', CAST(43254.65400 AS Numeric(18, 5)), N'testNVarchar1', 654654.563, CAST(0xA43D0569 AS SmallDateTime), 169, 3123.4320, N'testText1', CAST(0x0780E1C886C10000 AS Time), 168, N'270e8267-aa79-4e43-8910-ea45abe62487', 0xAEFDCB, N'testVarchar1', N'<test>5</test>')
 GO
+INSERT [dbo].[TestDbType] ([Id], [BigInt], [Binary50], [Bit], [Char10], [Date], [DateTime], [DateTime2], [DateTimeOffset], [Decimal], [Float], [Image], [Int], [Money], [NChar10], [NText], [Numeric], [NVarchar50], [Real], [SmallDateTime], [SmallInt], [SmallMoney], [Text], [Time], [TinyInt], [Uniqueidentifier], [Varbinary50], [Varchar50], [Xml]) VALUES (N'9b85f633-f58b-468b-82f0-99f089a89c47', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+GO
 
 CREATE PROCEDURE [dbo].[spTestDbType]
 	@BigInt [bigint],

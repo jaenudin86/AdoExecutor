@@ -127,5 +127,21 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
 
       DictionaryComparator.Compare(TestData.Item1Dictionary, actual);
     }
+
+    [Test]
+    public void SelectNoRows()
+    {
+      //ARRANGE
+      const string queryText = @"select * 
+                                 from dbo.TestDbType 
+                                 where id = @id";
+
+      //ACT
+      var result = Query.Select<DataSet>(queryText, new { id = TestData.NotExistingItemId1 });
+
+      //ASSERT
+      Assert.AreEqual(1, result.Tables.Count);
+      Assert.AreEqual(0, result.Tables[0].Rows.Count);
+    }
   }
 }
