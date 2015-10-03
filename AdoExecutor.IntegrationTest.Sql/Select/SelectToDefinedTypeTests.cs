@@ -196,5 +196,22 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
 
       DictionaryComparator.Compare(TestData.Item1Dictionary, dictionaryResult);
     }
+
+    [Test]
+    public void SelectSingleNullRow()
+    {
+      //ARRANGE
+      const string queryText = @"select * 
+                                 from dbo.TestDbType 
+                                 where id = @id";
+
+      //ACT
+      var result = Query.Select<TestDataItemToFill>(queryText, new { id = TestData.NullItem.Id });
+
+      //ASSERT
+      var dictionaryResult = DictionaryConverter.ConvertToDictionary(result);
+
+      DictionaryComparator.Compare(TestData.NullItemDictionary, dictionaryResult);
+    }
   }
 }

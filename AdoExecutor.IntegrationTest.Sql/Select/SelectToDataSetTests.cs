@@ -129,6 +129,28 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
     }
 
     [Test]
+    public void SelectSingleNullRow()
+    {
+      //ARRANGE
+      const string queryText = @"select * 
+                                 from dbo.TestDbType 
+                                 where id = @id";
+
+      //ACT
+      var result = Query.Select<DataSet>(queryText, new { id = TestData.NullItem.Id });
+
+
+      //ASSERT
+      Assert.AreEqual(1, result.Tables.Count);
+      Assert.AreEqual(1, result.Tables[0].Rows.Count);
+
+      var actual = DictionaryConverter.ConvertToDictionary(result.Tables[0].Rows[0]);
+
+      DictionaryComparator.Compare(TestData.DbNullItemDictionary, actual);
+    }
+
+
+    [Test]
     public void SelectNoRows()
     {
       //ARRANGE

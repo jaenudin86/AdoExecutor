@@ -11,7 +11,7 @@ namespace AdoExecutor.IntegrationTest.Sql.Helpers.TestData
       get { return new Guid("9AA3B743-0A67-4274-8470-F7E978DDC930"); }
     }
 
-    public long BigInt
+    public long? BigInt
     {
       get { return 54354354; }
     }
@@ -25,7 +25,7 @@ namespace AdoExecutor.IntegrationTest.Sql.Helpers.TestData
       }
     }
 
-    public bool Bit
+    public bool? Bit
     {
       get { return true; }
     }
@@ -35,32 +35,32 @@ namespace AdoExecutor.IntegrationTest.Sql.Helpers.TestData
       get { return "testChar1 "; }
     }
 
-    public DateTime Date
+    public DateTime? Date
     {
-      get { return DateTime.Parse("2015-02-03"); }
+      get { return System.DateTime.Parse("2015-02-03"); }
     }
 
-    public DateTime DateTime
+    public DateTime? DateTime
     {
-      get { return DateTime.Parse("2015-02-03 15:05:23.543"); }
+      get { return System.DateTime.Parse("2015-02-03 15:05:23.543"); }
     }
 
-    public DateTime DateTime2
+    public DateTime? DateTime2
     {
-      get { return DateTime.Parse("2015-02-03 15:05:23.5435430"); }
+      get { return System.DateTime.Parse("2015-02-03 15:05:23.5435430"); }
     }
 
-    public DateTimeOffset DateTimeOffset
+    public DateTimeOffset? DateTimeOffset
     {
-      get { return DateTimeOffset.Parse("2015-02-03 15:05:23.5430000 +01:00"); }
+      get { return System.DateTimeOffset.Parse("2015-02-03 15:05:23.5430000 +01:00"); }
     }
 
-    public decimal Decimal
+    public decimal? Decimal
     {
       get { return 54.43243M; }
     }
 
-    public double Float
+    public double? Float
     {
       get { return 214535.43D; }
     }
@@ -70,12 +70,12 @@ namespace AdoExecutor.IntegrationTest.Sql.Helpers.TestData
       get { return "57B3ACC5454565".ToByteArray(); }
     }
 
-    public int Int
+    public int? Int
     {
       get { return 4321; }
     }
 
-    public decimal Money
+    public decimal? Money
     {
       get { return 126.14M; }
     }
@@ -90,7 +90,7 @@ namespace AdoExecutor.IntegrationTest.Sql.Helpers.TestData
       get { return "testNText1"; }
     }
 
-    public decimal Numeric
+    public decimal? Numeric
     {
       get { return 43254.65400M; }
     }
@@ -100,22 +100,22 @@ namespace AdoExecutor.IntegrationTest.Sql.Helpers.TestData
       get { return "testNVarchar1"; }
     }
 
-    public float Real
+    public float? Real
     {
       get { return 654654.563F; }
     }
 
-    public DateTime SmallDateTime
+    public DateTime? SmallDateTime
     {
-      get { return DateTime.Parse("2015-02-12 23:05:00"); }
+      get { return System.DateTime.Parse("2015-02-12 23:05:00"); }
     }
 
-    public short SmallInt
+    public short? SmallInt
     {
       get { return 169; }
     }
 
-    public decimal SmallMoney
+    public decimal? SmallMoney
     {
       get { return 3123.432M; }
     }
@@ -125,17 +125,17 @@ namespace AdoExecutor.IntegrationTest.Sql.Helpers.TestData
       get { return "testText1"; }
     }
 
-    public TimeSpan Time
+    public TimeSpan? Time
     {
       get { return TimeSpan.Parse("23:05:19.0000000"); }
     }
 
-    public byte TinyInt
+    public byte? TinyInt
     {
       get { return 168; }
     }
 
-    public Guid Uniqueidentifier
+    public Guid? Uniqueidentifier
     {
       get { return new Guid("270E8267-AA79-4E43-8910-EA45ABE62487"); }
     }

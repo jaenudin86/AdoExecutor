@@ -14,7 +14,7 @@ namespace AdoExecutor.IntegrationTest.Sql.Helpers.Comparators
       {
         var actualItem = actual[expectedItem.Key];
 
-        Assert.AreEqual(expectedItem.Value, actualItem);
+        Assert.AreEqual(expectedItem.Value, actualItem, $"Not equals values with name: {expectedItem.Key}");
       }
     }
 

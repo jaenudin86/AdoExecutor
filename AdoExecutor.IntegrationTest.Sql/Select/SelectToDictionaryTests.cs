@@ -256,6 +256,21 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
       DictionaryComparator.Compare(TestData.Item1Dictionary, result);
     }
 
+    [Test]
+    public void SelectSingleNullRow()
+    {
+      //ARRANGE
+      const string queryText = @"select * 
+                                 from dbo.TestDbType 
+                                 where id = @id";
+
+      //ACT
+      var result = Query.Select<Dictionary<string, object>>(queryText, new { id = TestData.NullItem.Id });
+
+      //ASSERT
+      DictionaryComparator.Compare(TestData.NullItemDictionary, result);
+    }
+
     private void SelectMultipleRowWithSpecifiedIds<T>()
       where T : IEnumerable<IDictionary<string, object>>
     {

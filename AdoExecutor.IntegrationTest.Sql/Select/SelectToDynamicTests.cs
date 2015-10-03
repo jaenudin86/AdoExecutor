@@ -34,6 +34,60 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
       DictionaryComparator.Compare(expectedResult, resultArray);
     }
 
+    [Test]
+    public void SelectMultipleNoRows_AsArray()
+    {
+      SelectMultipleNoRows<dynamic[]>();
+    }
+
+    [Test]
+    public void SelectMultipleNoRows_AsCollection()
+    {
+      SelectMultipleNoRows<Collection<dynamic>>();
+    }
+
+    [Test]
+    public void SelectMultipleNoRows_AsICollection()
+    {
+      SelectMultipleNoRows<ICollection<dynamic>>();
+    }
+
+    [Test]
+    public void SelectMultipleNoRows_AsIEnumerable()
+    {
+      SelectMultipleNoRows<IEnumerable<dynamic>>();
+    }
+
+    [Test]
+    public void SelectMultipleNoRows_AsIList()
+    {
+      SelectMultipleNoRows<IList<dynamic>>();
+    }
+
+    [Test]
+    public void SelectMultipleNoRows_AsList()
+    {
+      SelectMultipleNoRows<List<dynamic>>();
+    }
+
+    [Test]
+    public void SelectMultipleNoRows_AsObservableCollection()
+    {
+      SelectMultipleNoRows<ObservableCollection<dynamic>>();
+    }
+
+    [Test]
+    public void SelectMultipleNoRows_AsReadOnlyCollection()
+    {
+      SelectMultipleNoRows<ReadOnlyCollection<dynamic>>();
+    }
+
+    [Test]
+    public void SelectMultipleNoRows_AsReadOnlyObservableCollection()
+    {
+      SelectMultipleNoRows<ReadOnlyObservableCollection<dynamic>>();
+    }
+
     private void SelectMultipleNoRows<T>()
       where T : IEnumerable
     {
@@ -135,6 +189,21 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
 
       //ASSERT
       DictionaryComparator.Compare(TestData.Item1Dictionary, result);
+    }
+
+    [Test]
+    public void SelectSingleNullRow()
+    {
+      //ARRANGE
+      const string queryText = @"select * 
+                                 from dbo.TestDbType 
+                                 where id = @id";
+
+      //ACT
+      var result = Query.Select<dynamic>(queryText, new { id = TestData.NullItem.Id });
+
+      //ASSERT
+      DictionaryComparator.Compare(TestData.NullItemDictionary, result);
     }
   }
 }
