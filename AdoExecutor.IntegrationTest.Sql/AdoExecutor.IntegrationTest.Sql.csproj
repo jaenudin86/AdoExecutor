@@ -53,6 +53,7 @@
     <Compile Include="Helpers\TestData\TestDataItemNull.cs" />
     <Compile Include="Helpers\TestData\TestDataItemToFill.cs" />
     <Compile Include="Helpers\Tests\AdoExecutorTestBase.cs" />
+    <Compile Include="Select\MultipleResultSetTests.cs" />
     <Compile Include="Select\SelectTestBase.cs" />
     <Compile Include="Select\SelectToDataSetTests.cs" />
     <Compile Include="Select\SelectToDataTableTests.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Select\SelectToDefinedTypeTests.cs" />
     <Compile Include="Select\SelectToDictionaryTests.cs" />
     <Compile Include="Select\SelectToDynamicTests.cs" />
+    <Compile Include="Select\SelectToSimpleTypeTests.cs" />
     <Compile Include="Select\SelectToTupleTests.cs" />
     <Compile Include="Transaction\InvokeInTransactionTests.cs" />
     <Content Include="_SqlScripts\RecreateTablesAndData.sql" />

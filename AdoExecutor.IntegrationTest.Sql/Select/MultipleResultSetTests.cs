@@ -1,37 +1,23 @@
-﻿using System.Data;
-using AdoExecutor.Core.Query.Infrastructure;
-using AdoExecutor.Core.QueryFactory;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Dynamic;
+using AdoExecutor.IntegrationTest.Sql.Helpers.Comparators;
+using AdoExecutor.IntegrationTest.Sql.Helpers.Covnerters;
 using AdoExecutor.IntegrationTest.Sql.Helpers.TestData;
+using AdoExecutor.IntegrationTest.Sql.Helpers.Tests;
 using AdoExecutor.Shared.Core.Entities;
-using AdoExecutor.Shared.Core.ObjectBuilder;
 using NUnit.Framework;
 
 namespace AdoExecutor.IntegrationTest.Sql.Select
 {
-  [TestFixture(Category = "Integration")]
-  public class MultipleResultSetTests
+  public class MultipleResultSetTests : AdoExecutorTestBase
   {
-    private IQuery _query;
-
-    [SetUp]
-    public void SetUp()
-    {
-      var queryFactory = new SqlQueryFactory("AdoExecutorTestDb");
-      _query = queryFactory.CreateQuery();
-    }
-
-    [TearDown]
-    public void TearDown()
-    {
-      _query.Dispose();
-    }
-
     [Test]
-    public void TesT()
+    public void SelectMultipleRowsOfType()
     {
-      var x = typeof (DataTable);
       //ARRANGE
-      const string queryText = @"select *
+      const string queryText = @"select NVarchar50
                                  from dbo.TestDbType 
                                  where id = @id1 or id = @id2;
 
@@ -40,18 +26,80 @@ namespace AdoExecutor.IntegrationTest.Sql.Select
                                 where id = @id1 or id = @id2
                                 order by id asc;
 
+                                select *
+                                from dbo.TestDbType 
+                                where id = @id1
+
                                 select NVarchar50 
                                 from dbo.TestDbType
-                                where id = @id1";
+                                where id = @id1
+
+                                select *
+                                from dbo.TestDbType 
+                                where id = @id1
+
+                                select *
+                                from dbo.TestDbType 
+                                where id = @id1 or id = @id2
+                                order by id asc
+
+                                select *
+                                from dbo.TestDbType 
+                                where id = @id1 or id = @id2
+                                order by id asc";
 
       //ACT
-      var rowObject1 = TestDbTypeTable.Row1;
-      var rowObject2 = TestDbTypeTable.Row2;
-      var result = _query.Select<DataSet>(queryText,
-        new {id1 = rowObject1.Id, id2 = rowObject2.Id});
+      var result = Query.Select<MultipleResultSet<string[], DataTable, Dictionary<string, object>, string, Tuple<TestDataItemToFill>,
+                       dynamic[], TestDataItemToFill[]>>(queryText, new {id1 = TestData.Item1.Id, id2 = TestData.Item2.Id});
 
-      var x1 =
-        ObjectBuilderExtensions.BuildFromDataSet<MultipleResultSet<DataTable, TestDbTypeTableRowDefiniedType[], string>>(result);
+      //Assert Item 1
+      var item1 = result.Item1;
+      Assert.AreEqual(2, item1.Length);
+      Assert.AreEqual(TestData.Item1.NVarchar50, item1[0]);
+      Assert.AreEqual(TestData.Item2.NVarchar50, item1[1]);
+
+      //Assert Item 2
+      var item2 = result.Item2;
+
+      var actualItem2 = new[]
+      {
+        DictionaryConverter.ConvertToDictionary(item2.Rows[0]),
+        DictionaryConverter.ConvertToDictionary(item2.Rows[1]),
+      };
+
+      DictionaryComparator.Compare(new[] { TestData.Item1Dictionary, TestData.Item2Dictionary}, actualItem2);
+
+      //Assert Item 3
+      var item3 = result.Item3;
+      DictionaryComparator.Compare(TestData.Item1Dictionary, item3);
+
+      //Assert Item 4
+      var item4 = result.Item4;
+      Assert.AreEqual(TestData.Item1.NVarchar50, item4);
+
+      //Assert Item 5
+      var item5 = result.Item5;
+      DictionaryComparator.Compare(TestData.Item1Dictionary, DictionaryConverter.ConvertToDictionary(item5.Item1));
+
+      //Assert Item 6
+      var item6 = result.Item6;
+
+      var actualItem6 = new IDictionary<string, object>[]
+      {
+        (ExpandoObject) item6[0],
+        (ExpandoObject) item6[1],
+      };
+      DictionaryComparator.Compare(new[] {TestData.Item1Dictionary, TestData.Item2Dictionary}, actualItem6);
+
+      //Assert Item 7
+      var item7 = result.Item7;
+
+      var actualItem7 = new[]
+      {
+        DictionaryConverter.ConvertToDictionary(item7[0]),
+        DictionaryConverter.ConvertToDictionary(item7[1])
+      };
+      DictionaryComparator.Compare(new[] { TestData.Item1Dictionary, TestData.Item2Dictionary}, actualItem7);
     }
   }
 }

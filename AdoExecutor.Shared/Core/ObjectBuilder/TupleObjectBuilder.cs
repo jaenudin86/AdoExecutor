@@ -25,7 +25,8 @@ namespace AdoExecutor.Shared.Core.ObjectBuilder
 
       var genericType = context.ResultType.GetGenericTypeDefinition();
 
-      return genericType == typeof (Tuple<,>)
+      return genericType == typeof(Tuple<>)
+             || genericType == typeof (Tuple<,>)
              || genericType == typeof (Tuple<,,>)
              || genericType == typeof (Tuple<,,,>)
              || genericType == typeof (Tuple<,,,,>)
