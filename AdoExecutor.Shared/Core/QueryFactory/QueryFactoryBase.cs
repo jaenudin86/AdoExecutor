@@ -4,6 +4,7 @@ using AdoExecutor.Core.ParameterExtractor;
 using AdoExecutor.Core.Query.Infrastructure;
 using AdoExecutor.Core.QueryFactory.Infrastructure;
 using AdoExecutor.Shared.Core.ObjectBuilder;
+using AdoExecutor.Shared.Core.ParameterExtractor;
 using AdoExecutor.Shared.Utilities.Adapter.List;
 using AdoExecutor.Utilities.Adapter.DataTable;
 using AdoExecutor.Utilities.ObjectConverter;
@@ -62,6 +63,7 @@ namespace AdoExecutor.Core.QueryFactory
     protected virtual void ConfigureParameterExtractors(Configuration.Configuration configuration)
     {
       configuration.ParameterExtractors.Add(new SpecifiedParameterParameterExtractor());
+      configuration.ParameterExtractors.Add(new DataParameterParameterExtractor());
       configuration.ParameterExtractors.Add(new DataTableParameterExtractor());
       configuration.ParameterExtractors.Add(new DictionaryParameterExtractor(new SqlPrimitiveDataTypes()));
       configuration.ParameterExtractors.Add(new EnumerableParameterExtractor(new SqlPrimitiveDataTypes()));

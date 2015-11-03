@@ -43,6 +43,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\ObjectBuilderExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\SqlSimpleTypeObjectBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ObjectBuilder\TupleObjectBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ParameterExtractor\DataParameterParameterExtractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ParameterExtractor\DataTableParameterExtractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ParameterExtractor\DictionaryParameterExtractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ParameterExtractor\EnumerableParameterExtractor.cs" />
