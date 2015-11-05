@@ -101,6 +101,7 @@ Table below contains supported object types, that can be passed as a input param
 |Anonymous type|Properties types must be primitive.|
 |Custom user type|Properties types must be primitive.|
 |```SpecifiedParameter```|Support output parameters.|
+|```IDataParameter```|For example SqlParameter|
 
 #### 6. Options of executing queries
 While executing ```Select<T>``` and ```Execute``` methods You can pass optional parameter ```QueryOptions```. ```QueryOptions``` parameter allows to manipulate Timeout and CommandType values.
