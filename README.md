@@ -11,6 +11,7 @@ Library is similar to [Dapper](https://github.com/StackExchange/dapper-dot-net),
 
 ## Nuget
 [AdoExecutor](https://www.nuget.org/packages/AdoExecutor/)
+
 [AdoExecutor (strong named)](https://www.nuget.org/packages/AdoExecutor.StrongName/)
 
 ## Examples
