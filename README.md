@@ -9,6 +9,10 @@ Library is similar to [Dapper](https://github.com/StackExchange/dapper-dot-net),
 * Easiness of use - after reading this document You should have the knowledge to configure the library and execute database query.
 * Adaptable to many database engines - those that support ADO.NET driver.
 
+## Nuget
+[AdoExecutor](https://www.nuget.org/packages/AdoExecutor/)
+[AdoExecutor (strong named)](https://www.nuget.org/packages/AdoExecutor.StrongName/)
+
 ## Examples
 If You want see some of examples, please visit wiki: [ADO EXECUTOR WIKI](https://github.com/treformat/AdoExecutor/wiki)
 
