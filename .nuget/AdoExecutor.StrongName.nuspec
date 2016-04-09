@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>AdoExecutor.StrongName</id>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <title>AdoExecutor (strong named)</title>
     <authors>Tomasz Reformat</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
