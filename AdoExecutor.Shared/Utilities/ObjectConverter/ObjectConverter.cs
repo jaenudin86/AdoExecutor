@@ -23,7 +23,10 @@ namespace AdoExecutor.Utilities.ObjectConverter
 
       if (destinationType == objectToConvertType || destinationNullableUnderlyingType == objectToConvertType)
         return objectToConvert;
-
+      
+      if((destinationNullableUnderlyingType ?? destinationType).IsEnum)
+        return Enum.ToObject((destinationNullableUnderlyingType ?? destinationType), objectToConvert);
+      
       return Convert.ChangeType(objectToConvert, destinationNullableUnderlyingType ?? destinationType);
     }
   }
