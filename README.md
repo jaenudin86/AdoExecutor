@@ -1,4 +1,4 @@
-#!!!Important!!!
+## !!!Important!!!
 I wrote this library more than two years ago (in 2015). In that time i learn a lot, so based on my experience don't use this library. It works - i test it in many scenarios, but from time perspective i treat it like a learning development adventure.
 
 For production environment it will be better to use [Dapper](https://github.com/StackExchange/dapper-dot-net).
