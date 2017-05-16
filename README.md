@@ -1,7 +1,7 @@
 ## !!!Important!!!
 I wrote this library more than two years ago (in 2015). In that time i have learned a lot, so based on my experience You shouldn't use this library. It works - i test it in many scenarios, but from time perspective i treat it like a development adventure.
 
-For production environment it is better to choose [Dapper](https://github.com/StackExchange/dapper-dot-net).
+For production environment is better to choose [Dapper](https://github.com/StackExchange/dapper-dot-net).
 
 ## Informations
 Assumption of library (overlay) AdoExecutor is to assist users to query a database using ADO.NET driver.
